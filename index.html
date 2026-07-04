@@ -699,7 +699,7 @@ function ritaPush(t,who){const d=document.createElement('div');d.className='rm '
 function ritaQuick(opts){const q=document.getElementById('ritaQuick');q.innerHTML=opts.map(o=>`<button onclick="ritaPick('${o.replace(/'/g,"")}')">${o}</button>`).join('');}
 let ritaStarted=false;
 function openRita(){document.getElementById('ritaPanel').classList.add('on');document.getElementById('ritaLabel').classList.remove('show');
-  if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, de la parte de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios','Hablar con una persona']);}
+  if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, de la parte de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios']);}
 }
 function closeRita(){document.getElementById('ritaPanel').classList.remove('on');}
 function ritaPick(t){document.getElementById('ritaText').value=t;ritaSend();}
@@ -725,16 +725,16 @@ async function callRita(lastText){
 }
 function ritaReplyFallback(t){
   const q=document.getElementById('ritaQuick');q.innerHTML='';
-  if(/bot|robot|human|persona|real/.test(t)){ritaPush('Soy Rita, la asistente de ventas virtual de la pañalería. Estoy para ayudarte a elegir y comprar rápido. Si preferís, te paso con una persona del local por WhatsApp. ¿Te ayudo a elegir mientras tanto?','bot');ritaQuick(['Para un adulto','Para un bebé','Hablar con una persona']);return;}
+  if(/bot|robot|human|persona|real/.test(t)){ritaPush('Soy Rita, la asistente de ventas virtual de la pañalería. Estoy para ayudarte a elegir y comprar rápido. Si preferís, te paso con una persona del local por WhatsApp. ¿Te ayudo a elegir mientras tanto?','bot');ritaQuick(['Para un adulto','Para un bebé']);return;}
   if(/adulto|mam|pap|abuel|mayor/.test(t)){ritaPush('Perfecto. Para el talle de adulto me guío por el contorno de cintura: hasta ~90cm es M, 90-115cm es G, y más de 115cm es XG. ¿Sabés más o menos el contorno? Si es para la noche, conviene el XG por absorción.','bot');ritaQuick(['Es para la noche','Contorno mediano','Ver pañales de adulto']);return;}
   if(/beb|niñ|chico|hijo|nieto/.test(t)){ritaPush('¡Genial! En bebé me guío por el peso: 6-9kg es M, 9-12kg es G y 12-15kg es XG. ¿Cuánto pesa el bebé?','bot');ritaQuick(['9 a 12 kg','12 a 15 kg','Ver pañales de bebé']);return;}
   if(/noche/.test(t)){ritaPush('Para la noche te recomiendo el XG: es el de mayor absorción y evita pérdidas hasta la mañana. ¿Te lo agrego al carrito?','bot');ritaQuick(['Ver adulto XG','Sí, dale']);return;}
   if(/precio|sale|cuesta|cu[aá]nto/.test(t)){ritaPush('Trabajamos precio de fábrica, y baja si llevás 3 o más (por bolsón). Mirá el catálogo con todos los precios más abajo. ¿De qué producto querés saber?','bot');ritaQuick(['Adulto XG','Bebé G','Ver catálogo']);return;}
-  if(/envi|domicilio|llega|manda/.test(t)){ritaPush('Hacemos envío a domicilio en zona norte (San Martín y alrededores), GRATIS desde $30.000. También podés retirarlo gratis en el local. ¿Querés que armemos tu pedido?','bot');ritaQuick(['Ver productos','Hablar con una persona']);return;}
+  if(/envi|domicilio|llega|manda/.test(t)){ritaPush('Hacemos envío a domicilio en zona norte (San Martín y alrededores), GRATIS desde $30.000. También podés retirarlo gratis en el local. ¿Querés que armemos tu pedido?','bot');ritaQuick(['Ver productos']);return;}
   if(/persona|whatsapp|llamar|humano/.test(t)){ritaPush('¡Dale! Escribinos por WhatsApp y una persona del local te atiende directo. (En la versión final este botón abre el WhatsApp del negocio.) ¿Algo más en lo que te ayude?','bot');ritaQuick(['Ver productos']);return;}
   if(/catalogo|catálogo|ver|producto/.test(t)){closeRita();document.getElementById('catalogo').scrollIntoView();return;}
   ritaPush('Te ayudo con eso. Contame para quién es el pañal (adulto o bebé) y el peso o contorno, y te digo el talle justo. También te muestro precios o te paso con una persona.','bot');
-  ritaQuick(['Para un adulto','Para un bebé','Ver precios','Hablar con una persona']);
+  ritaQuick(['Para un adulto','Para un bebé','Ver precios']);
 }
 // ---------- Rita peek-a-boo loop (aparece ~10s / se esconde ~4s, en loop) ----------
 (function ritaLoop(){let visible=false;function tick(){if(document.getElementById('ritaPanel').classList.contains('on')){setTimeout(tick,4000);return;}visible=!visible;document.getElementById('ritaLabel').classList.toggle('show',visible);setTimeout(tick,visible?10000:4000);}setTimeout(tick,3500);})();
