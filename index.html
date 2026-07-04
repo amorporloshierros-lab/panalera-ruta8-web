@@ -58,6 +58,7 @@
   nav.top.scrolled{background:rgba(255,255,255,.92);box-shadow:var(--sh)}
   .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:1.05rem}
   .brand .mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,var(--azul),var(--azul-l));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Fraunces';font-weight:700;font-size:1.15rem;box-shadow:0 6px 16px -4px rgba(14,90,167,.6);flex:0 0 auto}
+  .brand .mark-logo{width:46px;height:46px;object-fit:contain;flex:0 0 auto}
   .brand b{font-family:'Fraunces';font-weight:600}.brand small{display:block;font-size:.62rem;letter-spacing:.13em;color:var(--mut);font-weight:600;text-transform:uppercase;font-family:'Figtree'}
   nav.top .links{margin-left:auto;display:flex;align-items:center;gap:6px}
   nav.top .links a{padding:9px 13px;border-radius:var(--r-pill);font-weight:600;font-size:.94rem;color:var(--ink2);transition:background .15s,color .15s}
@@ -205,6 +206,7 @@
   footer h4{color:#fff;font-family:'Figtree';font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
   footer a{color:#c3d3e3;display:block;padding:5px 0;transition:color .15s}footer a:hover{color:#fff}
   .foot-brand .mark{width:44px;height:44px}
+  .foot-brand .mark-logo{width:56px;height:56px;object-fit:contain}
   .socials{display:flex;gap:10px;margin-top:16px}
   .socials a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;padding:0}
   .socials a:hover{background:var(--azul)}
@@ -274,7 +276,7 @@
 
 <!-- NAV -->
 <nav class="top" id="nav">
-  <a href="#top" class="brand"><span class="mark">R8</span><span><b>Pañalera Ruta 8</b><small>Mayorista · precio de fábrica</small></span></a>
+  <a href="#top" class="brand"><img class="mark-logo" src="logo-emblema.png" alt="Logo Pañalera Ruta 8" width="46" height="46"><span><b>Pañalera Ruta 8</b><small>Mayorista · precio de fábrica</small></span></a>
   <div class="links">
     <a href="#catalogo">Productos</a>
     <a href="#asesor">Asesor de talle</a>
@@ -412,7 +414,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="brand" style="color:#fff"><span class="mark">R8</span><span><b style="color:#fff">Pañalera Ruta 8</b><small style="color:#8ba3bd">Mayorista · precio de fábrica</small></span></div>
+        <div class="brand" style="color:#fff"><img class="mark-logo" src="logo-emblema.png" alt="Logo Pañalera Ruta 8" width="56" height="56"><span><b style="color:#fff">Pañalera Ruta 8</b><small style="color:#8ba3bd">Mayorista · precio de fábrica</small></span></div>
         <p style="margin-top:14px;max-width:36ch;color:#8ba3bd">Pañales de adulto y bebé al precio de fábrica, a la puerta de tu casa. San Martín, zona norte GBA.</p>
         <div class="socials">
           <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
