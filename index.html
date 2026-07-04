@@ -122,6 +122,19 @@
   .prod:hover{transform:translateY(-4px);box-shadow:var(--sh)}
   .prod .img{aspect-ratio:4/3;background:linear-gradient(135deg,var(--azul-soft),var(--soft2));display:flex;align-items:center;justify-content:center;color:var(--azul-l);position:relative}
   .prod .img svg{width:66px;height:66px;opacity:.8}
+  .prod .img .pkg{width:auto;height:82%;opacity:1;filter:drop-shadow(0 10px 16px rgba(14,90,167,.2))}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes road{to{background-position:34px 0}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @media (prefers-reduced-motion:no-preference){
+    .prod .img .pkg{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+    .prod:hover .img .pkg{transform:translateY(-6px) scale(1.05) rotate(-1.5deg)}
+    .hero-card{animation:floaty 6s ease-in-out infinite}
+    .hero-float.a{animation:floaty 5s ease-in-out infinite}
+    .hero-float.b{animation:floaty 7s ease-in-out infinite .6s}
+    .route{animation:road 4.5s linear infinite}
+    .rita-label.show{animation:bob 2.4s ease-in-out infinite}
+  }
   .prod .tag{position:absolute;top:12px;left:12px;background:#fff;color:var(--azul);font-weight:700;font-size:.78rem;padding:5px 11px;border-radius:var(--r-pill);box-shadow:var(--sh-s)}
   .prod .tag.out{background:#f0f2f5;color:var(--mut)}
   .prod .body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
@@ -477,13 +490,26 @@ const PRODUCTOS=[
 const money=n=>'$'+Number(n).toLocaleString('es-AR');
 let CART=[];let curCat='adulto';
 
+function prodImg(cat){
+  const c = cat==='bebe' ? {a:'#8fd0f7',b:'#d6edfc',band:'#2b82d4',ink:'#0e5aa7'} : {a:'#3a90d6',b:'#bfdcf4',band:'#0e5aa7',ink:'#0a4885'};
+  return `<svg class="pkg" viewBox="0 0 220 168" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><linearGradient id="g${cat}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c.a}"/><stop offset="1" stop-color="${c.b}"/></linearGradient></defs>
+    <ellipse cx="110" cy="152" rx="62" ry="9" fill="#0e5aa7" opacity=".12"/>
+    <rect x="63" y="22" width="94" height="124" rx="14" fill="url(#g${cat})"/>
+    <path d="M63 36c0-8 5-14 13-14h68c8 0 13 6 13 14v5H63z" fill="${c.band}"/>
+    <path d="M64 22h92l-6 7H70z" fill="#fff" opacity=".22"/>
+    <rect x="63" y="76" width="94" height="42" fill="#fff" opacity=".95"/>
+    <text x="110" y="96" text-anchor="middle" font-family="Fraunces,serif" font-weight="700" font-size="16" fill="${c.ink}">RUTA 8</text>
+    <text x="110" y="110" text-anchor="middle" font-family="Figtree,sans-serif" font-size="7.5" letter-spacing="2.5" fill="#6b7f95">PAÑALES ${cat==='bebe'?'BEBÉ':'ADULTO'}</text>
+    <path d="M86 130c16 9 32 9 48 0-2 8-6 12-24 12s-22-4-24-12z" fill="#fff" opacity=".82"/>
+    <path d="M73 28l15 0-31 110-10 0z" fill="#fff" opacity=".13"/>
+  </svg>`;
+}
 function renderProds(){
   const g=document.getElementById('prodGrid');
   g.innerHTML=PRODUCTOS.filter(p=>p.cat===curCat).map(p=>`
     <div class="prod">
-      <div class="img"><span class="tag ${p.stock?'':'out'}">${p.stock?'Precio de fábrica':'Sin stock'}</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg>
-      </div>
+      <div class="img"><span class="tag ${p.stock?'':'out'}">${p.stock?'Precio de fábrica':'Sin stock'}</span>${prodImg(p.cat)}</div>
       <div class="body">
         <h3>${p.nombre}</h3>
         <div class="desc">${p.desc}</div>
