@@ -543,7 +543,7 @@ function ritaPush(t,who){const d=document.createElement('div');d.className='rm '
 function ritaQuick(opts){const q=document.getElementById('ritaQuick');q.innerHTML=opts.map(o=>`<button onclick="ritaPick('${o.replace(/'/g,"")}')">${o}</button>`).join('');}
 let ritaStarted=false;
 function openRita(){document.getElementById('ritaPanel').classList.add('on');document.getElementById('ritaLabel').classList.remove('show');
-  if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, assesora de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios','Hablar con una persona']);}
+  if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, de la parte de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios','Hablar con una persona']);}
 }
 function closeRita(){document.getElementById('ritaPanel').classList.remove('on');}
 function ritaPick(t){document.getElementById('ritaText').value=t;ritaSend();}
