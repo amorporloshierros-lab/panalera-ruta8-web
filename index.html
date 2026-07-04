@@ -84,13 +84,12 @@
   @media(max-width:860px){.hero p.sub{margin-left:auto;margin-right:auto}}
   .hero .cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px}
   .hero .badges{display:flex;gap:10px;flex-wrap:wrap}
-  .hero-visual{position:relative}
-  .hero-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:26px;position:relative;overflow:hidden}
-  .hero-card .ph{height:230px;border-radius:var(--r);background:linear-gradient(135deg,var(--azul-soft),var(--soft2));display:flex;align-items:center;justify-content:center;color:var(--azul-l);flex-direction:column;gap:10px;text-align:center}
-  .hero-card .ph svg{width:64px;height:64px}
-  .hero-float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:12px 16px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:.9rem}
-  .hero-float.a{bottom:-18px;left:-14px;color:var(--verde)}
-  .hero-float.b{top:-16px;right:-10px;color:var(--azul)}
+  .hero-visual{position:relative;perspective:1000px}
+  .hero-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 44px 90px -34px rgba(14,90,167,.5),0 14px 34px -14px rgba(10,30,55,.28);padding:9px;position:relative;overflow:hidden;transform:rotateY(-6deg) rotateX(2deg);transform-style:preserve-3d;will-change:transform}
+  .hero-photo{display:block;width:100%;height:auto;border-radius:calc(var(--r-lg) - 7px)}
+  .hero-float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 22px 44px -14px rgba(10,30,55,.4);padding:13px 18px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;z-index:4}
+  .hero-float.a{bottom:8%;left:-26px;color:var(--verde);transform:translateZ(45px)}
+  .hero-float.b{top:9%;right:-22px;color:var(--azul);transform:translateZ(70px)}
   @media(max-width:860px){.hero-float{display:none}}
   .hero-float .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .hero-float.a .ic{background:var(--verde-soft)}.hero-float.b .ic{background:var(--azul-soft)}
@@ -153,12 +152,15 @@
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
   @keyframes road{to{background-position:34px 0}}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes heroTilt{0%,100%{transform:rotateY(-6deg) rotateX(2deg) translateY(0)}50%{transform:rotateY(-6deg) rotateX(2deg) translateY(-7px)}}
+  @keyframes floatDA{0%,100%{transform:translateZ(45px) translateY(0)}50%{transform:translateZ(45px) translateY(-7px)}}
+  @keyframes floatDB{0%,100%{transform:translateZ(70px) translateY(0)}50%{transform:translateZ(70px) translateY(-7px)}}
   @media (prefers-reduced-motion:no-preference){
     .prod .img .pkg{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
     .prod:hover .img .pkg{transform:translateY(-6px) scale(1.05) rotate(-1.5deg)}
-    .hero-card{animation:floaty 6s ease-in-out infinite}
-    .hero-float.a{animation:floaty 5s ease-in-out infinite}
-    .hero-float.b{animation:floaty 7s ease-in-out infinite .6s}
+    .hero-card{animation:heroTilt 7s ease-in-out infinite}
+    .hero-float.a{animation:floatDA 5s ease-in-out infinite}
+    .hero-float.b{animation:floatDB 7s ease-in-out infinite .6s}
     .route{animation:road 4.5s linear infinite}
     .rita-label.show{animation:bob 2.4s ease-in-out infinite}
   }
@@ -197,6 +199,7 @@
   .rev .stars{color:var(--ambar);font-size:1.1rem;letter-spacing:2px;margin-bottom:8px}
   /* FOOTER */
   footer{background:#0c1c2e;color:#c3d3e3;padding:60px 0 30px;margin-top:0}
+  .foot-cut{height:160px;margin:-60px 0 40px;background:linear-gradient(rgba(12,28,46,.5),rgba(12,28,46,.85)),url('local-esquina.jpg') center 32%/cover}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:40px}
   @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:26px}}
   footer h4{color:#fff;font-family:'Figtree';font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
@@ -302,10 +305,7 @@
     </div>
     <div class="hero-visual rv d2">
       <div class="hero-card">
-        <div class="ph">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg>
-          <span style="font-weight:700">Tus pañales, siempre listos</span>
-        </div>
+        <img class="hero-photo" src="local-hero.jpg" alt="Frente de Pañalera Ruta 8 en San Martín" loading="eager" decoding="async">
       </div>
       <div class="hero-float a"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18V9a2 2 0 0 1 2-2h9l3 4v7"/><circle cx="7.5" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg></span> Te llega a casa</div>
       <div class="hero-float b"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Precio de fábrica</div>
@@ -378,9 +378,8 @@
 <!-- FABRICA -->
 <section id="fabrica">
   <div class="wrap fab-grid">
-    <div class="fab-photo rv">
-      <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 21h18M4 21V7l5-3 5 3v14M14 21V10l6 3v8"/></svg>
-      <span style="font-weight:700">Nuestro depósito en San Martín</span>
+    <div class="fab-photo rv" style="background:linear-gradient(180deg,rgba(10,30,55,0) 45%,rgba(10,30,55,.78)),url('local-esquina.jpg') center/cover;justify-content:flex-end;align-items:flex-start;padding:22px">
+      <span style="font-weight:700;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);font-size:1.05rem">Nuestro depósito en San Martín</span>
     </div>
     <div class="rv d1">
       <span class="eyebrow">Por qué comprar acá</span>
@@ -409,6 +408,7 @@
 
 <!-- FOOTER -->
 <footer>
+  <div class="foot-cut"></div>
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
@@ -739,6 +739,14 @@ function ritaReplyFallback(t){
 }
 // ---------- Rita peek-a-boo loop (aparece ~10s / se esconde ~4s, en loop) ----------
 (function ritaLoop(){let visible=false;function tick(){if(document.getElementById('ritaPanel').classList.contains('on')){setTimeout(tick,4000);return;}visible=!visible;document.getElementById('ritaLabel').classList.toggle('show',visible);setTimeout(tick,visible?10000:4000);}setTimeout(tick,3500);})();
+// ---------- Hero 3D: profundidad al mover el mouse (parallax) ----------
+(function(){
+  const v=document.querySelector('.hero-visual'), card=document.querySelector('.hero-card');
+  if(!v||!card) return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches||matchMedia('(max-width:860px)').matches) return;
+  v.addEventListener('mousemove',e=>{const r=v.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;card.style.animation='none';card.style.transform='rotateY('+(-6+px*12)+'deg) rotateX('+(2-py*9)+'deg)';});
+  v.addEventListener('mouseleave',()=>{card.style.animation='';card.style.transform='';});
+})();
 
 // init
 renderProds();cargarCatalogo();updateCart();revScan();document.getElementById('heroPill')&&document.getElementById('heroPill').classList.add('in');
