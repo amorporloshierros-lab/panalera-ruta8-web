@@ -225,7 +225,18 @@
     </section>
 
     <section class="view" id="sec-chatbot">
-      <h2 class="title">💬 Chatbot Web — tablero</h2><p class="lead">El chat de la página web (módulo pendiente de construir). Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
+      <h2 class="title">💬 Chatbot Web (Rita)</h2><p class="lead">El cerebro de Rita se edita acá y responde con IA usando el catálogo real. Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
+      <div class="panel">
+        <div class="h">🤖 Cerebro de Rita (editable)</div>
+        <div class="b">
+          <div class="field"><label>Nombre del asistente</label><input id="ri_nombre" placeholder="Rita"></div>
+          <div class="field"><label>Saludo inicial (lo primero que dice en la web)</label><textarea id="ri_saludo" rows="2"></textarea></div>
+          <div class="field"><label>Instrucciones / personalidad (system prompt)</label><textarea id="ri_prompt" rows="12" style="width:100%;font-family:monospace;font-size:.82rem"></textarea></div>
+          <div class="field"><label><input type="checkbox" id="ri_activo" style="width:auto;margin-right:8px">Rita activa (si la apagás, el chat de la web queda en pausa)</label></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn lg" id="btnRitaSave" onclick="guardarRita()">💾 Guardar cambios de Rita</button><span id="ri_msg" class="hint"></span></div>
+          <div class="hint" style="margin-top:8px">Rita responde con IA usando estas instrucciones + el catálogo real. Para activar la IA hay que cargar la clave <b>ANTHROPIC_API_KEY</b> en Supabase → Edge Functions → Secrets. Sin la clave, da una respuesta de respaldo (la web igual funciona).</div>
+        </div>
+      </div>
       <div class="kpis" id="kpisChat"></div>
       <div class="panel"><div class="h">🙋 Necesitan que atiendas vos</div><div class="b tablewrap" id="tChatHumano"></div></div>
       <div class="panel"><div class="h">💬 Últimas conversaciones</div><div class="b tablewrap" id="tChatUlt"></div></div>
@@ -767,14 +778,23 @@ $('btnChatCerrar').onclick=async()=>{if(!CHAT)return;await sb.from('bot_outbox')
 $('btnReconectar').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'reconectar',payload:{}});alert('Pedido de reconexión enviado al bot.');};
 
 // CHATBOT (tablero real: usa conversaciones + mensajes)
+async function guardarRita(){
+  const msg=$('ri_msg'); msg.textContent='Guardando…';
+  const {error}=await sb.from('web_config').update({nombre:($('ri_nombre').value.trim()||'Rita'),saludo:$('ri_saludo').value.trim(),system_prompt:$('ri_prompt').value,activo:$('ri_activo').checked,actualizado_en:new Date().toISOString()}).eq('id',1);
+  msg.textContent=error?('⚠️ Error: '+error.message):'✅ Guardado. Rita ya usa el nuevo cerebro.';
+  setTimeout(()=>{msg.textContent='';},5000);
+}
 async function loadChatbot(){
+  // Cargar el cerebro editable de Rita (web_config)
+  const{data:wc}=await sb.from('web_config').select('*').eq('id',1).maybeSingle();
+  if(wc){ $('ri_nombre').value=wc.nombre||''; $('ri_saludo').value=wc.saludo||''; $('ri_prompt').value=wc.system_prompt||''; $('ri_activo').checked=wc.activo!==false; }
   // SOLO conversaciones del canal WEB (las de WhatsApp viven en "Bot WhatsApp")
   const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','web').order('ultima_actividad',{ascending:false}).limit(100);
   const convs=cv||[];
   if(!convs.length){
     $('kpisChat').innerHTML=kpi(0,'Conversaciones','az')+kpi(0,'Atendidas por el bot','gr')+kpi(0,'Esperan persona','amb')+kpi(0,'Cerradas');
-    $('tChatHumano').innerHTML=empty('El Chatbot Web todavía no está construido (módulo pendiente). Cuando exista el chat de la página, sus conversaciones aparecen acá.');
-    $('tChatUlt').innerHTML=empty('Las conversaciones de WhatsApp NO van acá: están en “🤖 Bot WhatsApp”.');
+    $('tChatHumano').innerHTML=empty('Todavía no hay charlas del chat web. Cuando alguien escriba con Rita en la página, aparecen acá.');
+    $('tChatUlt').innerHTML=empty('Sin charlas del chat web todavía. (Las de WhatsApp están en “🤖 Bot WhatsApp”.)');
     return;
   }
   const ids=convs.map(c=>c.id);
@@ -928,29 +948,4 @@ async function loadSistema(){
   $('sistServicios').innerHTML=tbl('<tr><th>Servicio</th><th>Estado</th><th>Detalle</th></tr>'+svc.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td><span class="badge ${s[2]}">${esc(s[1])}</span></td><td>${esc(s[3])}</td></tr>`).join(''));
   $('sistLogs').innerHTML=L.length?tbl('<tr><th>Cuándo</th><th>Origen</th><th>Nivel</th><th>Mensaje</th></tr>'+L.map(x=>`<tr><td>${esc((x.creado_en||'').slice(0,19).replace('T',' '))}</td><td>${esc(x.origen)}</td><td><span class="badge ${x.nivel==='error'?'amb':'gr'}">${esc(x.nivel)}</span></td><td>${esc(x.mensaje)}</td></tr>`).join('')):empty('Sin errores registrados. 👍');
 }
-async function logPanel(mensaje,detalle){try{const{data:{session}}=await sb.auth.getSession();await sb.from('eventos_log').insert({origen:'panel',nivel:'error',mensaje:String(mensaje).slice(0,400),detalle:detalle||null,usuario_id:(session&&session.user&&session.user.id)||null});}catch(_){}}
-window.addEventListener('error',ev=>{logPanel(ev.message,{src:ev.filename,line:ev.lineno});});
-window.addEventListener('unhandledrejection',ev=>{logPanel('Promesa sin manejar: '+((ev.reason&&ev.reason.message)||ev.reason),null);});
-let _rtSuscrito=false;
-function suscribirRealtime(){ if(_rtSuscrito)return; _rtSuscrito=true;
-  sb.channel('sistema')
-    .on('postgres_changes',{event:'*',schema:'public',table:'bot_estado'},()=>{if(vistaActual==='sistema')loadSistema();if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'eventos_log'},()=>{if(vistaActual==='sistema')loadSistema();})
-    .on('postgres_changes',{event:'*',schema:'public',table:'conversaciones'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
-    .on('postgres_changes',{event:'*',schema:'public',table:'mensajes'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
-    .subscribe();
-}
-function abrir(id){$(id).style.display='flex';}function cerrar(id){$(id).style.display='none';}
-// Saca los emojis del principio de títulos y encabezados (look profesional, sin default)
-(function(){try{
-  function strip(s){var i=0;while(i<s.length){var c=s.charCodeAt(i);if(c===32||c===9||c===0x200D||(c>=0x2190&&c<=0x3300)||(c>=0xFE00&&c<=0xFE0F)||(c>=0xD800&&c<=0xDFFF))i++;else break;}return s.slice(i);}
-  document.querySelectorAll('h2.title, .panel .h').forEach(function(el){var n=el.firstChild;if(n&&n.nodeType===3)n.textContent=strip(n.textContent);});
-}catch(_){}})();
-// Tema claro/oscuro
-function _temaLabel(){const d=document.documentElement.getAttribute('data-theme')==='dark';const t=$('temaTxt');if(t)t.textContent=d?'Tema claro':'Tema oscuro';}
-_temaLabel();
-$('btnTema').onclick=()=>{const nuevo=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nuevo);try{localStorage.setItem('panalera-theme',nuevo);}catch(_){}_temaLabel();};
-init();
-</script>
-</body>
-</html>
+async function logPanel(mensaje,detalle){try{const{data:{session}}=await sb.auth.getSession();await sb.from('eventos_log').insert({origen:'panel',nivel:'error',mensaje:String(mensaje).slice(0,400),detalle:detalle||null,usuario_id:(session&&session.user&&sessi

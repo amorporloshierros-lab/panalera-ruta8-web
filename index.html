@@ -704,11 +704,26 @@ function openRita(){document.getElementById('ritaPanel').classList.add('on');doc
 function closeRita(){document.getElementById('ritaPanel').classList.remove('on');}
 function ritaPick(t){document.getElementById('ritaText').value=t;ritaSend();}
 function ritaAviso(prod){openRita();ritaPush('Quiero que me avisen cuando llegue: '+prod,'me');ritaPush('¡Listo! Apenas repongamos '+prod+' te aviso. ¿Me dejás tu WhatsApp así te escribo?','bot');ritaQuick([]);}
+const RITA_FN=SB_URL+'/functions/v1/rita-chat';
+let ritaHist=[];
+const ritaSid=(function(){try{let s=localStorage.getItem('r8-sid');if(!s){s=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem('r8-sid',s);}return s;}catch(e){return 'anon'+Date.now();}})();
 function ritaSend(){
   const inp=document.getElementById('ritaText');const t=inp.value.trim();if(!t)return;inp.value='';ritaPush(t,'me');
-  setTimeout(()=>ritaReply(t.toLowerCase()),450);
+  document.getElementById('ritaQuick').innerHTML='';
+  ritaHist.push({role:'user',content:t});
+  callRita(t);
 }
-function ritaReply(t){
+async function callRita(lastText){
+  ritaPush('escribiendo…','bot');const typing=ritaMsgs.lastChild;if(typing)typing.classList.add('rm-typing');
+  try{
+    const r=await fetch(RITA_FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({messages:ritaHist.slice(-16),session:ritaSid})});
+    const d=await r.json();if(typing)typing.remove();
+    if(d&&d.ai===false){ ritaReplyFallback((lastText||'').toLowerCase()); return; }
+    const reply=(d&&d.reply)||'¿Te ayudo con algo más? 😊';
+    ritaPush(reply,'bot');ritaHist.push({role:'assistant',content:reply});
+  }catch(e){ if(typing)typing.remove(); ritaReplyFallback((lastText||'').toLowerCase()); }
+}
+function ritaReplyFallback(t){
   const q=document.getElementById('ritaQuick');q.innerHTML='';
   if(/bot|robot|human|persona|real/.test(t)){ritaPush('Soy Rita, la asistente de ventas virtual de la pañalería. Estoy para ayudarte a elegir y comprar rápido. Si preferís, te paso con una persona del local por WhatsApp. ¿Te ayudo a elegir mientras tanto?','bot');ritaQuick(['Para un adulto','Para un bebé','Hablar con una persona']);return;}
   if(/adulto|mam|pap|abuel|mayor/.test(t)){ritaPush('Perfecto. Para el talle de adulto me guío por el contorno de cintura: hasta ~90cm es M, 90-115cm es G, y más de 115cm es XG. ¿Sabés más o menos el contorno? Si es para la noche, conviene el XG por absorción.','bot');ritaQuick(['Es para la noche','Contorno mediano','Ver pañales de adulto']);return;}
