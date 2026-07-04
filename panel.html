@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin · Pañalera Ruta 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('panalera-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
+<style>
+  :root{
+    --bg:#eef1f6;--card:#ffffff;--ink:#101828;--mut:#667085;--line:#e5e8ef;--soft:#f6f8fb;
+    --azul:#4f46e5;--azul-d:#4338ca;--azul-soft:#eef2ff;--azul-ink:#3730a3;
+    --verde:#12b76a;--rojo:#f04438;--ambar:#f79009;
+    --nav:#0e1626;--nav2:#0a1120;--nav-h:rgba(255,255,255,.06);--nav-ink:#c4cee0;--nav-mut:#7c8aa5;--nav-brand:#ffffff;
+    --chip-bg:#eef2ff;--chip-ink:#3730a3;--gris-bg:#eef1f6;--gris-ink:#3b4658;
+    --warn-bg:#fffaf0;--warn-line:#fde3b6;--warn-ink:#93500b;
+    --ok-bg:#ecfdf3;--ok-line:#b7ecd0;--ok-ink:#05603a;
+    --in-bg:#eef1f6;--out-bg:#e6f7ef;
+    --r:12px;--r-lg:16px;--r-sm:9px;
+    --sombra:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.07);
+    --sombra-lg:0 12px 32px -8px rgba(16,24,40,.18);
+    --focus:0 0 0 3px rgba(79,70,229,.18);
+  }
+  html[data-theme="dark"]{
+    --bg:#0b1120;--card:#141c2e;--ink:#e7ebf5;--mut:#94a1b8;--line:#243049;--soft:#0f1728;
+    --azul:#6366f1;--azul-d:#818cf8;--azul-soft:#1e2444;--azul-ink:#c7ccff;
+    --verde:#34d399;--rojo:#f87171;--ambar:#fbbf24;
+    --nav:#080d18;--nav2:#05090f;--nav-h:rgba(255,255,255,.055);--nav-ink:#b9c4da;--nav-mut:#66748f;--nav-brand:#ffffff;
+    --chip-bg:#1e2444;--chip-ink:#c7ccff;--gris-bg:#1c2740;--gris-ink:#cfd8ea;
+    --warn-bg:#2a2110;--warn-line:#4d3a12;--warn-ink:#fbc971;
+    --ok-bg:#0f2a1f;--ok-line:#1f4a38;--ok-ink:#6ee7b7;
+    --in-bg:#1c2740;--out-bg:#12321f;
+    --sombra:0 1px 2px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.28);
+    --sombra-lg:0 16px 40px -10px rgba(0,0,0,.6);
+    --focus:0 0 0 3px rgba(99,102,241,.3);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+  h1,h2,h3,.brand{font-family:'Plus Jakarta Sans','Inter',sans-serif;letter-spacing:-.01em}
+  button{font-family:inherit;font-size:1rem;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:.95rem;padding:10px 13px;border:1px solid var(--line);border-radius:var(--r-sm);width:100%;background:var(--card);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--azul);box-shadow:var(--focus)}
+  .btn{background:var(--azul);color:#fff;border:none;border-radius:var(--r-sm);padding:11px 18px;font-weight:600;box-shadow:0 1px 2px rgba(16,24,40,.1);transition:transform .12s,filter .15s,background .15s}
+  .btn:hover{filter:brightness(1.07)}.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.55;cursor:default;filter:none}
+  .btn.lg{font-size:1rem;padding:13px 22px}
+  .btn.gris{background:var(--gris-bg);color:var(--gris-ink);box-shadow:none}
+  .btn.rojo{background:transparent;color:var(--rojo);box-shadow:none;border:1px solid var(--line)}.btn.rojo:hover{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .btn.sm{padding:7px 13px;border-radius:8px;font-size:.88rem}
+  .err{color:var(--rojo);min-height:1.2em;font-size:.9rem}.ok{color:var(--verde);font-size:.9rem}
+  a{color:var(--azul)}
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(1200px 600px at 50% -10%,var(--azul-soft),var(--bg) 60%)}
+  #login .card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sombra-lg);padding:38px 34px;width:100%;max-width:400px;text-align:center;border:1px solid var(--line)}
+  #login h1{font-size:1.55rem;margin:0 0 4px;font-weight:800}#login p{color:var(--mut);margin:0 0 24px}#login input{margin-bottom:12px;padding:13px 15px}#login .btn{width:100%;margin-top:6px;padding:13px}
+  #app{display:none}
+  .shell{display:grid;grid-template-columns:256px 1fr;min-height:100vh}
+  aside{background:linear-gradient(180deg,var(--nav),var(--nav2));color:var(--nav-ink);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid rgba(255,255,255,.05)}
+  aside .brand{color:var(--nav-brand);font-weight:800;font-size:1.08rem;padding:4px 8px 16px;display:flex;align-items:center;gap:10px}
+  aside .brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--azul),#8b5cf6);display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 12px -2px rgba(79,70,229,.5)}
+  aside .brand small{display:block;font-weight:600;color:var(--nav-mut);font-size:.6rem;letter-spacing:.14em;margin-top:2px}
+  .grp{color:var(--nav-mut);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:16px 12px 6px}
+  nav a{display:flex;align-items:center;gap:11px;color:var(--nav-ink);text-decoration:none;padding:9px 12px;border-radius:10px;font-weight:500;margin-bottom:1px;cursor:pointer;font-size:.9rem;transition:background .15s,color .15s}
+  nav a svg{width:18px;height:18px;flex:0 0 auto;opacity:.85;stroke-width:1.9;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+  nav a:hover{background:var(--nav-h);color:#fff}
+  nav a.active{background:linear-gradient(90deg,var(--azul),#6d28d9);color:#fff;box-shadow:0 6px 16px -6px rgba(79,70,229,.7)}
+  nav a.active svg{opacity:1}
+  aside .foot{margin-top:18px;border-top:1px solid rgba(255,255,255,.07);padding-top:14px;font-size:.78rem;color:var(--nav-mut)}
+  .themebtn{display:flex;align-items:center;gap:9px;width:100%;background:var(--nav-h);color:var(--nav-ink);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:9px 12px;font-weight:600;font-size:.85rem;margin-bottom:8px}
+  .themebtn:hover{background:rgba(255,255,255,.1)}.themebtn svg{width:16px;height:16px}
+  main{padding:26px 30px 70px;max-width:1240px}
+  @media(max-width:860px){.shell{grid-template-columns:1fr}aside{position:static;height:auto}main{padding:18px}}
+  h2.title{font-size:1.5rem;margin:0 0 4px;font-weight:800}.lead{color:var(--mut);margin:0 0 20px;font-size:.95rem}
+  section.view{display:none}section.view.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--azul);opacity:.85}
+  .kpi.amb::before{background:var(--ambar)}.kpi.gr::before{background:var(--verde)}.kpi.az::before{background:var(--azul)}
+  .kpi .n{font-size:1.75rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-.02em}
+  .kpi .l{color:var(--mut);font-size:.82rem;font-weight:500;margin-top:2px}
+  .kpi.amb .n{color:var(--ambar)}.kpi.gr .n{color:var(--verde)}.kpi.az .n{color:var(--azul)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sombra);margin-bottom:20px;overflow:hidden}
+  .panel .h{padding:14px 20px;border-bottom:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:11px;font-size:.98rem}
+  .panel .h::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--azul);flex:0 0 auto;box-shadow:0 0 0 3px var(--azul-soft)}
+  h2.title{position:relative}
+  main>section.view>h2.title{padding-left:14px}
+  main>section.view>h2.title::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:4px;border-radius:3px;background:linear-gradient(180deg,var(--azul),#8b5cf6)}
+  .panel .h .sp{margin-left:auto}.panel .b{padding:6px 0}
+  .tablewrap{overflow:auto}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:560px}
+  th,td{padding:12px 20px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr{transition:background .12s}tbody tr:hover td{background:var(--soft)}
+  th{background:var(--soft);color:var(--mut);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  tr.rep td{background:var(--warn-bg)}td.num{font-variant-numeric:tabular-nums;font-weight:600}
+  .chip{display:inline-block;background:var(--chip-bg);color:var(--chip-ink);border-radius:6px;padding:2px 9px;font-size:.75rem;font-weight:600}
+  .badge{border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;color:#fff;letter-spacing:.01em}.badge.amb{background:var(--ambar)}.badge.gr{background:var(--mut)}.badge.ok{background:var(--verde)}
+  .empty{padding:34px;text-align:center;color:var(--mut);font-size:.92rem}
+  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.bar .search{max-width:300px}
+  .banner{display:none;align-items:center;gap:12px;background:var(--warn-bg);border:1px solid var(--warn-line);border-left:4px solid var(--ambar);border-radius:var(--r);padding:14px 18px;margin-bottom:18px;color:var(--warn-ink);font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sombra);transition:transform .15s,box-shadow .15s}
+  .pcard:hover{transform:translateY(-3px);box-shadow:var(--sombra-lg)}
+  .pcard .img{height:150px;background:var(--soft) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:2rem}
+  .pcard .body{padding:14px 16px}.pcard .nm{font-weight:700}.pcard .ds{color:var(--mut);font-size:.84rem;margin:4px 0 8px;min-height:2.2em}
+  .pcard .pr{font-size:.84rem;color:var(--mut)}.pcard .pr b{color:var(--azul)}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(9,14,26,.55);backdrop-filter:blur(3px);z-index:30;align-items:flex-start;justify-content:center;padding:30px 16px;overflow:auto}
+  .modal{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sombra-lg);width:100%;max-width:580px;padding:26px;border:1px solid var(--line);animation:pop .2s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+  .modal h3{margin:0 0 4px;font-weight:800;font-size:1.2rem}.modal .sub{color:var(--mut);margin:0 0 18px;font-size:.9rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+  .field{margin-bottom:14px}.field label{display:block;font-weight:600;margin-bottom:6px;font-size:.88rem}.field .hint{color:var(--mut);font-size:.79rem;margin-top:4px}
+  .prev{display:none;background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:10px;padding:11px 14px;font-size:.88rem;color:var(--ok-ink);margin-bottom:14px}
+  .acts{display:flex;gap:12px;margin-top:8px}.acts .btn{flex:1}
+  .inlineedit{display:flex;gap:8px;align-items:center}.inlineedit input{max-width:120px}
+  .grid-bot{display:grid;grid-template-columns:340px 1fr;gap:18px}@media(max-width:820px){.grid-bot{grid-template-columns:1fr}}
+  .msg{margin:5px 0}.msg span{display:inline-block;border-radius:12px;padding:7px 12px;max-width:82%;font-size:.9rem}
+  .msg.in{text-align:left}.msg.in span{background:var(--in-bg);color:var(--ink)}.msg.out{text-align:right}.msg.out span{background:var(--out-bg);color:var(--ink)}
+  ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}::-webkit-scrollbar-thumb:hover{background:var(--mut)}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="card">
+    <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,var(--azul),#8b5cf6);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 22px -6px rgba(79,70,229,.6)"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a4 4 0 0 1 4-4h5l6 6v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M9 4v4a2 2 0 0 1-2 2H4"/></svg></div>
+    <h1>Pañalera Ruta 8</h1><p>Panel de administración <b style="color:var(--verde)">· v2.8</b></p>
+    <input id="email" type="email" placeholder="Email" autocomplete="username">
+    <input id="pass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <button class="btn lg" id="btnLogin">Entrar</button>
+    <div class="err" id="loginErr" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div id="app"><div class="shell">
+  <aside>
+    <div class="brand"><span class="logo"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a4 4 0 0 1 4-4h5l6 6v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M9 4v4a2 2 0 0 1-2 2H4"/></svg></span><div>Pañalera Ruta 8<small>PANEL ADMIN</small></div></div>
+    <nav id="nav">
+      <div class="grp">Operación</div>
+      <a data-v="inicio" class="active"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg> Inicio</a>
+      <a data-v="catalogo"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> Catálogo</a>
+      <a data-v="productos"><svg viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg> Productos y precios</a>
+      <a data-v="clientes"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Clientes</a>
+      <a data-v="pedidos"><svg viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 2.5h2l2.6 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6l1.6-7.4H5.1"/></svg> Pedidos</a>
+      <div class="grp">Marketing y ventas</div>
+      <a data-v="marketing"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> Mailing y campañas</a>
+      <a data-v="promos"><svg viewBox="0 0 24 24"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.3"/></svg> Promociones (web)</a>
+      <a data-v="bot"><svg viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Bot WhatsApp</a>
+      <a data-v="b2bfrio"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Vendedor B2B</a>
+      <a data-v="chatbot"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Chatbot Web</a>
+      <a data-v="publicaciones"><svg viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg> Publicaciones</a>
+      <div class="grp">Gestión</div>
+      <a data-v="contabilidad"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Contabilidad</a>
+      <a data-v="sistema"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Sistema (en vivo)</a>
+      <a data-v="config"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Configuración</a>
+      <a data-v="usuarios"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg> Usuarios y roles</a>
+    </nav>
+    <div class="foot">
+      <button class="themebtn" id="btnTema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span id="temaTxt">Tema oscuro</span></button>
+      <div id="who"></div>
+      <button class="btn gris sm" id="btnLogout" style="width:100%;margin-top:8px">Salir</button></div>
+  </aside>
+
+  <main>
+    <section class="view on" id="sec-inicio">
+      <h2 class="title">🏠 Inicio</h2><p class="lead">Resumen del negocio en vivo.</p>
+      <div class="banner" id="repBanner"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="panel" id="panelChartCanal" style="display:none"><div class="h">📈 Facturación por canal</div><div class="b" style="padding:16px"><canvas id="chartCanal" height="110"></canvas></div></div>
+      <div class="panel"><div class="h">⚠️ Para reponer (stock bajo)</div><div class="b tablewrap" id="tReponer"></div></div>
+      <div class="panel"><div class="h">🔁 Recompra próxima (7 días)</div><div class="b tablewrap" id="tRecompra"></div></div>
+      <div class="panel"><div class="h">📊 Ventas por canal</div><div class="b tablewrap" id="tCanal"></div></div>
+      <div class="panel"><div class="h">🎯 Embudo B2B</div><div class="b tablewrap" id="tEmbudo"></div></div>
+    </section>
+
+    <section class="view" id="sec-catalogo">
+      <h2 class="title">🖼️ Catálogo</h2><p class="lead">Cada producto con su foto, descripción y precios.</p>
+      <div class="bar"><input class="search" id="bCat" placeholder="🔎 Buscar…"><button class="btn lg" onclick="go('productos')">+ Agregar / editar</button></div>
+      <div class="cards" id="catCards"></div>
+    </section>
+
+    <section class="view" id="sec-productos">
+      <h2 class="title">📦 Productos y precios</h2><p class="lead">Cargá el costo, la foto y la descripción. Los 5 precios se calculan solos.</p>
+      <div class="kpis" id="kpisProd"></div>
+      <div class="bar"><input class="search" id="bProd" placeholder="🔎 Buscar producto…"><button class="btn lg" id="btnNuevoProd">+ Agregar producto</button></div>
+      <div class="panel"><div class="b tablewrap" id="tProd"></div></div>
+    </section>
+
+    <section class="view" id="sec-clientes">
+      <h2 class="title">👤 Clientes</h2><p class="lead">Datos personales cifrados; solo el staff los ve en claro.</p>
+      <div class="kpis" id="kpisCli"></div>
+      <div class="bar"><input class="search" id="bCli" placeholder="🔎 Buscar cliente…"><button class="btn lg" id="btnNuevoCli">+ Agregar cliente</button></div>
+      <div class="panel"><div class="b tablewrap" id="tCli"></div></div>
+    </section>
+
+    <section class="view" id="sec-pedidos">
+      <h2 class="title">🛒 Pedidos</h2><p class="lead">Todas las ventas y su estado.</p>
+      <div class="kpis" id="kpisPed"></div>
+      <div class="bar"><input class="search" id="bPed" placeholder="🔎 Buscar pedido o cliente…"><button class="btn lg" id="btnNuevoPed">+ Nuevo pedido</button></div>
+      <div class="panel"><div class="b tablewrap" id="tPed"></div></div>
+    </section>
+
+    <section class="view" id="sec-marketing">
+      <h2 class="title">📣 Mailing y campañas</h2><p class="lead">Campañas de WhatsApp, email y ads, con sus métricas.</p>
+      <div class="kpis" id="kpisCmp"></div>
+      <div class="bar"><button class="btn lg" id="btnNuevaCmp">+ Nueva campaña</button><button class="btn lg" id="btnPromoSeg">📲 Promo por WhatsApp segmentada</button><button class="btn lg gris" id="btnDifusion">📨 Campaña en frío (leads)</button></div>
+      <div class="panel"><div class="b tablewrap" id="tCmp"></div></div>
+    </section>
+
+    <section class="view" id="sec-promos">
+      <h2 class="title">🎉 Promociones (cartel de la web)</h2><p class="lead">Cargá el cartel emergente que va a aparecer en la página web (Navidad, descuentos, avisos). El entorno está listo; se muestra en el sitio cuando armemos el front.</p>
+      <div class="kpis" id="kpisPromo"></div>
+      <div class="bar"><button class="btn lg" id="btnNuevaPromo">+ Nueva promoción</button></div>
+      <div class="cards" id="promoCards"></div>
+    </section>
+
+    <section class="view" id="sec-bot">
+      <h2 class="title">🤖 Bot WhatsApp</h2><p class="lead">Conectá y gestioná el WhatsApp desde acá. El bot corre en la PC del local; vos lo controlás desde este panel.</p>
+      <div class="kpis" id="kpisBot"></div>
+      <div class="grid-bot">
+        <div class="panel"><div class="h">🔌 Conexión<span class="sp"></span><button class="btn sm" id="btnReconectar">Reconectar</button></div><div class="b" id="botConn" style="padding:16px 18px"></div></div>
+        <div class="panel"><div class="h">💬 Conversaciones</div><div class="b tablewrap" id="tConv"></div></div>
+      </div>
+      <div class="panel"><div class="h">📣 Campañas del bot</div><div class="b tablewrap" id="tBot"></div></div>
+    </section>
+
+    <section class="view" id="sec-chatbot">
+      <h2 class="title">💬 Chatbot Web — tablero</h2><p class="lead">El chat de la página web (módulo pendiente de construir). Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
+      <div class="kpis" id="kpisChat"></div>
+      <div class="panel"><div class="h">🙋 Necesitan que atiendas vos</div><div class="b tablewrap" id="tChatHumano"></div></div>
+      <div class="panel"><div class="h">💬 Últimas conversaciones</div><div class="b tablewrap" id="tChatUlt"></div></div>
+    </section>
+
+    <section class="view" id="sec-b2bfrio">
+      <h2 class="title">🧊 Vendedor B2B (venta en frío)</h2><p class="lead">Javier: prospección a geriátricos y comercios desde un número aparte. Corre solo, aprende de sus charlas y mejora día a día.</p>
+      <div class="kpis" id="kpisB2B"></div>
+      <div class="panel"><div class="h">📲 Conexión del vendedor (número aparte)</div>
+        <div class="b">
+          <div id="b2bConn"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <button class="btn lg" id="btnB2BPausar">⏸️ Pausar prospección</button>
+            <button class="btn lg" id="btnB2BReactivar">▶️ Reactivar</button>
+            <button class="btn gris" id="btnB2BRecon">🔄 Reconectar / nuevo QR</button>
+          </div>
+          <p class="sub" id="b2bEstadoTxt" style="margin-top:8px"></p>
+        </div>
+      </div>
+      <div class="panel"><div class="h">🧠 Cerebro del vendedor — prompt principal (editable)</div>
+        <div class="b">
+          <div class="grid2">
+            <div class="field"><label>Nombre del vendedor</label><input id="b2b_nombre" placeholder="Javier"></div>
+            <div class="field"><label>WhatsApp de ventas (para derivar, ej: 5491164240931)</label><input id="b2b_numatt" placeholder="549..."></div>
+          </div>
+          <div class="field"><label>Instrucciones del vendedor (system prompt)</label><textarea id="b2b_prompt" rows="14" style="width:100%;font-family:monospace;font-size:.82rem"></textarea></div>
+          <div class="err" id="b2bCfgErr"></div>
+          <div style="display:flex;gap:8px;align-items:center"><button class="btn lg" id="btnB2BCfg">💾 Guardar prompt</button><span id="b2bCfgOk" style="color:var(--verde);font-size:.85rem"></span></div>
+        </div>
+      </div>
+      <div class="panel"><div class="h">📚 Reglas que aprendió (se suman abajo del prompt) — editables</div>
+        <div class="b">
+          <p class="sub">Cada regla activa se le agrega al cerebro. El vendedor propone nuevas desde sus charlas (tocá “🧠 Analizar y aprender”); vos las prendés, apagás, editás o borrás.</p>
+          <div style="display:flex;gap:8px;margin:8px 0"><input class="search" id="b2b_lecNueva" placeholder="Escribí una regla nueva… (ej: al geriátrico, hablá de ahorro mensual antes que de precio)" style="flex:1"><button class="btn lg" id="btnB2BLecAdd">+ Agregar</button><button class="btn gris" id="btnB2BAnalizar">🧠 Analizar y aprender</button></div>
+          <div class="tablewrap" id="tB2BLec"></div>
+        </div>
+      </div>
+      <div class="panel"><div class="h">✉️ Saludos de entrada — cuál cierra más (A/B, se auto-optimiza)</div><div class="b tablewrap" id="tB2BAper"></div></div>
+      <div class="panel"><div class="h">📈 Embudo de leads por rubro</div><div class="b tablewrap" id="tB2BEmbudo"></div></div>
+      <div class="panel"><div class="h">💬 Conversaciones del vendedor (abrir para ver / responder / frenar)</div><div class="b tablewrap" id="tB2BConv"></div></div>
+    </section>
+
+    <section class="view" id="sec-publicaciones">
+      <h2 class="title">📢 Publicaciones</h2><p class="lead">Registro de tus avisos en MercadoLibre, Facebook/Instagram y Marketplace. Cargalos y seguí su estado y ventas.</p>
+      <div class="kpis" id="kpisPub"></div>
+      <div class="bar"><input class="search" id="bPub" placeholder="🔎 Buscar publicación…"><button class="btn lg" id="btnNuevaPub">+ Nueva publicación</button></div>
+      <div class="panel"><div class="b tablewrap" id="tPub"></div></div>
+    </section>
+
+    <section class="view" id="sec-contabilidad">
+      <h2 class="title">💰 Contabilidad</h2><p class="lead">Ingresos y facturación del negocio.</p>
+      <div class="kpis" id="kpisCont"></div>
+      <div class="panel"><div class="h">Ventas por tipo</div><div class="b tablewrap" id="tContTipo"></div></div>
+      <div class="panel"><div class="h">Pagos por método</div><div class="b tablewrap" id="tContPago"></div></div>
+    </section>
+
+    <section class="view" id="sec-sistema">
+      <h2 class="title">🩺 Sistema — monitoreo en tiempo real</h2><p class="lead">Estado de tus servicios y los errores de producción, actualizado en vivo (Supabase Realtime).</p>
+      <div class="kpis" id="sistKpis"></div>
+      <div class="panel"><div class="h">🔌 Servicios conectados</div><div class="b tablewrap" id="sistServicios"></div></div>
+      <div class="panel"><div class="h">🐞 Últimos errores y eventos <span class="sp"></span><span style="font-size:.8rem;color:var(--verde)" id="sistLive">● en vivo</span></div><div class="b tablewrap" id="sistLogs"></div></div>
+    </section>
+
+    <section class="view" id="sec-config">
+      <h2 class="title">⚙️ Configuración</h2><p class="lead">Editá los márgenes por lista y las zonas de envío. Los precios se recalculan solos.</p>
+      <div class="panel"><div class="h">💲 Márgenes por lista (% sobre el costo)<span class="sp"></span><span class="ok" id="okMargen"></span></div><div class="b tablewrap" id="tMargen"></div></div>
+      <div class="panel"><div class="h">🚚 Zonas de envío<span class="sp"></span><button class="btn sm" id="btnNuevaZona">+ Zona</button></div><div class="b tablewrap" id="tZonas"></div></div>
+    </section>
+
+    <section class="view" id="sec-usuarios">
+      <h2 class="title">🔐 Usuarios y roles</h2><p class="lead">Quién entra y con qué permisos (RLS). Creás el login acá mismo.</p>
+      <div class="bar"><button class="btn lg" id="btnNuevoUsr">+ Agregar usuario</button></div>
+      <div class="panel"><div class="b tablewrap" id="tUsuarios"></div></div>
+    </section>
+  </main>
+</div></div>
+
+<!-- MODAL PRODUCTO -->
+<div class="overlay" id="ovProd"><div class="modal">
+  <h3 id="mpTitle">Agregar producto</h3><p class="sub">Cargá el <b>costo</b>. Los precios salen solos.</p>
+  <div class="prev" id="mpPrev"></div>
+  <div class="field"><label>Nombre</label><input id="p_nombre" placeholder="Ej: Pañal Bebé Talle XG"></div>
+  <div class="field"><label>Descripción</label><textarea id="p_desc" rows="2" placeholder="Detalle del producto"></textarea></div>
+  <div class="field"><label>Foto</label><input id="p_foto" type="file" accept="image/*"><div class="hint" id="p_foto_h">Opcional. Se sube al guardar.</div></div>
+  <div class="grid2">
+    <div class="field"><label>Categoría</label><select id="p_categoria"><option value="bebe">Bebé</option><option value="adulto">Adulto</option><option value="juvenil">Juvenil</option><option value="accesorio">Accesorio</option><option value="crema">Crema</option><option value="otro">Otro</option></select></div>
+    <div class="field"><label>Marca</label><input id="p_marca" placeholder="Ej: Ruta 8"></div>
+    <div class="field"><label>Talle</label><input id="p_talle" placeholder="P, M, G, XG…"></div>
+    <div class="field"><label>Selección</label><select id="p_seleccion"><option value="">— (no aplica)</option><option value="1ra">1ª selección</option><option value="2da">2ª selección</option></select></div>
+    <div class="field"><label>Presentación</label><select id="p_presentacion"><option value="unidad">Unidad</option><option value="paquete">Paquete</option><option value="bolson">Bolsón</option></select></div>
+    <div class="field"><label>Costo ($)</label><input id="p_costo" type="number" min="0" oninput="mpPreview()"></div>
+    <div class="field"><label>Stock</label><input id="p_stock" type="number" min="0"></div>
+    <div class="field"><label>Stock mínimo</label><input id="p_stockmin" type="number" min="0"><div class="hint">Avisa cuando baje a este número.</div></div>
+  </div>
+  <div class="err" id="mpErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovProd')">Cancelar</button><button class="btn lg" id="btnSaveProd">Guardar</button></div>
+</div></div>
+
+<!-- MODAL CLIENTE -->
+<div class="overlay" id="ovCli"><div class="modal">
+  <h3>Agregar cliente</h3><p class="sub">El teléfono, email y dirección se guardan cifrados.</p>
+  <div class="field"><label>Nombre</label><input id="c_nombre" placeholder="Nombre y apellido"></div>
+  <div class="grid2">
+    <div class="field"><label>Tipo</label><select id="c_tipo"><option value="one_time">Cliente (1 compra)</option><option value="recurrente">Recurrente</option><option value="b2b">B2B</option></select></div>
+    <div class="field"><label>¿Cómo llegó?</label><select id="c_canal"></select></div>
+    <div class="field"><label>Teléfono</label><input id="c_tel" placeholder="11…"></div>
+    <div class="field"><label>Email</label><input id="c_email" placeholder="opcional"></div>
+    <div class="field"><label>Dirección</label><input id="c_dir" placeholder="opcional"></div>
+    <div class="field"><label>Rubro</label><input id="c_rubro" placeholder="opcional"></div>
+  </div>
+  <div class="err" id="mcErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovCli')">Cancelar</button><button class="btn lg" id="btnSaveCli">Guardar</button></div>
+</div></div>
+
+<!-- MODAL FICHA DE CLIENTE -->
+<div class="overlay" id="ovFicha"><div class="modal">
+  <h3 id="f_titulo">Ficha de cliente</h3><p class="sub" id="f_sub"></p>
+  <div class="field"><label>Nombre</label><input id="f_nombre"></div>
+  <div class="grid2">
+    <div class="field"><label>Tipo</label><select id="f_tipo"><option value="one_time">Cliente (1 compra)</option><option value="recurrente">Recurrente</option><option value="b2b">B2B</option></select></div>
+    <div class="field"><label>Rubro</label><input id="f_rubro" placeholder="opcional"></div>
+    <div class="field"><label>Teléfono</label><input id="f_tel" placeholder="vacío = borrar"></div>
+    <div class="field"><label>Email</label><input id="f_email" placeholder="vacío = borrar"></div>
+  </div>
+  <div class="field"><label>Dirección</label><input id="f_dir" placeholder="vacío = borrar"></div>
+  <h3 style="margin-top:14px">🛒 Historial de compras</h3>
+  <div class="tablewrap" id="fHist"></div>
+  <div class="err" id="mfErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovFicha')">Cerrar</button><button class="btn lg" id="btnSaveFicha">Guardar cambios</button></div>
+</div></div>
+
+<!-- MODAL NUEVO PEDIDO -->
+<div class="overlay" id="ovPed"><div class="modal" style="max-width:660px">
+  <h3>🛒 Nuevo pedido</h3><p class="sub">Elegí el cliente y la lista de precios. El total se calcula solo.</p>
+  <div class="grid2">
+    <div class="field"><label>Cliente</label><select id="pe_cliente"></select></div>
+    <div class="field"><label>Lista de precios</label><select id="pe_lista">
+      <option value="minorista">Minorista (mostrador)</option>
+      <option value="almacen">Almacén</option>
+      <option value="mayorista">Mayorista</option>
+      <option value="geriatrico">Geriátrico</option>
+      <option value="revendedor">Revendedor</option></select></div>
+  </div>
+  <div class="field"><label>Productos</label><div id="pe_lines"></div>
+    <button class="btn gris sm" id="btnPedAddLine" style="margin-top:8px">+ Agregar producto</button></div>
+  <div class="grid2">
+    <div class="field"><label>Canal de venta</label><select id="pe_canal"></select></div>
+    <div class="field"><label>Costo de envío ($)</label><input id="pe_envio" type="number" min="0" value="0" oninput="pedRecalc()"></div>
+  </div>
+  <div class="prev" id="pe_total" style="display:block;background:var(--azul-soft);border-color:var(--line);color:var(--azul-ink)"></div>
+  <div class="err" id="mpeErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovPed')">Cancelar</button><button class="btn lg" id="btnSavePed">Guardar pedido</button></div>
+</div></div>
+
+<!-- MODAL PUBLICACIÓN -->
+<div class="overlay" id="ovPub"><div class="modal">
+  <h3 id="pubTitle">Nueva publicación</h3><p class="sub">Registrá el aviso y seguí su estado y ventas.</p>
+  <div class="field"><label>Título del aviso</label><input id="pu_titulo" placeholder="Ej: Pañales Ruta 8 XG x bolsón"></div>
+  <div class="grid2">
+    <div class="field"><label>Canal</label><select id="pu_canal"><option value="mercadolibre">MercadoLibre</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="marketplace">Marketplace</option><option value="tienda_web">Tienda web</option><option value="otro">Otro</option></select></div>
+    <div class="field"><label>Estado</label><select id="pu_estado"><option value="activa">Activa</option><option value="borrador">Borrador</option><option value="pausada">Pausada</option><option value="vendida">Vendida</option><option value="baja">Baja</option></select></div>
+    <div class="field"><label>Producto (opcional)</label><select id="pu_prod"></select></div>
+    <div class="field"><label>Precio publicado ($)</label><input id="pu_precio" type="number" min="0"></div>
+    <div class="field"><label>Visitas</label><input id="pu_visitas" type="number" min="0" value="0"></div>
+    <div class="field"><label>Ventas</label><input id="pu_ventas" type="number" min="0" value="0"></div>
+  </div>
+  <div class="field"><label>Link del aviso</label><input id="pu_link" placeholder="https://…"></div>
+  <div class="field"><label>Notas</label><input id="pu_notas" placeholder="opcional"></div>
+  <div class="err" id="mpuErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovPub')">Cancelar</button><button class="btn lg" id="btnSavePub">Guardar</button></div>
+</div></div>
+
+<!-- MODAL CAMPAÑA -->
+<div class="overlay" id="ovCmp"><div class="modal">
+  <h3>Nueva campaña</h3><p class="sub">Definí la campaña. Las métricas se actualizan cuando el bot/mailing la ejecute.</p>
+  <div class="field"><label>Nombre</label><input id="cmp_nombre" placeholder="Ej: Recompra octubre"></div>
+  <div class="grid2">
+    <div class="field"><label>Canal</label><select id="cmp_canal"><option value="whatsapp">WhatsApp</option><option value="email">Email</option><option value="ads">Ads</option><option value="canal_wsp">Canal WhatsApp</option></select></div>
+    <div class="field"><label>Tipo</label><select id="cmp_tipo"><option value="recompra">Recompra</option><option value="prospeccion">Prospección</option><option value="oferta">Oferta</option><option value="reactivacion">Reactivación</option></select></div>
+  </div>
+  <div class="err" id="mcmpErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovCmp')">Cancelar</button><button class="btn lg" id="btnSaveCmp">Crear</button></div>
+</div></div>
+
+<!-- MODAL DIFUSIÓN (campaña en frío) -->
+<div class="overlay" id="ovDif"><div class="modal">
+  <h3>📨 Campaña en frío (difusión por WhatsApp)</h3>
+  <p class="sub">El bot manda a cada número con pausas (ritmo humano) para no caer en spam. Necesita el bot conectado.</p>
+  <div class="field"><label>Nombre de la campaña</label><input id="dif_nombre" placeholder="Ej: Prospección geriátricos"></div>
+  <div class="field"><label>Mensaje</label><textarea id="dif_texto" rows="4" placeholder="Hola, somos Pañalera Ruta 8 (fábrica). Te paso precios mayoristas…"></textarea></div>
+  <div class="field"><label>Números (uno por línea, con código de país)</label><textarea id="dif_nums" rows="5" placeholder="5491140557954&#10;5491133334444"></textarea><div class="hint">Incluí el código de país (54 = Argentina). Espacios o guiones no molestan.</div></div>
+  <div class="err" id="mdifErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovDif')">Cancelar</button><button class="btn lg" id="btnSaveDif">Enviar campaña</button></div>
+</div></div>
+
+<!-- MODAL PROMO SEGMENTADA (WhatsApp a un segmento de clientes) -->
+<div class="overlay" id="ovPromoSeg"><div class="modal">
+  <h3>📲 Promo por WhatsApp segmentada</h3>
+  <p class="sub">Manda una promo SOLO a un tipo de cliente (no a todos). Sale por el bot de atención, en tandas pausadas.</p>
+  <div class="field"><label>¿A qué clientes?</label><select id="ps_lista">
+    <option value="minorista">Consumidor final (minorista)</option>
+    <option value="almacen">Almacenes</option>
+    <option value="mayorista">Mayoristas</option>
+    <option value="geriatrico">Geriátricos</option>
+    <option value="revendedor">Revendedores</option></select>
+    <div class="hint" id="ps_cant">—</div></div>
+  <div class="field"><label>Mensaje</label><textarea id="ps_texto" rows="4" placeholder="Hola! 👋 Esta semana en Pañalera Ruta 8 tenemos… (precio mayorista / oferta)"></textarea></div>
+  <div class="err" id="mpsErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovPromoSeg')">Cancelar</button><button class="btn lg" id="btnSavePromoSeg">Enviar a este segmento</button></div>
+</div></div>
+
+<!-- MODAL PROMOCIÓN (cartel web) -->
+<div class="overlay" id="ovPromo"><div class="modal">
+  <h3 id="promoTitle">Nueva promoción</h3><p class="sub">Este es el cartel emergente que verá la gente en la web.</p>
+  <div class="field"><label>Título</label><input id="pr_titulo" placeholder="Ej: ¡Ofertas de Navidad! 🎄"></div>
+  <div class="field"><label>Texto</label><textarea id="pr_texto" rows="2" placeholder="Hasta 30% off en pañales de adulto…"></textarea></div>
+  <div class="field"><label>Imagen del cartel</label><input id="pr_foto" type="file" accept="image/*"><div class="hint" id="pr_foto_h">Opcional. Se sube al guardar.</div></div>
+  <div class="grid2">
+    <div class="field"><label>Tipo</label><select id="pr_tipo"><option value="descuento">Descuento</option><option value="navidad">Navidad</option><option value="evento">Evento</option><option value="anuncio">Anuncio</option><option value="otro">Otro</option></select></div>
+    <div class="field"><label>Estado</label><select id="pr_activa"><option value="true">Activa (se muestra)</option><option value="false">Apagada</option></select></div>
+    <div class="field"><label>Desde (opcional)</label><input id="pr_desde" type="date"></div>
+    <div class="field"><label>Hasta (opcional)</label><input id="pr_hasta" type="date"></div>
+    <div class="field"><label>Link (opcional)</label><input id="pr_link" placeholder="https://…"></div>
+    <div class="field"><label>Texto del botón (opcional)</label><input id="pr_cta" placeholder="Ver ofertas"></div>
+  </div>
+  <div class="err" id="mprErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovPromo')">Cancelar</button><button class="btn lg" id="btnSavePromo">Guardar</button></div>
+</div></div>
+
+<!-- MODAL USUARIO -->
+<div class="overlay" id="ovUsr"><div class="modal">
+  <h3>Agregar usuario</h3><p class="sub">Crea el login y le asigna el rol.</p>
+  <div class="field"><label>Email</label><input id="u_email" type="email" placeholder="persona@email.com"></div>
+  <div class="grid2">
+    <div class="field"><label>Contraseña</label><input id="u_pass" type="text" placeholder="mínimo 6 caracteres"></div>
+    <div class="field"><label>Rol</label><select id="u_rol"><option value="vendedor">vendedor</option><option value="repartidor">repartidor</option><option value="dueño">dueño</option><option value="cliente">cliente</option><option value="cliente_mayorista">cliente_mayorista</option><option value="bot">bot</option><option value="programador">programador</option></select></div>
+  </div>
+  <div class="err" id="muErr"></div>
+  <div class="acts"><button class="btn gris" onclick="cerrar('ovUsr')">Cancelar</button><button class="btn lg" id="btnSaveUsr">Crear usuario</button></div>
+</div></div>
+
+<!-- MODAL CHAT -->
+<div class="overlay" id="ovChat"><div class="modal" style="max-width:520px">
+  <h3 id="chatTitle">Chat</h3>
+  <div id="chatMsgs" style="max-height:340px;overflow:auto;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px;margin:10px 0"></div>
+  <div style="display:flex;gap:8px"><input id="chatInput" placeholder="Escribí una respuesta…"><button class="btn" id="btnChatSend">Enviar</button></div>
+  <div style="display:flex;gap:8px;margin-top:10px"><button class="btn gris sm" id="btnChatHumano">Atiendo yo</button><button class="btn gris sm" id="btnChatCerrar">Cerrar chat</button><button class="btn gris sm" style="margin-left:auto" onclick="cerrar('ovChat')">Volver</button></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const SUPABASE_URL='https://rgxnsmrldkrwpxhxiqkx.supabase.co';
+const SUPABASE_KEY='sb_publishable_cearVxw4OJdpY1G6Xg7Zqw_YOruKla9';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,storage:window.localStorage,storageKey:'panalera-panel-auth'}});
+const $=id=>document.getElementById(id);
+const money=n=>(n==null?'—':'$'+Number(n).toLocaleString('es-AR'));
+const esc=s=>(s==null?'':String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])));
+const kpi=(n,l,cls='')=>`<div class="kpi ${cls}"><div class="n">${n}</div><div class="l">${l}</div></div>`;
+const tbl=h=>`<table>${h}</table>`; const empty=m=>`<div class="empty">${m}</div>`;
+let MARG={},FUENTES=[],editProd=null,vistaActual='inicio';
+
+async function init(){const{data:{session}}=await sb.auth.getSession();session?showApp(session):showLogin();}
+function showLogin(){$('login').style.display='flex';$('app').style.display='none';}
+async function showApp(s){$('login').style.display='none';$('app').style.display='block';$('who').textContent=s.user.email;
+  try{const{data:rol}=await sb.rpc('app_rol');if(!['programador','dueño'].includes(rol)){const a=document.querySelector('#nav a[data-v="usuarios"]');if(a)a.style.display='none';}}catch(_){}
+  await cargarMargenes();await cargarFuentes();suscribirRealtime();go('inicio');}
+$('btnLogin').onclick=async()=>{$('loginErr').textContent='';const{data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('pass').value});if(error){$('loginErr').textContent='No pudimos entrar: '+error.message;return;}showApp(data.session);};
+$('pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnLogin').click();});
+$('btnLogout').onclick=async()=>{await sb.auth.signOut();showLogin();};
+
+function go(v){vistaActual=v;document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.v===v));
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='sec-'+v));
+  ({inicio:loadInicio,catalogo:loadCatalogo,productos:loadProductos,clientes:loadClientes,pedidos:loadPedidos,marketing:loadMarketing,promos:loadPromos,bot:loadBot,b2bfrio:loadB2B,chatbot:loadChatbot,publicaciones:loadPub,contabilidad:loadCont,sistema:loadSistema,config:loadConfig,usuarios:loadUsuarios}[v])();}
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.v));
+
+async function cargarMargenes(){const{data}=await sb.from('listas_precio').select('nombre,margen_pct');MARG={};(data||[]).forEach(l=>MARG[l.nombre]=Number(l.margen_pct));}
+async function cargarFuentes(){const{data}=await sb.from('fuentes_captacion').select('codigo,nombre').order('orden');FUENTES=data||[];
+  $('c_canal').innerHTML='<option value="">—</option>'+FUENTES.map(f=>`<option value="${f.codigo}">${esc(f.nombre)}</option>`).join('');}
+
+// INICIO
+async function loadInicio(){
+  const[cg,lb,cl,pd,bajo,rec,can,emb,vt,subs,pros]=(await Promise.allSettled([
+    sb.from('catalogo').select('*',{count:'exact',head:true}).eq('estado','cargado'),
+    sb.from('catalogo').select('*',{count:'exact',head:true}).eq('estado','vacio'),
+    sb.from('clientes').select('*',{count:'exact',head:true}),
+    sb.from('pedidos').select('*',{count:'exact',head:true}),
+    sb.from('vw_stock_bajo').select('*'),
+    sb.from('vw_recompra_proxima').select('*'),
+    sb.from('vw_ventas_por_canal').select('*'),
+    sb.from('vw_embudo_b2b').select('*'),
+    sb.from('vw_ventas_por_tipo').select('*'),
+    sb.from('suscripciones').select('*',{count:'exact',head:true}).eq('estado','activa'),
+    sb.from('prospectos_b2b').select('*',{count:'exact',head:true})])).map(r=>r.status==='fulfilled'?r.value:{data:[],count:0});
+  const rep=bajo.data||[]; const fact=(vt.data||[]).reduce((a,b)=>a+Number(b.facturacion||0),0);
+  const np=pd.count||0; const ticket=np?Math.round(fact/np):0;
+  $('kpis').innerHTML=kpi(money(fact),'Facturación','gr')+kpi(np,'Pedidos')+kpi(money(ticket),'Ticket promedio','az')+
+    kpi(cl.count??0,'Clientes')+kpi(subs.count??0,'Suscripciones activas','az')+kpi(pros.count??0,'Prospectos B2B')+
+    kpi(cg.count??0,'Productos')+kpi(rep.length,'Para reponer','amb');
+  $('repBanner').style.display=rep.length?'flex':'none';
+  $('repBanner').innerHTML=rep.length?('⚠️ <b>'+rep.length+'</b> para reponer: '+rep.map(r=>esc(r.nombre)+' ('+r.stock+')').join(' · ')):'';
+  $('tReponer').innerHTML=rep.length?tbl('<tr><th>Producto</th><th>Stock</th><th>Mínimo</th></tr>'+rep.map(r=>`<tr class="rep"><td>${esc(r.nombre)}</td><td class="num">${r.stock}</td><td class="num">${r.stock_minimo}</td></tr>`).join('')):empty('Nada para reponer. 👍');
+  const rc=rec.data||[];$('tRecompra').innerHTML=rc.length?tbl('<tr><th>Suscripción</th><th>Cliente</th><th>Próximo envío</th></tr>'+rc.map(r=>`<tr><td>${esc(r.codigo)}</td><td>${esc(r.nombre)}</td><td>${esc(r.proximo_envio)}</td></tr>`).join('')):empty('Sin recompras en 7 días.');
+  const ca=(can.data||[]).filter(c=>c.pedidos>0);$('tCanal').innerHTML=ca.length?tbl('<tr><th>Canal</th><th>Pedidos</th><th>Facturación</th></tr>'+ca.map(c=>`<tr><td>${esc(c.canal)}</td><td class="num">${c.pedidos}</td><td class="num">${money(c.facturacion)}</td></tr>`).join('')):empty('Todavía no hay ventas.');
+  if(window.Chart){const lab=ca.map(c=>c.canal),dat=ca.map(c=>Number(c.facturacion||0));const cv=$('chartCanal');
+    if(window.__chartCanal)window.__chartCanal.destroy();
+    const pn=$('panelChartCanal');
+    if(cv&&lab.length){if(pn)pn.style.display='block';window.__chartCanal=new Chart(cv,{type:'bar',data:{labels:lab,datasets:[{label:'Facturación $',data:dat,backgroundColor:'#2563eb',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});}
+    else if(pn){pn.style.display='none';}}
+  const em=emb.data||[];$('tEmbudo').innerHTML=em.length?tbl('<tr><th>Etapa</th><th>Cantidad</th></tr>'+em.map(e=>`<tr><td>${esc(e.etapa)}</td><td class="num">${e.count}</td></tr>`).join('')):empty('Sin prospectos B2B aún.');
+}
+
+// CATALOGO (cards)
+async function loadCatalogo(){const{data}=await sb.from('vw_precios_catalogo').select('*');window._CAT=data||[];renderCat();}
+function renderCat(){const q=($('bCat').value||'').toLowerCase();const rows=(window._CAT||[]).filter(p=>(p.nombre||'').toLowerCase().includes(q));
+  if(!(window._CAT||[]).length){$('catCards').innerHTML=empty('Sin productos cargados todavía.');return;}
+  $('catCards').innerHTML=rows.map(p=>`<div class="pcard">
+    <div class="img" style="${p.foto_url?`background-image:url('${esc(p.foto_url)}')`:''}">${p.foto_url?'':'📦'}</div>
+    <div class="body"><div class="nm">${esc(p.nombre)}</div><div class="ds">${esc(p.descripcion||'')}</div>
+    <div class="pr">Minorista <b>${money(p.p_minorista)}</b> · Mayor. ${money(p.p_mayorista)}<br>Stock: ${p.stock}${p.reponer?' <span class="badge amb">reponer</span>':''}</div></div></div>`).join('');}
+$('bCat').addEventListener('input',renderCat);
+
+// PRODUCTOS
+async function loadProductos(){const{data:prods,error}=await sb.from('vw_precios_catalogo').select('*');
+  if(error){$('tProd').innerHTML=empty('Error: '+esc(error.message));return;}
+  const{count:libres}=await sb.from('catalogo').select('*',{count:'exact',head:true}).eq('estado','vacio');
+  window._PRODS=prods||[];const rep=window._PRODS.filter(p=>p.reponer);
+  $('kpisProd').innerHTML=kpi(window._PRODS.length,'Cargados')+kpi(libres??'—','Slots libres (100)')+kpi(rep.length,'Para reponer','amb');renderProd();}
+function renderProd(){const q=($('bProd').value||'').toLowerCase();const rows=(window._PRODS||[]).filter(p=>(p.nombre||'').toLowerCase().includes(q));
+  if(!(window._PRODS||[]).length){$('tProd').innerHTML=empty('Sin productos. Tocá “+ Agregar producto”.');return;}
+  $('tProd').innerHTML=tbl('<tr><th>Producto</th><th>Cat.</th><th>Talle</th><th>Costo</th><th>Minor.</th><th>Almacén</th><th>Mayor.</th><th>Geriát.</th><th>Revend.</th><th>Stock</th><th></th></tr>'+
+    rows.map(p=>`<tr class="${p.reponer?'rep':''}"><td><b>${esc(p.nombre)}</b>${p.marca?` <span class="chip">${esc(p.marca)}</span>`:''}</td><td>${esc(p.categoria||'')}</td><td>${esc([p.talle,p.seleccion].filter(Boolean).join(' '))}</td><td class="num">${money(p.costo)}</td><td class="num">${money(p.p_minorista)}</td><td class="num">${money(p.p_almacen)}</td><td class="num">${money(p.p_mayorista)}</td><td class="num">${money(p.p_geriatrico)}</td><td class="num">${money(p.p_revendedor)}</td><td class="num">${p.stock}${p.reponer?' <span class="badge amb">reponer</span>':''}</td><td><button class="btn gris sm" onclick='editarProd(${JSON.stringify(p.codigo)})'>Editar</button></td></tr>`).join(''));}
+$('bProd').addEventListener('input',renderProd);
+$('btnNuevoProd').onclick=()=>{editProd=null;$('mpTitle').textContent='Agregar producto';['p_nombre','p_marca','p_talle','p_costo','p_stock','p_stockmin','p_desc'].forEach(i=>$(i).value='');$('p_foto').value='';$('p_categoria').value='bebe';$('p_seleccion').value='';$('p_presentacion').value='bolson';mpPreview();abrir('ovProd');};
+window.editarProd=codigo=>{const p=window._PRODS.find(x=>x.codigo===codigo);if(!p)return;editProd=codigo;$('mpTitle').textContent='Editar producto';
+  $('p_nombre').value=p.nombre||'';$('p_marca').value=p.marca||'';$('p_talle').value=p.talle||'';$('p_desc').value=p.descripcion||'';$('p_foto').value='';$('p_categoria').value=p.categoria||'otro';$('p_seleccion').value=p.seleccion||'';$('p_presentacion').value=p.presentacion||'bolson';$('p_costo').value=p.costo??'';$('p_stock').value=p.stock??0;$('p_stockmin').value=p.stock_minimo??0;mpPreview();abrir('ovProd');};
+function mpPreview(){const c=Number($('p_costo').value);if(!c||!Object.keys(MARG).length){$('mpPrev').style.display='none';return;}
+  const f=l=>'$'+Math.round(c*(1+(MARG[l]||0)/100)).toLocaleString('es-AR');$('mpPrev').style.display='block';
+  $('mpPrev').innerHTML=`Minorista <b>${f('minorista')}</b> · Almacén <b>${f('almacen')}</b> · Mayorista <b>${f('mayorista')}</b> · Geriátrico <b>${f('geriatrico')}</b> · Revendedor <b>${f('revendedor')}</b>`;}
+async function subirFoto(codigo){const file=$('p_foto').files[0];if(!file)return null;
+  const ext=(file.name.split('.').pop()||'jpg');const path=codigo+'_'+Date.now()+'.'+ext;
+  const{error}=await sb.storage.from('productos').upload(path,file,{upsert:true});if(error)throw error;
+  return sb.storage.from('productos').getPublicUrl(path).data.publicUrl;}
+$('btnSaveProd').onclick=async()=>{$('mpErr').textContent='';const nombre=$('p_nombre').value.trim(),costo=Number($('p_costo').value);
+  if(!nombre){$('mpErr').textContent='Poné un nombre.';return;}if(!costo||costo<=0){$('mpErr').textContent='Poné un costo válido.';return;}
+  $('btnSaveProd').disabled=true;
+  try{let codigo=editProd;
+    if(!codigo){const{data:slot,error}=await sb.from('catalogo').select('codigo').eq('estado','vacio').order('slot').limit(1).maybeSingle();if(error)throw error;if(!slot)throw new Error('No quedan slots libres (máx 100).');codigo=slot.codigo;}
+    let foto=null;try{foto=await subirFoto(codigo);}catch(e){throw new Error('Foto: '+(e.message||e));}
+    const{error}=await sb.rpc('cargar_producto',{p_codigo:codigo,p_nombre:nombre,p_categoria:$('p_categoria').value,p_talle:$('p_talle').value.trim()||null,p_seleccion:$('p_seleccion').value||null,p_presentacion:$('p_presentacion').value,p_costo:costo,p_stock:Number($('p_stock').value)||0,p_stock_minimo:Number($('p_stockmin').value)||0,p_marca:$('p_marca').value.trim()||null,p_descripcion:$('p_desc').value.trim()||null,p_foto_url:foto});
+    if(error)throw error;cerrar('ovProd');loadProductos();
+  }catch(e){$('mpErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSaveProd').disabled=false;}};
+
+// CLIENTES
+async function loadClientes(){const{data,error}=await sb.from('vw_clientes_legible').select('*').order('nombre');if(error){$('tCli').innerHTML=empty('Error: '+esc(error.message));return;}
+  window._CLI=data||[];const b2b=window._CLI.filter(c=>c.tipo==='b2b').length,rec=window._CLI.filter(c=>c.tipo==='recurrente').length;
+  $('kpisCli').innerHTML=kpi(window._CLI.length,'Clientes')+kpi(rec,'Recurrentes','az')+kpi(b2b,'B2B');renderCli();}
+function renderCli(){const q=($('bCli').value||'').toLowerCase();const rows=(window._CLI||[]).filter(c=>(c.nombre||'').toLowerCase().includes(q));
+  if(!(window._CLI||[]).length){$('tCli').innerHTML=empty('Sin clientes. Tocá “+ Agregar cliente”.');return;}
+  $('tCli').innerHTML=tbl('<tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Teléfono</th><th>Email</th><th>Rubro</th><th></th></tr>'+rows.map(c=>`<tr><td>${esc(c.codigo)}</td><td><b>${esc(c.nombre)}</b></td><td><span class="chip">${esc(c.tipo)}</span></td><td>${esc(c.telefono||'')}</td><td>${esc(c.email||'')}</td><td>${esc(c.rubro||'')}</td><td><button class="btn gris" onclick="abrirFicha('${c.id}')">📋 Ficha</button></td></tr>`).join(''));}
+$('bCli').addEventListener('input',renderCli);
+$('btnNuevoCli').onclick=()=>{['c_nombre','c_tel','c_email','c_dir','c_rubro'].forEach(i=>$(i).value='');$('c_tipo').value='one_time';$('c_canal').value='';$('mcErr').textContent='';abrir('ovCli');};
+$('btnSaveCli').onclick=async()=>{$('mcErr').textContent='';const nombre=$('c_nombre').value.trim();if(!nombre){$('mcErr').textContent='Poné un nombre.';return;}$('btnSaveCli').disabled=true;
+  try{const{error}=await sb.rpc('alta_cliente',{p_nombre:nombre,p_tipo:$('c_tipo').value,p_canal:$('c_canal').value||null,p_telefono:$('c_tel').value.trim()||null,p_email:$('c_email').value.trim()||null,p_direccion:$('c_dir').value.trim()||null,p_rubro:$('c_rubro').value.trim()||null});if(error)throw error;cerrar('ovCli');loadClientes();
+  }catch(e){$('mcErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSaveCli').disabled=false;}};
+
+// FICHA DE CLIENTE (ver + editar + historial)
+let _fichaId=null;
+async function abrirFicha(id){const c=(window._CLI||[]).find(x=>x.id===id);if(!c)return;_fichaId=id;
+  $('f_titulo').textContent='📋 '+(c.nombre||'Cliente');
+  $('f_sub').textContent=(c.codigo||'')+' · llegó por: '+(c.canal_origen||'—')+(c.ultima_compra?(' · última compra: '+String(c.ultima_compra).slice(0,10)):'');
+  $('f_nombre').value=c.nombre||'';$('f_tipo').value=c.tipo||'one_time';$('f_rubro').value=c.rubro||'';
+  $('f_tel').value=c.telefono||'';$('f_email').value=c.email||'';$('f_dir').value=c.direccion||'';
+  $('mfErr').textContent='';$('fHist').innerHTML='<p class="sub">Cargando historial…</p>';abrir('ovFicha');
+  const{data:peds,error}=await sb.from('pedidos').select('codigo,total,estado,creado_en').eq('cliente_id',id).order('creado_en',{ascending:false}).limit(200);
+  if(_fichaId!==id)return; // el usuario ya abrió otra ficha: no pisar su historial
+  if(error){$('fHist').innerHTML=empty('No pude cargar el historial: '+esc(error.message));return;}
+  if(!(peds||[]).length){$('fHist').innerHTML=empty('Todavía no tiene pedidos.');return;}
+  const totalH=peds.reduce((a,b)=>a+Number(b.total||0),0);
+  $('fHist').innerHTML='<p class="sub"><b>'+peds.length+(peds.length===200?'+':'')+'</b> pedidos · suman: <b>'+money(totalH)+'</b></p>'+
+    tbl('<tr><th>Pedido</th><th>Estado</th><th>Total</th><th>Fecha</th></tr>'+peds.map(p=>`<tr><td>${esc(p.codigo)}</td><td><span class="badge ${p.estado==='entregado'?'ok':'gr'}">${esc(p.estado)}</span></td><td class="num">${money(p.total)}</td><td>${esc((p.creado_en||'').slice(0,10))}</td></tr>`).join(''));}
+$('btnSaveFicha').onclick=async()=>{$('mfErr').textContent='';const nombre=$('f_nombre').value.trim();if(!nombre){$('mfErr').textContent='Poné un nombre.';return;}
+  $('btnSaveFicha').disabled=true;
+  try{const{error}=await sb.rpc('editar_cliente',{p_id:_fichaId,p_nombre:nombre,p_tipo:$('f_tipo').value,p_rubro:$('f_rubro').value.trim(),p_telefono:$('f_tel').value.trim(),p_email:$('f_email').value.trim(),p_direccion:$('f_dir').value.trim()});
+    if(error)throw error;cerrar('ovFicha');loadClientes();
+  }catch(e){$('mfErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSaveFicha').disabled=false;}};
+
+// PEDIDOS
+async function loadPedidos(){const{data,error}=await sb.from('pedidos').select('codigo,total,estado,tipo_pedido,creado_en,clientes(nombre)').order('creado_en',{ascending:false});
+  if(error){$('tPed').innerHTML=empty('Error: '+esc(error.message));return;}const rows=data||[];window._PED=rows;
+  const fact=rows.reduce((a,b)=>a+Number(b.total||0),0),pend=rows.filter(p=>p.estado!=='entregado'&&p.estado!=='cancelado').length;
+  $('kpisPed').innerHTML=kpi(rows.length,'Pedidos')+kpi(pend,'En curso','az')+kpi(money(fact),'Facturación','gr');renderPed();}
+function renderPed(){const q=($('bPed').value||'').toLowerCase();const rows=(window._PED||[]).filter(p=>(p.codigo||'').toLowerCase().includes(q)||(p.clientes?.nombre||'').toLowerCase().includes(q));
+  if(!(window._PED||[]).length){$('tPed').innerHTML=empty('Todavía no hay pedidos. Tocá “+ Nuevo pedido”.');return;}
+  $('tPed').innerHTML=tbl('<tr><th>Pedido</th><th>Cliente</th><th>Tipo</th><th>Estado</th><th>Total</th><th>Fecha</th></tr>'+rows.map(p=>`<tr><td>${esc(p.codigo)}</td><td>${esc(p.clientes?.nombre||'')}</td><td>${esc(p.tipo_pedido)}</td><td><span class="badge ${p.estado==='entregado'?'ok':'gr'}">${esc(p.estado)}</span></td><td class="num">${money(p.total)}</td><td>${esc((p.creado_en||'').slice(0,10))}</td></tr>`).join(''));}
+$('bPed').addEventListener('input',renderPed);
+
+// NUEVO PEDIDO (alta manual)
+let PED_PRODS=[];
+$('btnNuevoPed').onclick=async()=>{$('mpeErr').textContent='';$('pe_envio').value=0;$('pe_lista').value='minorista';
+  const[{data:cli},{data:prods}]=await Promise.all([
+    sb.from('vw_clientes_legible').select('id,nombre,codigo').order('nombre'),
+    sb.from('vw_precios_catalogo').select('*')]);
+  if(!(cli||[]).length){alert('Primero cargá un cliente en la pestaña “Clientes”. Después vas a poder hacerle el pedido.');return;}
+  if(!(prods||[]).length){alert('Primero cargá productos en “Productos y precios”. Sin productos no se puede armar un pedido.');return;}
+  PED_PRODS=prods;
+  $('pe_cliente').innerHTML=cli.map(c=>`<option value="${c.id}">${esc(c.nombre)} (${esc(c.codigo)})</option>`).join('');
+  $('pe_canal').innerHTML=(FUENTES||[]).map(f=>`<option value="${f.codigo}" ${f.codigo==='mostrador'?'selected':''}>${esc(f.nombre)}</option>`).join('')||'<option value="mostrador">Mostrador</option>';
+  $('pe_lines').innerHTML='';pedAddLine();pedRecalc();abrir('ovPed');};
+$('pe_lista').addEventListener('change',()=>pedRecalc());
+$('btnPedAddLine').onclick=()=>pedAddLine();
+function pedAddLine(){const id='pl_'+Date.now()+'_'+Math.floor(Math.random()*999);
+  const opts=PED_PRODS.map(p=>`<option value="${p.codigo}">${esc(p.nombre)}</option>`).join('');
+  const row=document.createElement('div');row.className='inlineedit';row.style.cssText='margin-bottom:8px;gap:8px';row.dataset.line=id;
+  row.innerHTML=`<select style="flex:1;max-width:none" data-role="prod" onchange="pedRecalc()">${opts||'<option value="">— sin productos —</option>'}</select>
+    <input type="number" min="1" value="1" style="max-width:80px" data-role="cant" oninput="pedRecalc()">
+    <span data-role="sub" style="min-width:90px;text-align:right;font-variant-numeric:tabular-nums"></span>
+    <button class="btn sm rojo" onclick="this.parentNode.remove();pedRecalc()">✕</button>`;
+  $('pe_lines').appendChild(row);}
+window.pedRecalc=function(){const lista=$('pe_lista').value;let total=0;
+  document.querySelectorAll('#pe_lines [data-line]').forEach(r=>{
+    const cod=r.querySelector('[data-role=prod]').value;const cant=Number(r.querySelector('[data-role=cant]').value)||0;
+    const p=PED_PRODS.find(x=>x.codigo===cod);const pu=p?Number(p['p_'+lista]||0):0;const sub=pu*cant;total+=sub;
+    r.querySelector('[data-role=sub]').textContent=money(sub);});
+  const envio=Number($('pe_envio').value)||0;
+  $('pe_total').innerHTML=`Subtotal <b>${money(total)}</b> + Envío <b>${money(envio)}</b> = Total <b style="font-size:1.1rem">${money(total+envio)}</b>`;};
+$('btnSavePed').onclick=async()=>{$('mpeErr').textContent='';const cliente=$('pe_cliente').value;
+  if(!cliente){$('mpeErr').textContent='Elegí un cliente.';return;}
+  const items=[];document.querySelectorAll('#pe_lines [data-line]').forEach(r=>{const p=PED_PRODS.find(x=>x.codigo===r.querySelector('[data-role=prod]').value);const cant=Number(r.querySelector('[data-role=cant]').value)||0;if(p&&cant>0)items.push({catalogo_id:p.id,cantidad:cant});});
+  if(!items.length){$('mpeErr').textContent='Agregá al menos un producto con cantidad.';return;}
+  $('btnSavePed').disabled=true;
+  try{const{data,error}=await sb.rpc('crear_pedido_manual',{p_cliente:cliente,p_lista:$('pe_lista').value,p_canal:$('pe_canal').value.trim()||'mostrador',p_costo_envio:Number($('pe_envio').value)||0,p_items:items});
+    if(error)throw error;cerrar('ovPed');alert('Pedido '+data+' creado ✅');loadPedidos();
+  }catch(e){$('mpeErr').textContent='No se pudo crear: '+(e.message||e);}finally{$('btnSavePed').disabled=false;}};
+
+// MARKETING / CAMPAÑAS
+async function campMetrics(rows){const e=rows.reduce((a,b)=>a+(b.enviados||0),0),r=rows.reduce((a,b)=>a+(b.respondidos||0),0),c=rows.reduce((a,b)=>a+(b.convertidos||0),0);
+  return{e,r,c,conv:e?Math.round(c/e*100):0};}
+async function loadMarketing(){const{data,error}=await sb.from('campanias').select('*').order('creado_en',{ascending:false});if(error){$('tCmp').innerHTML=empty('Error: '+esc(error.message));return;}
+  const rows=data||[];const m=await campMetrics(rows);
+  $('kpisCmp').innerHTML=kpi(rows.length,'Campañas')+kpi(m.e,'Enviados','az')+kpi(m.r,'Respondidos')+kpi(m.c,'Convertidos','gr')+kpi(m.conv+'%','Conversión','amb');
+  $('tCmp').innerHTML=rows.length?tbl('<tr><th>Campaña</th><th>Canal</th><th>Tipo</th><th>Estado</th><th>Env.</th><th>Resp.</th><th>Conv.</th></tr>'+rows.map(c=>`<tr><td><b>${esc(c.nombre)}</b></td><td>${esc(c.canal)}</td><td>${esc(c.tipo)}</td><td><span class="badge gr">${esc(c.estado)}</span></td><td class="num">${c.enviados}</td><td class="num">${c.respondidos}</td><td class="num">${c.convertidos}</td></tr>`).join('')):empty('Sin campañas. Creá la primera.');}
+$('btnNuevaCmp').onclick=()=>{$('cmp_nombre').value='';$('cmp_canal').value='whatsapp';$('cmp_tipo').value='recompra';$('mcmpErr').textContent='';abrir('ovCmp');};
+$('btnSaveCmp').onclick=async()=>{$('mcmpErr').textContent='';const nombre=$('cmp_nombre').value.trim();if(!nombre){$('mcmpErr').textContent='Poné un nombre.';return;}$('btnSaveCmp').disabled=true;
+  try{const{error}=await sb.from('campanias').insert({nombre,canal:$('cmp_canal').value,tipo:$('cmp_tipo').value});if(error)throw error;cerrar('ovCmp');loadMarketing();
+  }catch(e){$('mcmpErr').textContent='No se pudo crear: '+(e.message||e);}finally{$('btnSaveCmp').disabled=false;}};
+$('btnDifusion').onclick=()=>{['dif_nombre','dif_texto','dif_nums'].forEach(i=>$(i).value='');$('mdifErr').textContent='';abrir('ovDif');};
+$('btnSaveDif').onclick=async()=>{$('mdifErr').textContent='';
+  const nombre=$('dif_nombre').value.trim(),texto=$('dif_texto').value.trim();
+  const numeros=$('dif_nums').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  if(!nombre){$('mdifErr').textContent='Poné un nombre.';return;}
+  if(!texto){$('mdifErr').textContent='Escribí el mensaje.';return;}
+  if(!numeros.length){$('mdifErr').textContent='Pegá al menos un número.';return;}
+  $('btnSaveDif').disabled=true;
+  try{
+    const{data:camp,error:e1}=await sb.from('campanias').insert({nombre,canal:'whatsapp',tipo:'prospeccion',estado:'activa'}).select().single();if(e1)throw e1;
+    const{error:e2}=await sb.from('bot_outbox').insert({tipo:'difusion',payload:{campania_id:camp.id,numeros,texto}});if(e2)throw e2;
+    cerrar('ovDif');alert('Campaña encolada ✅ El bot va a ir enviando con pausas. El avance se ve en las métricas.');loadMarketing();
+  }catch(e){$('mdifErr').textContent='No se pudo: '+(e.message||e);}finally{$('btnSaveDif').disabled=false;}};
+
+// PROMO SEGMENTADA (WhatsApp a un tipo de cliente)
+async function psContar(){const{data,error}=await sb.rpc('clientes_por_lista',{p_lista:$('ps_lista').value});
+  const n=(data||[]).filter(x=>x.telefono).length;
+  $('ps_cant').textContent=error?('Error: '+error.message):(n+' cliente(s) con teléfono en este segmento');return data||[];}
+$('btnPromoSeg').onclick=()=>{$('mpsErr').textContent='';$('ps_texto').value='';$('ps_lista').value='minorista';psContar();abrir('ovPromoSeg');};
+$('ps_lista').addEventListener('change',()=>psContar());
+$('btnSavePromoSeg').onclick=async()=>{$('mpsErr').textContent='';const texto=$('ps_texto').value.trim();const lista=$('ps_lista').value;
+  if(!texto){$('mpsErr').textContent='Escribí el mensaje.';return;}
+  $('btnSavePromoSeg').disabled=true;
+  try{const{data,error}=await sb.rpc('clientes_por_lista',{p_lista:lista});if(error)throw error;
+    const numeros=(data||[]).map(x=>x.telefono).filter(Boolean);
+    if(!numeros.length){$('mpsErr').textContent='No hay clientes con teléfono cargado en ese segmento.';$('btnSavePromoSeg').disabled=false;return;}
+    const{data:camp,error:e1}=await sb.from('campanias').insert({nombre:'Promo '+lista+' '+new Date().toLocaleDateString('es-AR'),canal:'whatsapp',tipo:'oferta',estado:'activa'}).select().single();if(e1)throw e1;
+    const{error:e2}=await sb.from('bot_outbox').insert({tipo:'difusion',payload:{campania_id:camp.id,numeros,texto}});if(e2)throw e2;
+    cerrar('ovPromoSeg');alert('Promo encolada para '+numeros.length+' cliente(s) de '+lista+' ✅ El bot la manda en tandas pausadas (respeta el modo prueba).');loadMarketing();
+  }catch(e){$('mpsErr').textContent='No se pudo: '+(e.message||e);}finally{$('btnSavePromoSeg').disabled=false;}};
+
+// PROMOCIONES (cartel de la web)
+const PROMO_TIPO={navidad:'🎄 Navidad',descuento:'🏷️ Descuento',anuncio:'📢 Anuncio',evento:'🎪 Evento',otro:'Otro'};
+let editPromo=null;
+async function loadPromos(){const{data,error}=await sb.from('promociones').select('*').order('orden').order('creado_en',{ascending:false});
+  if(error){$('promoCards').innerHTML=empty('Error: '+esc(error.message));return;}
+  window._PROMO=data||[];const act=window._PROMO.filter(p=>p.activa).length;
+  $('kpisPromo').innerHTML=kpi(window._PROMO.length,'Promociones')+kpi(act,'Activas','gr');renderPromos();}
+function renderPromos(){const rows=window._PROMO||[];
+  if(!rows.length){$('promoCards').innerHTML=empty('Sin promociones. Tocá “+ Nueva promoción”.');return;}
+  $('promoCards').innerHTML=rows.map(p=>`<div class="pcard">
+    <div class="img" style="${p.imagen_url?`background-image:url('${esc(p.imagen_url)}')`:''}">${p.imagen_url?'':'🎉'}</div>
+    <div class="body"><div class="nm">${esc(p.titulo)} ${p.activa?'<span class="badge ok">activa</span>':'<span class="badge gr">apagada</span>'}</div>
+    <div class="ds">${esc(p.texto||'')}</div>
+    <div class="pr">${esc(PROMO_TIPO[p.tipo]||p.tipo)}${(p.fecha_desde||p.fecha_hasta)?` · ${esc(p.fecha_desde||'…')} → ${esc(p.fecha_hasta||'…')}`:''}</div>
+    <button class="btn gris sm" style="margin-top:8px" onclick='editarPromo(${JSON.stringify(p.id)})'>Editar</button></div></div>`).join('');}
+$('btnNuevaPromo').onclick=()=>{editPromo=null;$('promoTitle').textContent='Nueva promoción';$('mprErr').textContent='';
+  ['pr_titulo','pr_texto','pr_link','pr_cta','pr_desde','pr_hasta'].forEach(i=>$(i).value='');$('pr_foto').value='';$('pr_tipo').value='descuento';$('pr_activa').value='true';abrir('ovPromo');};
+window.editarPromo=id=>{const p=(window._PROMO||[]).find(x=>x.id===id);if(!p)return;editPromo=id;$('promoTitle').textContent='Editar promoción';$('mprErr').textContent='';
+  $('pr_titulo').value=p.titulo||'';$('pr_texto').value=p.texto||'';$('pr_foto').value='';$('pr_tipo').value=p.tipo;$('pr_activa').value=p.activa?'true':'false';$('pr_desde').value=p.fecha_desde||'';$('pr_hasta').value=p.fecha_hasta||'';$('pr_link').value=p.link||'';$('pr_cta').value=p.cta||'';abrir('ovPromo');};
+async function subirPromoFoto(){const f=$('pr_foto').files[0];if(!f)return null;const ext=(f.name.split('.').pop()||'jpg');const path='promo_'+Date.now()+'.'+ext;
+  const{error}=await sb.storage.from('promos').upload(path,f,{upsert:true});if(error)throw error;return sb.storage.from('promos').getPublicUrl(path).data.publicUrl;}
+$('btnSavePromo').onclick=async()=>{$('mprErr').textContent='';const titulo=$('pr_titulo').value.trim();if(!titulo){$('mprErr').textContent='Poné un título.';return;}
+  $('btnSavePromo').disabled=true;
+  try{let foto=null;try{foto=await subirPromoFoto();}catch(e){throw new Error('Foto: '+(e.message||e));}
+    const row={titulo,texto:$('pr_texto').value.trim()||null,tipo:$('pr_tipo').value,activa:$('pr_activa').value==='true',fecha_desde:$('pr_desde').value||null,fecha_hasta:$('pr_hasta').value||null,link:$('pr_link').value.trim()||null,cta:$('pr_cta').value.trim()||null,actualizado_en:new Date().toISOString()};
+    if(foto)row.imagen_url=foto;
+    let error;if(editPromo){({error}=await sb.from('promociones').update(row).eq('id',editPromo));}else{({error}=await sb.from('promociones').insert(row));}if(error)throw error;
+    cerrar('ovPromo');loadPromos();
+  }catch(e){$('mprErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSavePromo').disabled=false;}};
+
+// BOT
+let CHAT=null;
+async function loadBot(){
+  const{data:est}=await sb.from('bot_estado').select('*').eq('id',1).maybeSingle();
+  const e=est||{estado:'desconectado'};
+  const badge={conectado:'ok',esperando_qr:'amb',desconectado:'gr',error:'gr'}[e.estado]||'gr';
+  let conn=`<div><span class="badge ${badge}">${esc(e.estado)}</span>${e.numero?(' · '+esc(e.numero)):''}</div>`;
+  if(e.estado==='esperando_qr'&&e.qr){conn+='<p style="color:var(--mut);font-size:.85rem;margin:10px 0 6px">Escaneá este QR desde el WhatsApp del local (Dispositivos vinculados → Vincular):</p><canvas id="qrc"></canvas>';}
+  else if(e.estado==='conectado'){conn+='<p style="color:var(--verde);margin-top:8px">✅ Conectado y atendiendo.</p>';}
+  else{conn+='<p style="color:var(--mut);margin-top:8px">El bot no está conectado. Arrancá el bot en la PC del local (<code>npm start</code>) o tocá Reconectar, y el QR aparece acá.</p>';}
+  $('botConn').innerHTML=conn;
+  if(e.estado==='esperando_qr'&&e.qr&&window.QRCode){QRCode.toCanvas($('qrc'),e.qr,{width:210},()=>{});}
+  const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','whatsapp').order('ultima_actividad',{ascending:false}).limit(50);
+  const rows=cv||[];
+  $('tConv').innerHTML=rows.length?tbl('<tr><th>Contacto</th><th>Estado</th><th>Última</th><th></th></tr>'+rows.map(c=>`<tr><td><b>${esc(c.nombre_contacto||c.wa_id)}</b>${c.no_leidos>0?` <span class="badge amb">${c.no_leidos}</span>`:''}</td><td><span class="badge ${c.estado==='humano'?'amb':(c.estado==='cerrada'?'gr':'ok')}">${esc(c.estado)}</span></td><td>${esc((c.ultima_actividad||'').slice(0,16).replace('T',' '))}</td><td><button class="btn gris sm" onclick='abrirChat(${JSON.stringify(c.id)},${JSON.stringify(c.wa_id)},${JSON.stringify(c.nombre_contacto||c.wa_id)})'>Abrir</button></td></tr>`).join('')):empty('Sin conversaciones todavía. Cuando alguien escriba al WhatsApp, aparece acá.');
+  const{data}=await sb.from('campanias').select('*').eq('canal','whatsapp').order('creado_en',{ascending:false});const cmp=data||[];const m=await campMetrics(cmp);
+  $('kpisBot').innerHTML=kpi(esc(e.estado),'Estado del bot',e.estado==='conectado'?'gr':'amb')+kpi(rows.length,'Conversaciones','az')+kpi(m.e,'Mensajes enviados')+kpi(m.c,'Ventas','gr')+kpi(m.conv+'%','Conversión','amb');
+  $('tBot').innerHTML=cmp.length?tbl('<tr><th>Campaña</th><th>Tipo</th><th>Env.</th><th>Resp.</th><th>Ventas</th></tr>'+cmp.map(c=>`<tr><td><b>${esc(c.nombre)}</b></td><td>${esc(c.tipo)}</td><td class="num">${c.enviados}</td><td class="num">${c.respondidos}</td><td class="num">${c.convertidos}</td></tr>`).join('')):empty('Sin campañas de WhatsApp. Crealas en “Mailing y campañas”.');
+}
+window.abrirChat=async(id,waId,nombre)=>{CHAT={id,waId,nombre};$('chatTitle').textContent='💬 '+nombre;
+  const{data:ms}=await sb.from('mensajes').select('*').eq('conversacion_id',id).order('ts').limit(200);
+  $('chatMsgs').innerHTML=(ms||[]).map(m=>`<div class="msg ${m.direccion==='saliente'?'out':'in'}"><span>${esc(m.texto||'')}</span></div>`).join('')||'<div class="empty">Sin mensajes.</div>';
+  await sb.from('conversaciones').update({no_leidos:0}).eq('id',id);abrir('ovChat');$('chatMsgs').scrollTop=$('chatMsgs').scrollHeight;};
+$('btnChatSend').onclick=async()=>{const t=$('chatInput').value.trim();if(!t||!CHAT)return;$('chatInput').value='';
+  const{error}=await sb.from('bot_outbox').insert({tipo:'enviar_mensaje',payload:{wa_id:CHAT.waId,texto:t,conversacion_id:CHAT.id}});
+  if(error){alert('Error: '+error.message);return;}
+  $('chatMsgs').innerHTML+=`<div class="msg out"><span>${esc(t)} <i style="font-size:.7rem;color:#64748b">enviando…</i></span></div>`;$('chatMsgs').scrollTop=$('chatMsgs').scrollHeight;};
+$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnChatSend').click();});
+$('btnChatHumano').onclick=async()=>{if(!CHAT)return;await sb.from('bot_outbox').insert({tipo:'tomar_humano',payload:{conversacion_id:CHAT.id}});alert('Listo: lo atendés vos (el bot deja de responder este chat).');};
+$('btnChatCerrar').onclick=async()=>{if(!CHAT)return;await sb.from('bot_outbox').insert({tipo:'cerrar_chat',payload:{conversacion_id:CHAT.id}});cerrar('ovChat');loadBot();};
+$('btnReconectar').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'reconectar',payload:{}});alert('Pedido de reconexión enviado al bot.');};
+
+// CHATBOT (tablero real: usa conversaciones + mensajes)
+async function loadChatbot(){
+  // SOLO conversaciones del canal WEB (las de WhatsApp viven en "Bot WhatsApp")
+  const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','web').order('ultima_actividad',{ascending:false}).limit(100);
+  const convs=cv||[];
+  if(!convs.length){
+    $('kpisChat').innerHTML=kpi(0,'Conversaciones','az')+kpi(0,'Atendidas por el bot','gr')+kpi(0,'Esperan persona','amb')+kpi(0,'Cerradas');
+    $('tChatHumano').innerHTML=empty('El Chatbot Web todavía no está construido (módulo pendiente). Cuando exista el chat de la página, sus conversaciones aparecen acá.');
+    $('tChatUlt').innerHTML=empty('Las conversaciones de WhatsApp NO van acá: están en “🤖 Bot WhatsApp”.');
+    return;
+  }
+  const ids=convs.map(c=>c.id);
+  const desde=new Date(Date.now()-24*3600*1000).toISOString();
+  const[ms,ms24]=await Promise.all([
+    sb.from('mensajes').select('*',{count:'exact',head:true}).in('conversacion_id',ids),
+    sb.from('mensajes').select('*',{count:'exact',head:true}).in('conversacion_id',ids).gte('ts',desde)]);
+  const abiertas=convs.filter(c=>c.estado==='bot').length;
+  const humano=convs.filter(c=>c.estado==='humano');
+  const cerradas=convs.filter(c=>c.estado==='cerrada').length;
+  $('kpisChat').innerHTML=kpi(convs.length,'Conversaciones','az')+kpi(abiertas,'Atendidas por el bot','gr')+kpi(humano.length,'Esperan persona','amb')+kpi(cerradas,'Cerradas')+kpi(ms.count??0,'Mensajes totales')+kpi(ms24.count??0,'Mensajes (24 h)','az');
+  $('tChatHumano').innerHTML=humano.length?tbl('<tr><th>Contacto</th><th>Sin leer</th><th>Última actividad</th><th></th></tr>'+humano.map(c=>`<tr><td><b>${esc(c.nombre_contacto||c.wa_id)}</b></td><td class="num">${c.no_leidos||0}</td><td>${esc((c.ultima_actividad||'').slice(0,16).replace('T',' '))}</td><td><button class="btn gris sm" onclick='abrirChat(${JSON.stringify(c.id)},${JSON.stringify(c.wa_id)},${JSON.stringify(c.nombre_contacto||c.wa_id)})'>Abrir</button></td></tr>`).join('')):empty('Ninguna conversación necesita persona. 👍');
+  $('tChatUlt').innerHTML=convs.length?tbl('<tr><th>Contacto</th><th>Estado</th><th>Sin leer</th><th>Última</th><th></th></tr>'+convs.slice(0,30).map(c=>`<tr><td>${esc(c.nombre_contacto||c.wa_id)}</td><td><span class="badge ${c.estado==='humano'?'amb':(c.estado==='cerrada'?'gr':'ok')}">${esc(c.estado)}</span></td><td class="num">${c.no_leidos||0}</td><td>${esc((c.ultima_actividad||'').slice(0,16).replace('T',' '))}</td><td><button class="btn gris sm" onclick='abrirChat(${JSON.stringify(c.id)},${JSON.stringify(c.wa_id)},${JSON.stringify(c.nombre_contacto||c.wa_id)})'>Abrir</button></td></tr>`).join('')):empty('Sin conversaciones todavía. Cuando el bot atienda, aparecen acá.');
+}
+
+// VENDEDOR B2B EN FRÍO — conexión, control, cerebro editable, aprendizaje y métricas
+let _b2bActivo=true;
+async function loadB2B(){
+  // Config editable (prompt + nombre + número de derivación + activo)
+  const{data:cfg}=await sb.from('b2b_config').select('*').eq('id',1).maybeSingle();
+  if(cfg){$('b2b_nombre').value=cfg.nombre_vendedor||'';$('b2b_numatt').value=cfg.numero_atencion||'';$('b2b_prompt').value=cfg.system_prompt||'';_b2bActivo=cfg.activo!==false;}
+  // Estado de conexión (bot_estado id=2) + QR
+  const{data:est}=await sb.from('bot_estado').select('*').eq('id',2).maybeSingle();
+  const e=est||{estado:'desconectado'};
+  const badge={conectado:'ok',esperando_qr:'amb',desconectado:'gr',error:'gr'}[e.estado]||'gr';
+  let conn=`<div><span class="badge ${badge}">${esc(e.estado)}</span>${e.numero?(' · '+esc(e.numero)):''}</div>`;
+  if(e.estado==='esperando_qr'&&e.qr){conn+='<p style="color:var(--mut);font-size:.85rem;margin:10px 0 6px">Escaneá este QR desde el WhatsApp del <b>número aparte</b> del vendedor (Dispositivos vinculados → Vincular):</p><canvas id="qrcB2B"></canvas>';}
+  else if(e.estado==='conectado'){conn+='<p style="color:var(--verde);margin-top:8px">✅ Conectado y prospectando.</p>';}
+  else{conn+='<p style="color:var(--mut);margin-top:8px">El vendedor B2B no está conectado. Arrancá su proceso en la PC (carpeta <code>06-bot-venta-fria-b2b</code>) o tocá Reconectar, y el QR aparece acá.</p>';}
+  $('b2bConn').innerHTML=conn;
+  if(e.estado==='esperando_qr'&&e.qr&&window.QRCode){QRCode.toCanvas($('qrcB2B'),e.qr,{width:210},()=>{});}
+  $('b2bEstadoTxt').innerHTML=_b2bActivo?'🟢 Prospección <b>activa</b>: sale a contactar leads nuevos con su ritmo humano.':'⏸️ Prospección <b>pausada</b>: NO manda mensajes en frío (pero sí responde a quien ya le escribió).';
+  const[pr,lecR,cv,rank]=await Promise.all([
+    sb.from('prospectos_b2b').select('etapa,subtipo,negocio,creado_en'),
+    sb.from('b2b_lecciones').select('*').order('creado_en',{ascending:false}).limit(50),
+    sb.from('conversaciones').select('id,nombre_contacto,wa_id,estado,ultima_actividad').eq('canal','b2b_frio').order('ultima_actividad',{ascending:false}).limit(30),
+    sb.rpc('b2b_ranking_aperturas')]);
+  const P=pr.data||[];const et=x=>P.filter(p=>p.etapa===x).length;
+  $('kpisB2B').innerHTML=kpi(P.length,'Leads en la base')+kpi(et('contactado'),'Contactados','az')+kpi(et('interesado'),'Interesados','amb')+kpi(et('negociando'),'Negociando','amb')+kpi(et('cerrado'),'Cerrados ✔','gr')+kpi((cv.data||[]).length,'Charlas');
+  // Lecciones (editables: prender/apagar/borrar)
+  const L=lecR.data||[];
+  $('tB2BLec').innerHTML=L.length?tbl('<tr><th>Regla</th><th>Origen</th><th>En el prompt</th><th></th></tr>'+L.map(l=>`<tr><td style="max-width:520px;white-space:normal;word-break:break-word">${esc(l.texto)}</td><td>${l.origen==='auto'?'🧠 aprendida':'✍️ manual'}</td><td><button class="btn gris sm" onclick="b2bToggleLec('${l.id}',${l.activa?'false':'true'})">${l.activa?'🟢 activa':'⚪ apagada'}</button></td><td><button class="btn gris sm" onclick="b2bDelLec('${l.id}')">🗑️</button></td></tr>`).join('')):empty('Todavía sin reglas. Escribí una arriba o tocá “Analizar y aprender” cuando el vendedor tenga charlas.');
+  // Aperturas (ranking con recomendación + prender/apagar)
+  const A=rank.data||[];
+  $('tB2BAper').innerHTML=A.length?tbl('<tr><th></th><th>Saludo de entrada</th><th>Enviados</th><th>Resp.</th><th>% resp.</th><th>Veredicto</th><th></th></tr>'+A.map(a=>`<tr><td><b>${esc(a.clave)}</b></td><td style="max-width:380px;white-space:normal;word-break:break-word">${esc(a.texto)}</td><td class="num">${a.enviados}</td><td class="num">${a.respondidos}</td><td class="num">${a.tasa}%</td><td>${esc(a.recomendacion)}</td><td><button class="btn gris sm" onclick="b2bToggleAper('${esc(a.clave)}')">cambiar</button></td></tr>`).join('')):empty('Sin saludos cargados.');
+  // Embudo por rubro
+  const rub={};P.forEach(p=>{const r=p.subtipo||'otro';rub[r]=rub[r]||{t:0,c:0,i:0,x:0};rub[r].t++;if(p.etapa!=='nuevo')rub[r].c++;if(['interesado','negociando'].includes(p.etapa))rub[r].i++;if(p.etapa==='cerrado')rub[r].x++;});
+  const rks=Object.keys(rub);
+  $('tB2BEmbudo').innerHTML=P.length?tbl('<tr><th>Rubro</th><th>Leads</th><th>Contactados</th><th>Interesados</th><th>Cerrados</th></tr>'+rks.map(r=>`<tr><td><b>${esc(r)}</b></td><td class="num">${rub[r].t}</td><td class="num">${rub[r].c}</td><td class="num">${rub[r].i}</td><td class="num">${rub[r].x}</td></tr>`).join('')):empty('Sin leads todavía. Cargá prospectos (geriátricos, farmacias, kioscos…) y el vendedor sale a contactarlos.');
+  // Charlas (abrir → ver/responder/frenar con los botones del chat)
+  const C=cv.data||[];
+  $('tB2BConv').innerHTML=C.length?tbl('<tr><th>Negocio</th><th>Estado</th><th>Última</th><th></th></tr>'+C.map(c=>`<tr><td><b>${esc(c.nombre_contacto||c.wa_id)}</b></td><td><span class="badge ${c.estado==='humano'?'amb':(c.estado==='cerrada'?'gr':'ok')}">${esc(c.estado)}</span></td><td>${esc((c.ultima_actividad||'').slice(0,16).replace('T',' '))}</td><td><button class="btn gris sm" onclick='abrirChat(${JSON.stringify(c.id)},${JSON.stringify(c.wa_id)},${JSON.stringify(c.nombre_contacto||c.wa_id)})'>Abrir</button></td></tr>`).join('')):empty('El vendedor todavía no tuvo charlas (arrancá su proceso y cargá leads).');
+}
+// Guardar el cerebro (prompt principal)
+$('btnB2BCfg').onclick=async()=>{$('b2bCfgErr').textContent='';$('b2bCfgOk').textContent='';const p=$('b2b_prompt').value.trim();if(!p){$('b2bCfgErr').textContent='El prompt no puede quedar vacío.';return;}
+  const btn=$('btnB2BCfg');const orig=btn.textContent;btn.disabled=true;btn.textContent='⏳ Guardando…';
+  try{const{data,error}=await sb.from('b2b_config').update({nombre_vendedor:$('b2b_nombre').value.trim()||'Javier',numero_atencion:$('b2b_numatt').value.trim()||null,system_prompt:p,actualizado_en:new Date().toISOString()}).eq('id',1).select();
+    if(error)throw error;
+    if(!data||!data.length)throw new Error('No se guardó (sin permiso o config inexistente).');
+    btn.textContent='✅ ¡Guardado!';$('b2bCfgOk').textContent='Guardado '+new Date().toLocaleTimeString('es-AR')+'. El vendedor lo toma en su próxima charla.';
+    setTimeout(()=>{btn.textContent=orig;},2500);
+  }catch(e){$('b2bCfgErr').textContent='No se pudo guardar: '+(e.message||e);btn.textContent=orig;}finally{btn.disabled=false;}};
+// Pausar / reactivar prospección
+$('btnB2BPausar').onclick=async()=>{await sb.from('b2b_config').update({activo:false}).eq('id',1);loadB2B();};
+$('btnB2BReactivar').onclick=async()=>{await sb.from('b2b_config').update({activo:true}).eq('id',1);loadB2B();};
+$('btnB2BRecon').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'reconectar',payload:{bot:'b2b'}});alert('Pedido de reconexión enviado al vendedor B2B. En unos segundos aparece el QR.');};
+// Reglas aprendidas: agregar / prender-apagar / borrar
+$('btnB2BLecAdd').onclick=async()=>{const t=$('b2b_lecNueva').value.trim();if(!t)return;await sb.from('b2b_lecciones').insert({texto:t,origen:'manual',activa:true});$('b2b_lecNueva').value='';loadB2B();};
+window.b2bToggleLec=async(id,a)=>{await sb.from('b2b_lecciones').update({activa:a==='true'}).eq('id',id);loadB2B();};
+window.b2bDelLec=async(id)=>{if(!confirm('¿Borrar esta regla?'))return;await sb.from('b2b_lecciones').delete().eq('id',id);loadB2B();};
+window.b2bToggleAper=async(clave)=>{const{data}=await sb.from('b2b_aperturas').select('activa').eq('clave',clave).maybeSingle();await sb.from('b2b_aperturas').update({activa:!(data&&data.activa)}).eq('clave',clave);loadB2B();};
+// Analizar charlas y proponer reglas nuevas (el "aprende de sí mismo")
+$('btnB2BAnalizar').onclick=async()=>{
+  $('btnB2BAnalizar').disabled=true;const old=$('btnB2BAnalizar').textContent;$('btnB2BAnalizar').textContent='🧠 Analizando…';
+  try{
+    const{data:convs}=await sb.from('conversaciones').select('id,estado').eq('canal','b2b_frio').limit(100);
+    if(!convs||!convs.length){alert('Todavía no hay charlas para analizar. El vendedor tiene que haber conversado primero.');return;}
+    // Deja el pedido de análisis para el vendedor (lo procesa con IA y propone reglas 'auto').
+    await sb.from('bot_outbox').insert({tipo:'analizar_aprender',payload:{bot:'b2b',pedido:'proponer_lecciones'}});
+    alert('Listo: le pedí al vendedor que analice sus charlas y proponga reglas nuevas. Aparecen acá como “🧠 aprendida” para que las apruebes.');
+  }catch(e){alert('No se pudo: '+(e.message||e));}finally{$('btnB2BAnalizar').disabled=false;$('btnB2BAnalizar').textContent=old;}};
+
+// PUBLICACIONES (registro real, CRUD contra Supabase)
+const PUB_CANAL={mercadolibre:'MercadoLibre',facebook:'Facebook',instagram:'Instagram',marketplace:'Marketplace',tienda_web:'Tienda web',otro:'Otro'};
+let editPub=null;
+async function loadPub(){const{data,error}=await sb.from('publicaciones').select('*, catalogo(nombre)').order('creado_en',{ascending:false});
+  if(error){$('tPub').innerHTML=empty('Error: '+esc(error.message));return;}
+  window._PUB=data||[];const act=window._PUB.filter(p=>p.estado==='activa').length;const vts=window._PUB.reduce((a,b)=>a+Number(b.ventas||0),0);const vis=window._PUB.reduce((a,b)=>a+Number(b.visitas||0),0);
+  $('kpisPub').innerHTML=kpi(window._PUB.length,'Publicaciones')+kpi(act,'Activas','gr')+kpi(vis,'Visitas','az')+kpi(vts,'Ventas','amb');renderPub();}
+const PUB_BADGE={activa:'ok',vendida:'ok',pausada:'amb',borrador:'gr',baja:'gr'};
+function renderPub(){const q=($('bPub').value||'').toLowerCase();const rows=(window._PUB||[]).filter(p=>(p.titulo||'').toLowerCase().includes(q)||(PUB_CANAL[p.canal]||'').toLowerCase().includes(q));
+  if(!(window._PUB||[]).length){$('tPub').innerHTML=empty('Sin publicaciones. Tocá “+ Nueva publicación”.');return;}
+  if(!rows.length){$('tPub').innerHTML=empty('Ninguna publicación coincide con la búsqueda.');return;}
+  $('tPub').innerHTML=tbl('<tr><th>Título</th><th>Canal</th><th>Estado</th><th>Precio</th><th>Visitas</th><th>Ventas</th><th>Link</th><th></th></tr>'+rows.map(p=>`<tr><td><b>${esc(p.titulo)}</b>${p.catalogo?.nombre?` <span class="chip">${esc(p.catalogo.nombre)}</span>`:''}</td><td>${esc(PUB_CANAL[p.canal]||p.canal)}</td><td><span class="badge ${PUB_BADGE[p.estado]||'gr'}">${esc(p.estado)}</span></td><td class="num">${money(p.precio)}</td><td class="num">${p.visitas||0}</td><td class="num">${p.ventas||0}</td><td>${p.link?`<a href="${esc(p.link)}" target="_blank" rel="noopener">ver ↗</a>`:'—'}</td><td><button class="btn gris sm" onclick='editarPub(${JSON.stringify(p.id)})'>Editar</button></td></tr>`).join(''));}
+$('bPub').addEventListener('input',renderPub);
+function pubFillProds(){const opts='<option value="">— sin producto —</option>'+(PED_PRODS.length?PED_PRODS:(window._PRODS||[])).map(p=>`<option value="${p.id}">${esc(p.nombre)}</option>`).join('');$('pu_prod').innerHTML=opts;}
+$('btnNuevaPub').onclick=async()=>{editPub=null;$('pubTitle').textContent='Nueva publicación';$('mpuErr').textContent='';
+  ['pu_titulo','pu_precio','pu_link','pu_notas'].forEach(i=>$(i).value='');$('pu_visitas').value=0;$('pu_ventas').value=0;$('pu_canal').value='mercadolibre';$('pu_estado').value='activa';
+  if(!(window._PRODS||[]).length&&!PED_PRODS.length){const{data}=await sb.from('vw_precios_catalogo').select('id,nombre');window._PRODS=data||[];}
+  pubFillProds();$('pu_prod').value='';abrir('ovPub');};
+window.editarPub=id=>{const p=(window._PUB||[]).find(x=>x.id===id);if(!p)return;editPub=id;$('pubTitle').textContent='Editar publicación';$('mpuErr').textContent='';
+  pubFillProds();$('pu_titulo').value=p.titulo||'';$('pu_canal').value=p.canal;$('pu_estado').value=p.estado;$('pu_prod').value=p.catalogo_id||'';$('pu_precio').value=p.precio??'';$('pu_visitas').value=p.visitas||0;$('pu_ventas').value=p.ventas||0;$('pu_link').value=p.link||'';$('pu_notas').value=p.notas||'';abrir('ovPub');};
+$('btnSavePub').onclick=async()=>{$('mpuErr').textContent='';const titulo=$('pu_titulo').value.trim();if(!titulo){$('mpuErr').textContent='Poné un título.';return;}
+  const row={titulo,canal:$('pu_canal').value,estado:$('pu_estado').value,catalogo_id:$('pu_prod').value||null,precio:Number($('pu_precio').value)||null,visitas:Number($('pu_visitas').value)||0,ventas:Number($('pu_ventas').value)||0,link:$('pu_link').value.trim()||null,notas:$('pu_notas').value.trim()||null,actualizado_en:new Date().toISOString()};
+  $('btnSavePub').disabled=true;
+  try{let error;if(editPub){({error}=await sb.from('publicaciones').update(row).eq('id',editPub));}else{({error}=await sb.from('publicaciones').insert(row));}if(error)throw error;cerrar('ovPub');loadPub();
+  }catch(e){$('mpuErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSavePub').disabled=false;}};
+
+// CONTABILIDAD
+async function loadCont(){const[vt,pg,pagos]=await Promise.all([sb.from('vw_ventas_por_tipo').select('*'),sb.from('pedidos').select('total,estado'),sb.from('pagos').select('metodo,estado,monto')]);
+  const fact=(vt.data||[]).reduce((a,b)=>a+Number(b.facturacion||0),0);
+  const aprob=(pagos.data||[]).filter(p=>p.estado==='aprobado').reduce((a,b)=>a+Number(b.monto||0),0);
+  const pend=(pg.data||[]).filter(p=>p.estado==='pendiente').length;
+  $('kpisCont').innerHTML=kpi(money(fact),'Facturación total','gr')+kpi(money(aprob),'Cobrado (aprobado)','az')+kpi(pend,'Pedidos pendientes','amb');
+  const vd=vt.data||[];$('tContTipo').innerHTML=vd.length?tbl('<tr><th>Tipo</th><th>Pedidos</th><th>Facturación</th></tr>'+vd.map(v=>`<tr><td>${esc(v.tipo_pedido)}</td><td class="num">${v.pedidos}</td><td class="num">${money(v.facturacion)}</td></tr>`).join('')):empty('Sin ventas todavía.');
+  const porMetodo={};(pagos.data||[]).forEach(p=>{porMetodo[p.metodo]=(porMetodo[p.metodo]||0)+Number(p.monto||0);});const pm=Object.entries(porMetodo);
+  $('tContPago').innerHTML=pm.length?tbl('<tr><th>Método</th><th>Monto</th></tr>'+pm.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${money(v)}</td></tr>`).join('')):empty('Sin pagos registrados.');}
+
+// CONFIG
+async function loadConfig(){const{data:listas}=await sb.from('listas_precio').select('*').order('margen_pct',{ascending:false});
+  $('tMargen').innerHTML=tbl('<tr><th>Lista</th><th>Margen % sobre costo</th><th></th></tr>'+(listas||[]).map(l=>`<tr><td><b>${esc(l.nombre)}</b></td><td><div class="inlineedit"><input type="number" id="m_${l.nombre}" value="${Number(l.margen_pct)}" min="0"> %</div></td><td><button class="btn sm" onclick="guardarMargen('${l.nombre}')">Guardar</button></td></tr>`).join(''));
+  const{data:zonas}=await sb.from('zonas_envio').select('*').order('radio_km');window._ZONAS=zonas||[];
+  $('tZonas').innerHTML=tbl('<tr><th>Nombre</th><th>Hasta km</th><th>Tarifa $</th><th>Gratis desde $</th><th>Tiempo</th><th></th></tr>'+(window._ZONAS).map(z=>`<tr><td><input id="z_n_${z.id}" value="${esc(z.nombre)}"></td><td><input id="z_r_${z.id}" type="number" value="${z.radio_km??''}" style="max-width:90px"></td><td><input id="z_t_${z.id}" type="number" value="${z.tarifa??0}" style="max-width:110px"></td><td><input id="z_g_${z.id}" type="number" value="${z.envio_gratis_desde??''}" style="max-width:120px"></td><td><input id="z_e_${z.id}" value="${esc(z.tiempo_estimado||'')}" style="max-width:120px"></td><td style="display:flex;gap:6px"><button class="btn sm" onclick="guardarZona('${z.id}')">Guardar</button><button class="btn sm rojo" onclick="borrarZona('${z.id}')">✕</button></td></tr>`).join(''));}
+window.guardarMargen=async nombre=>{const v=Number($('m_'+nombre).value);const{error}=await sb.from('listas_precio').update({margen_pct:v}).eq('nombre',nombre);$('okMargen').textContent=error?('Error: '+error.message):('✓ '+nombre+' = '+v+'%');if(!error)await cargarMargenes();};
+window.guardarZona=async id=>{const{error}=await sb.from('zonas_envio').update({nombre:$('z_n_'+id).value,radio_km:Number($('z_r_'+id).value)||null,tarifa:Number($('z_t_'+id).value)||0,envio_gratis_desde:Number($('z_g_'+id).value)||null,tiempo_estimado:$('z_e_'+id).value||null}).eq('id',id);if(error)alert('Error: '+error.message);else loadConfig();};
+window.borrarZona=async id=>{if(!confirm('¿Borrar esta zona?'))return;const{error}=await sb.from('zonas_envio').delete().eq('id',id);if(error)alert('Error: '+error.message);else loadConfig();};
+$('btnNuevaZona').onclick=async()=>{const{error}=await sb.from('zonas_envio').insert({nombre:'Nueva zona',radio_km:0,tarifa:0});if(error)alert('Error: '+error.message);else loadConfig();};
+
+// USUARIOS
+const ROLES=['programador','dueño','vendedor','repartidor','bot','cliente','cliente_mayorista'];
+async function loadUsuarios(){const{data,error}=await sb.from('vw_usuarios').select('*').order('creado_en');if(error){$('tUsuarios').innerHTML=empty('Error: '+esc(error.message));return;}const rows=data||[];
+  $('tUsuarios').innerHTML=rows.length?tbl('<tr><th>Email</th><th>Rol</th><th>Activo</th><th></th></tr>'+rows.map(u=>`<tr><td>${esc(u.email)}</td><td><select id="u_r_${u.id}">${ROLES.map(r=>`<option ${r===u.rol?'selected':''}>${r}</option>`).join('')}</select></td><td><select id="u_a_${u.id}"><option value="true" ${u.activo?'selected':''}>Sí</option><option value="false" ${!u.activo?'selected':''}>No</option></select></td><td><button class="btn sm" onclick="guardarUsuario('${u.id}')">Guardar</button></td></tr>`).join('')):empty('Sin usuarios.');}
+window.guardarUsuario=async id=>{const{error}=await sb.from('usuarios').update({rol:$('u_r_'+id).value,activo:$('u_a_'+id).value==='true'}).eq('id',id);if(error)alert('Error: '+error.message);else loadUsuarios();};
+$('btnNuevoUsr').onclick=()=>{$('u_email').value='';$('u_pass').value='';$('u_rol').value='vendedor';$('muErr').textContent='';abrir('ovUsr');};
+$('btnSaveUsr').onclick=async()=>{$('muErr').textContent='';const email=$('u_email').value.trim(),password=$('u_pass').value,rol=$('u_rol').value;if(!email||!password){$('muErr').textContent='Poné email y contraseña.';return;}$('btnSaveUsr').disabled=true;
+  try{const{data,error}=await sb.functions.invoke('crear-usuario',{body:{email,password,rol}});if(error){let msg=error.message;try{const c=await error.context.json();if(c&&c.error)msg=c.error;}catch(_){}throw new Error(msg);}if(data&&data.error)throw new Error(data.error);cerrar('ovUsr');loadUsuarios();
+  }catch(e){$('muErr').textContent='No se pudo crear: '+(e.message||e);}finally{$('btnSaveUsr').disabled=false;}};
+
+// ---- SISTEMA (monitoreo en tiempo real) ----
+async function loadSistema(){
+  const[est,logs]=await Promise.all([
+    sb.from('bot_estado').select('*').eq('id',1).maybeSingle(),
+    sb.from('eventos_log').select('*').order('creado_en',{ascending:false}).limit(50)]);
+  const e=(est&&est.data)||{estado:'desconectado'}; const L=(logs&&logs.data)||[]; const errs=L.filter(x=>x.nivel==='error').length;
+  const latido=e.ultimo_latido?(Date.now()-new Date(e.ultimo_latido).getTime()):null;
+  const botOk=e.estado==='conectado'&&latido!=null&&latido<60000;
+  $('sistKpis').innerHTML=kpi(botOk?'🟢 OK':'🔴','Bot WhatsApp',botOk?'gr':'amb')+kpi('🟢 OK','Base de datos','gr')+kpi(errs,'Errores (últimos 50)','amb')+kpi(L.length,'Eventos');
+  const svc=[
+    ['Bot de WhatsApp (PC del local)',e.estado,botOk?'ok':'gr',e.ultimo_latido?('último latido '+new Date(e.ultimo_latido).toLocaleTimeString('es-AR')):'sin latido'],
+    ['Base de datos (Supabase)','conectado','ok','este panel está leyendo en vivo']];
+  $('sistServicios').innerHTML=tbl('<tr><th>Servicio</th><th>Estado</th><th>Detalle</th></tr>'+svc.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td><span class="badge ${s[2]}">${esc(s[1])}</span></td><td>${esc(s[3])}</td></tr>`).join(''));
+  $('sistLogs').innerHTML=L.length?tbl('<tr><th>Cuándo</th><th>Origen</th><th>Nivel</th><th>Mensaje</th></tr>'+L.map(x=>`<tr><td>${esc((x.creado_en||'').slice(0,19).replace('T',' '))}</td><td>${esc(x.origen)}</td><td><span class="badge ${x.nivel==='error'?'amb':'gr'}">${esc(x.nivel)}</span></td><td>${esc(x.mensaje)}</td></tr>`).join('')):empty('Sin errores registrados. 👍');
+}
+async function logPanel(mensaje,detalle){try{const{data:{session}}=await sb.auth.getSession();await sb.from('eventos_log').insert({origen:'panel',nivel:'error',mensaje:String(mensaje).slice(0,400),detalle:detalle||null,usuario_id:(session&&session.user&&session.user.id)||null});}catch(_){}}
+window.addEventListener('error',ev=>{logPanel(ev.message,{src:ev.filename,line:ev.lineno});});
+window.addEventListener('unhandledrejection',ev=>{logPanel('Promesa sin manejar: '+((ev.reason&&ev.reason.message)||ev.reason),null);});
+let _rtSuscrito=false;
+function suscribirRealtime(){ if(_rtSuscrito)return; _rtSuscrito=true;
+  sb.channel('sistema')
+    .on('postgres_changes',{event:'*',schema:'public',table:'bot_estado'},()=>{if(vistaActual==='sistema')loadSistema();if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'eventos_log'},()=>{if(vistaActual==='sistema')loadSistema();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'conversaciones'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'mensajes'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .subscribe();
+}
+function abrir(id){$(id).style.display='flex';}function cerrar(id){$(id).style.display='none';}
+// Saca los emojis del principio de títulos y encabezados (look profesional, sin default)
+(function(){try{
+  function strip(s){var i=0;while(i<s.length){var c=s.charCodeAt(i);if(c===32||c===9||c===0x200D||(c>=0x2190&&c<=0x3300)||(c>=0xFE00&&c<=0xFE0F)||(c>=0xD800&&c<=0xDFFF))i++;else break;}return s.slice(i);}
+  document.querySelectorAll('h2.title, .panel .h').forEach(function(el){var n=el.firstChild;if(n&&n.nodeType===3)n.textContent=strip(n.textContent);});
+}catch(_){}})();
+// Tema claro/oscuro
+function _temaLabel(){const d=document.documentElement.getAttribute('data-theme')==='dark';const t=$('temaTxt');if(t)t.textContent=d?'Tema claro':'Tema oscuro';}
+_temaLabel();
+$('btnTema').onclick=()=>{const nuevo=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nuevo);try{localStorage.setItem('panalera-theme',nuevo);}catch(_){}_temaLabel();};
+init();
+</script>
+</body>
+</html>
