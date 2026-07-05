@@ -198,7 +198,7 @@
     <section class="view" id="sec-clientes">
       <h2 class="title">👤 Clientes</h2><p class="lead">Datos personales cifrados; solo el staff los ve en claro.</p>
       <div class="kpis" id="kpisCli"></div>
-      <div class="bar"><input class="search" id="bCli" placeholder="🔎 Buscar cliente…"><button class="btn lg" id="btnNuevoCli">+ Agregar cliente</button></div>
+      <div class="bar"><input class="search" id="bCli" placeholder="🔎 Buscar cliente…"><select id="fSeg" class="search" style="max-width:210px"><option value="">Todos los segmentos</option><option value="minorista">Minorista</option><option value="mayorista">Mayorista</option><option value="geriatrico">Geriátrico</option><option value="almacen">Almacén</option><option value="revendedor">Revendedor</option></select><button class="btn lg" id="btnNuevoCli">+ Agregar cliente</button></div>
       <div class="panel"><div class="b tablewrap" id="tCli"></div></div>
     </section>
 
@@ -360,6 +360,14 @@
     <div class="field"><label>Email</label><input id="f_email" placeholder="vacío = borrar"></div>
   </div>
   <div class="field"><label>Dirección</label><input id="f_dir" placeholder="vacío = borrar"></div>
+  <div class="grid2" style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px">
+    <div class="field"><label>Segmento / lista de precio</label><select id="f_seg"><option value="minorista">Minorista (consumidor final)</option><option value="mayorista">Mayorista</option><option value="geriatrico">Geriátrico</option><option value="almacen">Almacén</option><option value="revendedor">Revendedor</option></select></div>
+    <div class="field" style="align-self:end"><button class="btn lg" onclick="guardarSegmento()">Ascender / guardar segmento</button></div>
+  </div>
+  <div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px"><b>Acceso web del cliente</b><p class="sub" style="margin:4px 0 8px">Creale un usuario para que entre a la tienda y vea SUS precios.</p>
+    <div class="grid2"><div class="field"><label>Contraseña inicial</label><input id="f_wpass" type="text" placeholder="mín. 8 caracteres"></div><div class="field" style="align-self:end"><button class="btn" onclick="crearAccesoWeb()">Crear acceso web</button></div></div>
+    <div class="err" id="fwErr"></div>
+  </div>
   <h3 style="margin-top:14px">🛒 Historial de compras</h3>
   <div class="tablewrap" id="fHist"></div>
   <div class="err" id="mfErr"></div>
@@ -595,12 +603,13 @@ $('btnSaveProd').onclick=async()=>{$('mpErr').textContent='';const nombre=$('p_n
 
 // CLIENTES
 async function loadClientes(){const{data,error}=await sb.from('vw_clientes_legible').select('*').order('nombre');if(error){$('tCli').innerHTML=empty('Error: '+esc(error.message));return;}
-  window._CLI=data||[];const b2b=window._CLI.filter(c=>c.tipo==='b2b').length,rec=window._CLI.filter(c=>c.tipo==='recurrente').length;
+  const{data:segs}=await sb.from('vw_cliente_segmento').select('*');const _sm={};(segs||[]).forEach(s=>{_sm[s.cliente_id]=s.segmento;});
+  window._CLI=(data||[]).map(c=>Object.assign({},c,{_seg:_sm[c.id]||'minorista'}));const b2b=window._CLI.filter(c=>c.tipo==='b2b').length,rec=window._CLI.filter(c=>c.tipo==='recurrente').length;
   $('kpisCli').innerHTML=kpi(window._CLI.length,'Clientes')+kpi(rec,'Recurrentes','az')+kpi(b2b,'B2B');renderCli();}
-function renderCli(){const q=($('bCli').value||'').toLowerCase();const rows=(window._CLI||[]).filter(c=>(c.nombre||'').toLowerCase().includes(q));
+function renderCli(){const q=($('bCli').value||'').toLowerCase();const sf=($('fSeg')&&$('fSeg').value)||'';const rows=(window._CLI||[]).filter(c=>(c.nombre||'').toLowerCase().includes(q)&&(!sf||c._seg===sf));
   if(!(window._CLI||[]).length){$('tCli').innerHTML=empty('Sin clientes. Tocá “+ Agregar cliente”.');return;}
-  $('tCli').innerHTML=tbl('<tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Teléfono</th><th>Email</th><th>Rubro</th><th></th></tr>'+rows.map(c=>`<tr><td>${esc(c.codigo)}</td><td><b>${esc(c.nombre)}</b></td><td><span class="chip">${esc(c.tipo)}</span></td><td>${esc(c.telefono||'')}</td><td>${esc(c.email||'')}</td><td>${esc(c.rubro||'')}</td><td><button class="btn gris" onclick="abrirFicha('${c.id}')">📋 Ficha</button></td></tr>`).join(''));}
-$('bCli').addEventListener('input',renderCli);
+  $('tCli').innerHTML=tbl('<tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Teléfono</th><th>Email</th><th>Rubro</th><th>Segmento</th><th></th></tr>'+rows.map(c=>`<tr><td>${esc(c.codigo)}</td><td><b>${esc(c.nombre)}</b></td><td><span class="chip">${esc(c.tipo)}</span></td><td>${esc(c.telefono||'')}</td><td>${esc(c.email||'')}</td><td>${esc(c.rubro||'')}</td><td><span class="chip">${esc(c._seg||'minorista')}</span></td><td><button class="btn gris" onclick="abrirFicha('${c.id}')">📋 Ficha</button></td></tr>`).join(''));}
+$('bCli').addEventListener('input',renderCli);$('fSeg')&&$('fSeg').addEventListener('change',renderCli);
 $('btnNuevoCli').onclick=()=>{['c_nombre','c_tel','c_email','c_dir','c_rubro'].forEach(i=>$(i).value='');$('c_tipo').value='one_time';$('c_canal').value='';$('mcErr').textContent='';abrir('ovCli');};
 $('btnSaveCli').onclick=async()=>{$('mcErr').textContent='';const nombre=$('c_nombre').value.trim();if(!nombre){$('mcErr').textContent='Poné un nombre.';return;}$('btnSaveCli').disabled=true;
   try{const{error}=await sb.rpc('alta_cliente',{p_nombre:nombre,p_tipo:$('c_tipo').value,p_canal:$('c_canal').value||null,p_telefono:$('c_tel').value.trim()||null,p_email:$('c_email').value.trim()||null,p_direccion:$('c_dir').value.trim()||null,p_rubro:$('c_rubro').value.trim()||null});if(error)throw error;cerrar('ovCli');loadClientes();
@@ -612,7 +621,7 @@ async function abrirFicha(id){const c=(window._CLI||[]).find(x=>x.id===id);if(!c
   $('f_titulo').textContent='📋 '+(c.nombre||'Cliente');
   $('f_sub').textContent=(c.codigo||'')+' · llegó por: '+(c.canal_origen||'—')+(c.ultima_compra?(' · última compra: '+String(c.ultima_compra).slice(0,10)):'');
   $('f_nombre').value=c.nombre||'';$('f_tipo').value=c.tipo||'one_time';$('f_rubro').value=c.rubro||'';
-  $('f_tel').value=c.telefono||'';$('f_email').value=c.email||'';$('f_dir').value=c.direccion||'';
+  $('f_tel').value=c.telefono||'';$('f_email').value=c.email||'';$('f_dir').value=c.direccion||'';$('f_seg').value=c._seg||'minorista';$('f_wpass').value='';$('fwErr').textContent='';
   $('mfErr').textContent='';$('fHist').innerHTML='<p class="sub">Cargando historial…</p>';abrir('ovFicha');
   const{data:peds,error}=await sb.from('pedidos').select('codigo,total,estado,creado_en').eq('cliente_id',id).order('creado_en',{ascending:false}).limit(200);
   if(_fichaId!==id)return; // el usuario ya abrió otra ficha: no pisar su historial
@@ -626,6 +635,8 @@ $('btnSaveFicha').onclick=async()=>{$('mfErr').textContent='';const nombre=$('f_
   try{const{error}=await sb.rpc('editar_cliente',{p_id:_fichaId,p_nombre:nombre,p_tipo:$('f_tipo').value,p_rubro:$('f_rubro').value.trim(),p_telefono:$('f_tel').value.trim(),p_email:$('f_email').value.trim(),p_direccion:$('f_dir').value.trim()});
     if(error)throw error;cerrar('ovFicha');loadClientes();
   }catch(e){$('mfErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSaveFicha').disabled=false;}};
+window.guardarSegmento=async function(){if(!_fichaId)return;const lista=$('f_seg').value;const{data,error}=await sb.rpc('set_segmento_cliente',{p_cliente:_fichaId,p_lista:lista});if(error){$('mfErr').style.color='#c00';$('mfErr').textContent='No se pudo: '+error.message;return;}$('mfErr').style.color='var(--verde)';$('mfErr').textContent='\u2705 Segmento: '+(data||lista)+'. Ya ve esos precios.';const c=(window._CLI||[]).find(x=>x.id===_fichaId);if(c)c._seg=data||lista;};
+window.crearAccesoWeb=async function(){if(!_fichaId)return;const email=$('f_email').value.trim();const pass=$('f_wpass').value;if(!email){$('fwErr').style.color='#c00';$('fwErr').textContent='El cliente necesita un email cargado arriba.';return;}if(!pass||pass.length<8){$('fwErr').style.color='#c00';$('fwErr').textContent='La contraseña debe tener al menos 8 caracteres.';return;}const rol=($('f_seg').value&&$('f_seg').value!=='minorista')?'cliente_mayorista':'cliente';try{const{data,error}=await sb.functions.invoke('crear-usuario',{body:{email,password:pass,rol,cliente_id:_fichaId}});if(error){let msg=error.message;try{const cc=await error.context.json();if(cc&&cc.error)msg=cc.error;}catch(_){}throw new Error(msg);}if(data&&data.error)throw new Error(data.error);$('fwErr').style.color='var(--verde)';$('fwErr').textContent='\u2705 Acceso creado. Entra con '+email+' y esa clave (la cambia en el primer ingreso).';$('f_wpass').value='';}catch(e){$('fwErr').style.color='#c00';$('fwErr').textContent='No se pudo: '+(e.message||e);}};
 
 // PEDIDOS
 async function loadPedidos(){const{data,error}=await sb.from('pedidos').select('codigo,total,estado,tipo_pedido,creado_en,clientes(nombre)').order('creado_en',{ascending:false});
