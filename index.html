@@ -808,8 +808,8 @@ const ritaMsgs=document.getElementById('ritaMsgs');
 function ritaPush(t,who){const d=document.createElement('div');d.className='rm '+who;d.textContent=t;ritaMsgs.appendChild(d);ritaMsgs.scrollTop=ritaMsgs.scrollHeight;}
 function ritaQuick(opts){const q=document.getElementById('ritaQuick');q.innerHTML=opts.map(o=>`<button onclick="ritaPick('${o.replace(/'/g,"")}')">${o}</button>`).join('');}
 let ritaStarted=false;
-function ctaMayorista(){openRita();setTimeout(function(){try{ritaPush('¡Genial! Para precios de mayorista o institución (geriátrico, hospital, residencia, almacén) te hago unas preguntas rápidas y te contacta una persona del equipo. Para empezar: ¿tu nombre y qué rubro tenés?','bot');}catch(e){}},450);}
-function openRita(){document.getElementById('ritaPanel').classList.add('on');document.getElementById('ritaLabel').classList.remove('show');
+function ctaMayorista(){openRita();window._ritaMayorista=true;setTimeout(function(){try{var op='¡Genial! Para darte precios de mayorista o institución te hago unas preguntas rápidas y después te contacta una persona del equipo. Empecemos: ¿cuál es tu nombre y qué tipo de negocio o institución tenés? (mayorista, almacén, geriátrico, hospital, residencia, revendedor)';ritaPush(op,'bot');ritaHist.push({role:'assistant',content:op});}catch(e){}},450);}
+function openRita(){window._ritaMayorista=false;document.getElementById('ritaPanel').classList.add('on');document.getElementById('ritaLabel').classList.remove('show');
   if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, de la parte de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios']);}
 }
 function closeRita(){document.getElementById('ritaPanel').classList.remove('on');}
@@ -827,7 +827,7 @@ function ritaSend(){
 async function callRita(lastText){
   ritaPush('escribiendo…','bot');const typing=ritaMsgs.lastChild;if(typing)typing.classList.add('rm-typing');
   try{
-    const r=await fetch(RITA_FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({messages:ritaHist.slice(-16),session:ritaSid})});
+    const r=await fetch(RITA_FN,{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({messages:ritaHist.slice(-16),session:ritaSid,mode:(window._ritaMayorista?'mayorista':null)})});
     const d=await r.json();if(typing)typing.remove();
     if(d&&d.ai===false){ ritaReplyFallback((lastText||'').toLowerCase()); return; }
     const reply=(d&&d.reply)||'¿Te ayudo con algo más? 😊';

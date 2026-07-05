@@ -235,6 +235,13 @@
 
     <section class="view" id="sec-chatbot">
       <h2 class="title">💬 Chatbot Web — tablero</h2><p class="lead">El chat de la página web (módulo pendiente de construir). Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
+      <div class="panel"><div class="h">⚙️ Guiones de Rita (chat de la web) — editable</div><div class="b">
+        <label style="font-weight:700;display:block;margin-bottom:4px">Rita — atención / ventas (chat normal)</label>
+        <textarea id="ri_prompt" rows="6" style="width:100%;box-sizing:border-box"></textarea>
+        <label style="font-weight:700;display:block;margin:12px 0 4px">Rita — cuestionario "Soy mayorista"</label>
+        <textarea id="ri_prompt_may" rows="8" style="width:100%;box-sizing:border-box"></textarea>
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px"><label><input type="checkbox" id="ri_activo"> Rita activa</label><button class="btn lg" id="btnSaveRita">Guardar guiones</button><span id="riMsg" class="sub"></span></div>
+      </div></div>
       <div class="kpis" id="kpisChat"></div>
       <div class="panel"><div class="h">🙋 Necesitan que atiendas vos</div><div class="b tablewrap" id="tChatHumano"></div></div>
       <div class="panel"><div class="h">💬 Últimas conversaciones</div><div class="b tablewrap" id="tChatUlt"></div></div>
@@ -792,6 +799,7 @@ $('btnReconectar').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'r
 
 // CHATBOT (tablero real: usa conversaciones + mensajes)
 async function loadChatbot(){
+  try{const{data:wc}=await sb.from('web_config').select('*').eq('id',1).maybeSingle();if(wc){$('ri_prompt').value=wc.system_prompt||'';$('ri_prompt_may').value=wc.system_prompt_mayorista||'';$('ri_activo').checked=wc.activo!==false;}$('btnSaveRita').onclick=async()=>{$('riMsg').style.color='';$('riMsg').textContent='Guardando...';const{error}=await sb.from('web_config').update({system_prompt:$('ri_prompt').value,system_prompt_mayorista:$('ri_prompt_may').value,activo:$('ri_activo').checked,actualizado_en:new Date().toISOString()}).eq('id',1);$('riMsg').style.color=error?'#c00':'var(--verde)';$('riMsg').textContent=error?('No se pudo: '+error.message):'\u2705 Guardado. Rita ya usa estos guiones.';};}catch(_){}
   // SOLO conversaciones del canal WEB (las de WhatsApp viven en "Bot WhatsApp")
   const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','web').order('ultima_actividad',{ascending:false}).limit(100);
   const convs=cv||[];
