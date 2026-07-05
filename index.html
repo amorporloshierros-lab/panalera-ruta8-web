@@ -93,18 +93,18 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .afs-btns button:hover{background:var(--azul-soft);color:var(--azul)}.afs-btns button.on:hover{background:var(--azul);color:#fff}
   @media(max-width:640px){.afs-lab{display:none}.brand small{display:none}}
   /* HERO */
-  header.hero{position:relative;overflow:hidden;background:#0b2545}
+  header.hero{position:relative;overflow:hidden;background:#0b2545;padding-top:88px}
   .hero-bg{position:relative;display:block;width:100%;height:auto;z-index:0}
   .hero-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.86) 38%,rgba(9,28,55,.5) 55%,transparent 72%)}
   .hero-stamp2{position:absolute;right:18px;bottom:18px;width:116px;height:116px;z-index:4;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
   .hero-stamp2 .stamp-rot{transform-origin:60px 60px;animation:spin 22s linear infinite}
-  .hero-copy-wrap{position:absolute;inset:0;z-index:2;display:flex;align-items:center}
+  .hero-copy-wrap{position:absolute;top:88px;left:0;right:0;bottom:0;z-index:2;display:flex;align-items:center}
   header.hero .wrap{position:relative;z-index:2}
   header.hero .marquee{position:absolute;left:0;bottom:0;width:100%;z-index:3}
   header.hero .eyebrow-hero{color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
   header.hero .hero-title{color:#fff}
-  header.hero .hero-title .hl{color:var(--gold)}
-  header.hero .hero-title .hl::after{background:rgba(240,200,90,.28)}
+  header.hero .hero-title .hl{color:#bcdcff}
+  header.hero .hero-title .hl::after{background:rgba(255,255,255,.22)}
   header.hero .hero-sub{color:#eef3fa}
   header.hero .hero-trust{color:#dbe6f2}
   .rv-l{opacity:0;transform:translateX(-60px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -251,7 +251,7 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .fab-photo{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
   .fab-img{display:block;width:100%;height:auto}
   .fab-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 20px 16px;background:linear-gradient(rgba(10,30,55,0),rgba(10,30,55,.8));color:#fff;font-weight:700;font-size:1.05rem;text-shadow:0 2px 8px rgba(0,0,0,.5)}
-  .cinta{position:relative;overflow:hidden;background:#0b2545}
+  .cinta{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(9,28,55,.97) 0%,rgba(9,28,55,.88) 40%,rgba(9,28,55,.6) 58%,rgba(9,28,55,.25) 82%),#0b2545 url('local-esquina.jpg') center/cover}
   .cinta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
   .cinta-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.86) 40%,rgba(9,28,55,.55) 58%,rgba(9,28,55,.18) 82%)}
   .cinta-inner{position:relative;z-index:2;min-height:560px;display:flex;align-items:center;padding:80px 0}
@@ -260,8 +260,8 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .cinta-p{color:#e6eef8;font-size:1.08rem;line-height:1.5;max-width:48ch}
   .cinta .stats .num{color:#fff}
   .cinta .stats .lab{color:#bcd0e6}
-  .cinta-tag{margin-top:18px;font-weight:800;color:var(--gold);font-family:'Figtree'}
-  @media(max-width:760px){.cinta-ov{background:linear-gradient(rgba(9,28,55,.62),rgba(9,28,55,.9))}.cinta-copy{max-width:100%}.cinta-inner{padding:54px 0;min-height:0}}
+  .cinta-tag{margin-top:18px;font-weight:800;color:#9fc7f5;font-family:'Figtree'}
+  @media(max-width:760px){.cinta{background:linear-gradient(rgba(9,28,55,.72),rgba(9,28,55,.92)),#0b2545 url('local-esquina.jpg') center/cover}.cinta-copy{max-width:100%}.cinta-inner{padding:54px 0;min-height:0}}
   .stats{display:flex;gap:26px;margin-top:24px;flex-wrap:wrap}
   .stat .num{font-family:'Bricolage Grotesque';font-weight:700;font-size:2.2rem;color:var(--azul)}
   .stat .lab{color:var(--mut);font-size:.86rem;font-weight:600}
@@ -373,7 +373,7 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
     <span class="eyebrow-hero">Mayorista · San Martín · Zona Norte</span>
     <h1 class="hero-title">Pañales al <span class="hl">precio de fábrica</span>, a la puerta de tu casa.</h1>
   </div></div></div>
-  <div class="hero-stamp2" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stc" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"/></defs><g class="stamp-rot"><circle cx="60" cy="60" r="58" fill="#0b2545" stroke="#f0c85a" stroke-width="1.5"/><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/><text font-family="Bricolage Grotesque" font-weight="700" font-size="10.5" letter-spacing="1.4" fill="#fff"><textPath href="#stc" startOffset="0">PAÑALERA RUTA 8 · MAYORISTA · </textPath></text></g><text x="60" y="73" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="38" fill="#f0c85a">8</text></svg></div>
+  <div class="hero-stamp2" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stc" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"/></defs><g class="stamp-rot"><circle cx="60" cy="60" r="58" fill="#0b2545" stroke="#cfe0f5" stroke-width="1.5"/><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/><text font-family="Bricolage Grotesque" font-weight="700" font-size="10.5" letter-spacing="1.4" fill="#fff"><textPath href="#stc" startOffset="0">PAÑALERA RUTA 8 · MAYORISTA · </textPath></text></g><text x="60" y="73" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="38" fill="#ffffff">8</text></svg></div>
   <div class="marquee" aria-hidden="true"><div class="marquee-track">
     <span>Precio de fábrica</span><i>●</i><span>Envío a domicilio</span><i>●</i><span>Adulto y bebé</span><i>●</i><span>San Martín · Zona Norte</span><i>●</i><span>Asesoría de talle</span><i>●</i>
     <span>Precio de fábrica</span><i>●</i><span>Envío a domicilio</span><i>●</i><span>Adulto y bebé</span><i>●</i><span>San Martín · Zona Norte</span><i>●</i><span>Asesoría de talle</span><i>●</i>
@@ -451,8 +451,6 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
 
 <!-- FABRICA -->
 <section id="fabrica" class="cinta">
-  <img class="cinta-bg rv rv-r" src="local-esquina.jpg" alt="Nuestro depósito en San Martín" loading="lazy">
-  <div class="cinta-ov"></div>
   <div class="wrap cinta-inner"><div class="cinta-copy rv rv-l">
     <span class="eyebrow" style="color:#bcd8f5">Por qué comprar acá</span>
     <h2 class="cinta-h2">Precio de fábrica,<br>sin pagar de más.</h2>
