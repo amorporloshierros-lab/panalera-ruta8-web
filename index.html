@@ -254,9 +254,9 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .fab-photo{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
   .fab-img{display:block;width:100%;height:auto}
   .fab-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 20px 16px;background:linear-gradient(rgba(10,30,55,0),rgba(10,30,55,.8));color:#fff;font-weight:700;font-size:1.05rem;text-shadow:0 2px 8px rgba(0,0,0,.5)}
-  .cinta{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(9,28,55,.98) 0%,rgba(9,28,55,.96) 42%,rgba(9,28,55,.48) 57%,rgba(9,28,55,.05) 72%),#0b2545 url('local-esquina.jpg') center right/cover}
-  .cinta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
-  .cinta-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.86) 40%,rgba(9,28,55,.55) 58%,rgba(9,28,55,.18) 82%)}
+  .cinta{position:relative;overflow:hidden;background:#0b2545}
+  .cinta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:0}
+  .cinta-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.88) 42%,rgba(9,28,55,.45) 60%,rgba(9,28,55,.08) 80%)}
   .cinta-inner{position:relative;z-index:2;min-height:560px;display:flex;align-items:center;padding:80px 0}
   .cinta-copy{max-width:47%}
   .cinta-h2{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(1.9rem,3.4vw,2.7rem);color:#fff;margin:12px 0 14px;line-height:1.05}
@@ -264,7 +264,7 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .cinta .stats .num{color:#fff}
   .cinta .stats .lab{color:#bcd0e6}
   .cinta-tag{margin-top:18px;font-weight:800;color:#9fc7f5;font-family:'Figtree'}
-  @media(max-width:760px){.cinta{background:linear-gradient(rgba(9,28,55,.72),rgba(9,28,55,.92)),#0b2545 url('local-esquina.jpg') center/cover}.cinta-copy{max-width:100%}.cinta-inner{padding:54px 0;min-height:0}}
+  @media(max-width:760px){.cinta-ov{background:linear-gradient(rgba(9,28,55,.66),rgba(9,28,55,.9))}.cinta-copy{max-width:100%}.cinta-inner{padding:54px 0;min-height:0}}
   .stats{display:flex;gap:26px;margin-top:24px;flex-wrap:wrap}
   .stat .num{font-family:'Bricolage Grotesque';font-weight:700;font-size:2.2rem;color:var(--azul)}
   .stat .lab{color:var(--mut);font-size:.86rem;font-weight:600}
@@ -455,6 +455,8 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
 
 <!-- FABRICA -->
 <section id="fabrica" class="cinta">
+  <img class="cinta-bg" src="local-esquina.jpg" alt="Nuestro deposito en San Martin - Panalera Ruta 8" loading="lazy" decoding="async">
+  <div class="cinta-ov"></div>
   <div class="wrap cinta-inner"><div class="cinta-copy rv rv-l">
     <span class="eyebrow" style="color:#bcd8f5">Por qué comprar acá</span>
     <h2 class="cinta-h2">Precio de fábrica,<br>sin pagar de más.</h2>
