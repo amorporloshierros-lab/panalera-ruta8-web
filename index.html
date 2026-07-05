@@ -108,7 +108,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   header.hero .hero-title .hl{color:#fff}
   header.hero .hero-title .hl::after{background:#fff;height:.08em;bottom:-.05em;left:0;right:0;border-radius:2px}
   header.hero .hero-sub{color:#eef3fa}
-  header.hero .hero-click{font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(1.05rem,2.1vw,1.55rem);line-height:1.15;color:#fff;margin:6px 0 0;opacity:.97}
+  header.hero .hero-click{font-family:'Figtree';font-style:italic;font-weight:500;font-size:clamp(1.4rem,3vw,2.15rem);line-height:1.18;letter-spacing:.005em;color:#fff;margin:12px 0 0;opacity:.98}
   header.hero .hero-click u{text-decoration:none;position:relative;white-space:nowrap}
   header.hero .hero-click u::after{content:'';position:absolute;left:0;right:0;bottom:-.05em;height:.07em;background:#fff;border-radius:2px}
   header.hero .hero-trust{color:#dbe6f2}
@@ -138,6 +138,14 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .hero-stamp{position:absolute;left:-30px;bottom:24px;width:118px;height:118px;color:var(--azul)}
   .hero-stamp svg{width:100%;height:100%;filter:drop-shadow(0 12px 22px rgba(10,30,55,.28))}
   .hero-stamp .stamp-rot{transform-origin:60px 60px;animation:spin 24s linear infinite}
+  .reveal-l,.reveal-r,.reveal{opacity:1}
+  .reveal.in{animation:revIn 1.15s cubic-bezier(.16,.68,.24,1) both}
+  .reveal-l.in{animation:revInL 1.5s cubic-bezier(.16,.68,.24,1) both}
+  .reveal-r.in{animation:revInR 1.5s cubic-bezier(.16,.68,.24,1) both}
+  @keyframes revIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  @keyframes revInL{from{opacity:0;transform:translateX(-58px)}to{opacity:1;transform:none}}
+  @keyframes revInR{from{opacity:0;transform:translateX(58px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.reveal,.reveal-l,.reveal-r{animation:none!important}}
   @keyframes kenburns{0%{transform:scale(1.02)}100%{transform:scale(1.1)}}
   @keyframes footzoom{0%{background-size:auto,auto 100%}100%{background-size:auto,auto 116%}}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -260,7 +268,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .fab-img{display:block;width:100%;height:auto}
   .fab-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 20px 16px;background:linear-gradient(rgba(10,30,55,0),rgba(10,30,55,.8));color:#fff;font-weight:700;font-size:1.05rem;text-shadow:0 2px 8px rgba(0,0,0,.5)}
   .cinta{position:relative;overflow:hidden;background:#0b2545}
-  .cinta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:0;will-change:transform;animation:kenburns 26s ease-in-out infinite alternate}
+  .cinta-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:0}
   .cinta-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.88) 42%,rgba(9,28,55,.45) 60%,rgba(9,28,55,.08) 80%)}
   .cinta-inner{position:relative;z-index:2;min-height:560px;display:flex;align-items:center;padding:80px 0}
   .cinta-copy{max-width:47%}
@@ -279,14 +287,18 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .rev{border:1px dashed var(--line);border-radius:var(--r-lg);padding:26px;background:var(--soft);color:var(--mut);text-align:center}
   .rev .stars{color:var(--ambar);font-size:1.1rem;letter-spacing:2px;margin-bottom:8px}
   /* FOOTER */
-  footer{position:relative;overflow:hidden;color:#eef3fa;padding:56px 0 30px;margin-top:0;background:linear-gradient(90deg,rgba(9,26,50,.99) 0%,rgba(9,26,50,.97) 40%,rgba(9,26,50,.5) 61%,rgba(9,26,50,.04) 78%),url('footer-bg.jpg') right center,#0b2545;background-repeat:no-repeat;background-size:auto,auto 100%}
+  footer{position:relative;overflow:hidden;color:#eef3fa;background:#0b1a32}
+  .foot-bg{position:relative;display:block;width:100%;height:auto;z-index:0}
+  .foot-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,26,50,.97) 0%,rgba(9,26,50,.9) 38%,rgba(9,26,50,.5) 58%,rgba(9,26,50,.08) 80%)}
+  .foot-wrap{position:absolute;inset:0;z-index:2;display:flex;align-items:center}
+  .foot-wrap>.wrap{width:100%}
   footer .wrap{position:relative;z-index:2}
   .foot-grid{max-width:460px}
   .foot-bottom{max-width:460px}
   @media(max-width:760px){footer{background:linear-gradient(rgba(9,26,50,.85),rgba(9,26,50,.95)),#0b2545 url('footer-bg.jpg') center/cover}}
   .foot-img{display:block;width:calc(100% - 40px);max-width:440px;height:auto;margin:0 auto 40px;border-radius:0 0 var(--r-lg) var(--r-lg)}
-  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:40px}
-  @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:26px}footer{background:linear-gradient(rgba(9,26,50,.9),rgba(9,26,50,.97)),url('footer-bg.jpg') center bottom/cover,#0b2545}}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px;margin-bottom:16px}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:26px}.foot-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.22}.foot-ov{background:linear-gradient(rgba(9,26,50,.82),rgba(9,26,50,.95))}.foot-wrap{position:static;display:block;padding:44px 0 26px}}
   footer h4{color:#fff;font-family:'Figtree';font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
   footer a{color:#c3d3e3;display:block;padding:5px 0;transition:color .15s}footer a:hover{color:#fff}
   .foot-brand .mark{width:44px;height:44px}
@@ -294,7 +306,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .socials{display:flex;gap:10px;margin-top:16px}
   .socials a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff;padding:0}
   .socials a:hover{background:var(--azul)}
-  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.85rem;color:#8ba3bd;align-items:center}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.85rem;color:#8ba3bd;align-items:center}
   .status{display:inline-flex;align-items:center;gap:8px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 0 rgba(31,158,115,.6);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,158,115,.5)}70%{box-shadow:0 0 0 9px rgba(31,158,115,0)}100%{box-shadow:0 0 0 0 rgba(31,158,115,0)}}
@@ -380,7 +392,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   <div class="hero-copy-wrap"><div class="wrap"><div class="hero-copy rv rv-l">
     <span class="eyebrow-hero">Mayorista · San Martín · Zona Norte</span>
     <h1 class="hero-title">Pañales <span class="hl">del depósito</span> a la puerta de tu casa.</h1>
-    <p class="hero-click">O donde estés, <u>con un solo click.</u></p>
+    <p class="hero-click">O donde estés, con un solo click.</p>
   </div></div></div>
   <div class="hero-stamp2" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stc" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"/></defs><g class="stamp-rot"><circle cx="60" cy="60" r="58" fill="#0b2545" stroke="#cfe0f5" stroke-width="1.5"/><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/><text font-family="Bricolage Grotesque" font-weight="700" font-size="10.5" letter-spacing="1.4" fill="#fff"><textPath href="#stc" startOffset="0">PAÑALERA RUTA 8 · MAYORISTA · </textPath></text></g><text x="60" y="73" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="38" fill="#ffffff">8</text></svg></div>
   <div class="marquee" aria-hidden="true"><div class="marquee-track">
@@ -460,7 +472,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 
 <!-- FABRICA -->
 <section id="fabrica" class="cinta">
-  <img class="cinta-bg" src="local-esquina.jpg" alt="Nuestro deposito en San Martin - Panalera Ruta 8" loading="lazy" decoding="async">
+  <img class="cinta-bg reveal-r" src="local-esquina.jpg" alt="Nuestro deposito en San Martin - Panalera Ruta 8" loading="lazy" decoding="async">
   <div class="cinta-ov"></div>
   <div class="wrap cinta-inner"><div class="cinta-copy rv rv-l">
     <span class="eyebrow" style="color:#bcd8f5">Por qué comprar acá</span>
@@ -489,7 +501,9 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 
 <!-- FOOTER -->
 <footer>
-  <div class="wrap">
+  <img class="foot-bg reveal-r" src="footer-bg.jpg" alt="Clientes de Panalera Ruta 8" decoding="async">
+  <div class="foot-ov"></div>
+  <div class="foot-wrap"><div class="wrap">
     <div class="foot-grid rv rv-l">
       <div class="foot-brand">
         <div class="brand" style="color:#fff"><img class="mark-logo" src="logo-emblema.png" alt="Logo Pañalera Ruta 8" width="56" height="56"><span><b style="color:#fff">Pañalera Ruta 8</b><small style="color:#8ba3bd">Mayorista · precio de fábrica</small></span></div>
@@ -519,7 +533,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
       <span class="status"><span class="dot"></span> Atendiendo online · panaleraruta8.com.ar</span>
       <span>© 2026 Pañalera Ruta 8 · Pañales al precio de fábrica</span>
     </div>
-  </div>
+  </div></div>
 </footer>
 
 <!-- CART DRAWER -->
@@ -772,7 +786,7 @@ function setFs(lv,btn){window.__fs=lv;const map={1:1,2:1.12,3:1.26,4:1.42};docum
 let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);}
 // ---------- reveals (nativo, sutil, reduce-motion friendly) ----------
 const io=('IntersectionObserver' in window)?new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.14}):null;
-function revScan(){try{if(!io){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));return;}document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el));}catch(e){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));}}
+function revScan(){try{if(!io){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));return;}document.querySelectorAll('.rv:not(.in),.reveal:not(.in),.reveal-l:not(.in),.reveal-r:not(.in)').forEach(el=>io.observe(el));}catch(e){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));}}
 // ---------- nav scroll ----------
 addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>20);});
 // ---------- RITA (asistente honesta; motor IA se conecta por Edge Function en la versión final) ----------
@@ -837,7 +851,7 @@ renderProds();cargarCatalogo();updateCart();revScan();window.__appOK=true;docume
   function fitHero(){
     var n=document.querySelector('nav.top'), hd=document.querySelector('header.hero');
     if(!n||!hd) return;
-    var pt=Math.round(n.getBoundingClientRect().bottom)+8;
+    var pt=Math.round(n.getBoundingClientRect().bottom);
     hd.style.paddingTop=pt+'px';
     var cw=document.querySelector('.hero-copy-wrap');
     if(cw && getComputedStyle(cw).position==='absolute') cw.style.top=pt+'px';
