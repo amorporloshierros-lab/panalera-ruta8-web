@@ -277,7 +277,7 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .rev{border:1px dashed var(--line);border-radius:var(--r-lg);padding:26px;background:var(--soft);color:var(--mut);text-align:center}
   .rev .stars{color:var(--ambar);font-size:1.1rem;letter-spacing:2px;margin-bottom:8px}
   /* FOOTER */
-  footer{position:relative;overflow:hidden;color:#eef3fa;padding:56px 0 30px;margin-top:0;background:linear-gradient(90deg,rgba(9,26,50,.99) 0%,rgba(9,26,50,.97) 40%,rgba(9,26,50,.5) 61%,rgba(9,26,50,.04) 78%),url('footer-bg.jpg') right center,#0b2545;background-repeat:no-repeat;background-size:auto,auto 100%;animation:footzoom 30s ease-in-out infinite alternate}
+  footer{position:relative;overflow:hidden;color:#eef3fa;padding:56px 0 30px;margin-top:0;background:linear-gradient(90deg,rgba(9,26,50,.99) 0%,rgba(9,26,50,.97) 40%,rgba(9,26,50,.5) 61%,rgba(9,26,50,.04) 78%),url('footer-bg.jpg') right center,#0b2545;background-repeat:no-repeat;background-size:auto,auto 100%}
   footer .wrap{position:relative;z-index:2}
   .foot-grid{max-width:460px}
   .foot-bottom{max-width:460px}
@@ -829,6 +829,21 @@ function ritaReplyFallback(t){
 
 // init
 renderProds();cargarCatalogo();updateCart();revScan();window.__appOK=true;document.getElementById('heroPill')&&document.getElementById('heroPill').classList.add('in');
+</script>
+<script>
+(function(){
+  function fitHero(){
+    var n=document.querySelector('nav.top'), hd=document.querySelector('header.hero');
+    if(!n||!hd) return;
+    var pt=Math.round(n.getBoundingClientRect().bottom)+8;
+    hd.style.paddingTop=pt+'px';
+    var cw=document.querySelector('.hero-copy-wrap');
+    if(cw && getComputedStyle(cw).position==='absolute') cw.style.top=pt+'px';
+  }
+  window.addEventListener('load',function(){fitHero();setTimeout(fitHero,300);});
+  window.addEventListener('resize',fitHero);
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fitHero);}
+})();
 </script>
 </body>
 </html>
