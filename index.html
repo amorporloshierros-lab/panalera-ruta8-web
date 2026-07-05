@@ -8,7 +8,9 @@
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <script>/* Failsafe: si el JS principal falla (navegador viejo del cel), muestra TODO igual */
 window.addEventListener('load',function(){setTimeout(function(){if(!window.__appOK){var e=document.querySelectorAll('.rv,.revsec,.reveal,.reveal-l,.reveal-r');for(var i=0;i<e.length;i++){e[i].className+=' in';}}},700);});</script>
-<script>/* Al recargar, volver siempre arriba (al hero) */
+<script>/* Recuperacion de clave: si el mail de reset cae aca, reenviar al panel con el token */
+if(location.hash.indexOf('type=recovery')>=0 && location.pathname.indexOf('panel')<0){location.replace('panel.html'+location.hash);}
+/* Al recargar, volver siempre arriba (al hero) */
 if('scrollRestoration' in history){history.scrollRestoration='manual';}
 try{if(location.hash){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}
 window.scrollTo(0,0);
