@@ -416,8 +416,8 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 </header>
 <section id="intro">
   <div class="wrap intro-wrap">
-    <p class="intro-lead rv">Somos mayoristas de pañales de adulto y bebé. Te asesoramos con el talle justo y te lo llevamos a domicilio.</p>
-    <div class="intro-cta rv d1"><a href="#catalogo" class="btn primary lg">Ver productos</a><button class="btn ghost lg" onclick="openRita()">Necesito ayuda para elegir</button></div>
+    <p class="intro-lead rv">Somos mayoristas de pañales de adulto y bebé. Te asesoramos con el talle justo y te lo llevamos a domicilio. <b>¿Sos mayorista, geriátrico, hospital o comprás por cantidad?</b> Llená el breve formulario y accedé a <b>precios exclusivos para vos.</b></p>
+    <div class="intro-cta rv d1"><a href="#catalogo" class="btn primary lg">Ver productos</a><button class="btn ghost lg" onclick="openRita()">Necesito ayuda para elegir</button><button class="btn ghost lg" onclick="ctaMayorista()" style="border:2px solid var(--azul);color:var(--azul);font-weight:800">🏷️ Soy mayorista</button></div>
     <div class="intro-trust rv d2"><span>✓ Envío gratis desde $30.000</span><span>✓ Retiro gratis en el local</span><span>✓ Adulto y bebé</span></div>
   </div>
 </section>
@@ -808,6 +808,7 @@ const ritaMsgs=document.getElementById('ritaMsgs');
 function ritaPush(t,who){const d=document.createElement('div');d.className='rm '+who;d.textContent=t;ritaMsgs.appendChild(d);ritaMsgs.scrollTop=ritaMsgs.scrollHeight;}
 function ritaQuick(opts){const q=document.getElementById('ritaQuick');q.innerHTML=opts.map(o=>`<button onclick="ritaPick('${o.replace(/'/g,"")}')">${o}</button>`).join('');}
 let ritaStarted=false;
+function ctaMayorista(){openRita();setTimeout(function(){try{ritaPush('¡Genial! Para precios de mayorista o institución (geriátrico, hospital, residencia, almacén) te hago unas preguntas rápidas y te contacta una persona del equipo. Para empezar: ¿tu nombre y qué rubro tenés?','bot');}catch(e){}},450);}
 function openRita(){document.getElementById('ritaPanel').classList.add('on');document.getElementById('ritaLabel').classList.remove('show');
   if(!ritaStarted){ritaStarted=true;ritaPush('Hola, soy Rita, de la parte de ventas de Pañalera Ruta 8. Te ayudo a elegir el pañal justo y armamos tu pedido, sin vueltas. ¿Para quién buscás?','bot');ritaQuick(['Para un adulto','Para un bebé','Ver precios']);}
 }
