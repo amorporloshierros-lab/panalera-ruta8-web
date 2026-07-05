@@ -8,6 +8,9 @@
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <script>/* Failsafe: si el JS principal falla (navegador viejo del cel), muestra TODO igual */
 window.addEventListener('load',function(){setTimeout(function(){if(!window.__appOK){var e=document.querySelectorAll('.rv');for(var i=0;i<e.length;i++){e[i].className+=' in';}}},700);});</script>
+<script>/* Al recargar, volver siempre arriba (al hero) */
+if('scrollRestoration' in history){history.scrollRestoration='manual';}
+window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0);}});</script>
 <meta name="keywords" content="pañales de adulto San Martín, pañales precio de fábrica, pañales mayorista, pañales a domicilio, pañales de bebé zona norte, comprar pañales online">
 <meta property="og:title" content="Pañalera Ruta 8 — Pañales al precio de fábrica, a tu casa">
 <meta property="og:description" content="Mayorista de pañales al precio de fábrica. Envío a domicilio en zona norte. Te asesoramos.">
