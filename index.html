@@ -91,8 +91,29 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .afs-btns button:hover{background:var(--azul-soft);color:var(--azul)}.afs-btns button.on:hover{background:var(--azul);color:#fff}
   @media(max-width:640px){.afs-lab{display:none}.brand small{display:none}}
   /* HERO */
-  header.hero{position:relative;padding:132px 0 0;background:var(--cream);overflow:hidden}
-  .hero-wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;padding-bottom:60px}
+  header.hero{position:relative;min-height:62vh;display:flex;align-items:center;background:#0b2545;overflow:hidden;padding:130px 0 0}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;z-index:0}
+  .hero-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.93) 0%,rgba(9,28,55,.78) 34%,rgba(9,28,55,.3) 60%,transparent 80%)}
+  header.hero .wrap{position:relative;z-index:2}
+  header.hero .marquee{position:absolute;left:0;bottom:0;width:100%;z-index:3}
+  header.hero .eyebrow-hero{color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
+  header.hero .hero-title{color:#fff}
+  header.hero .hero-title .hl{color:var(--gold)}
+  header.hero .hero-title .hl::after{background:rgba(240,200,90,.28)}
+  header.hero .hero-sub{color:#eef3fa}
+  header.hero .hero-trust{color:#dbe6f2}
+  .rv-l{opacity:0;transform:translateX(-60px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+  .rv-r{opacity:0;transform:translateX(70px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+  .rv-l.in,.rv-r.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv-l,.rv-r{transition:none;opacity:1;transform:none}}
+  @media(max-width:760px){.hero-ov{background:linear-gradient(rgba(9,28,55,.5),rgba(9,28,55,.86))}header.hero{min-height:60vh}}
+  .hero-copy{position:relative;max-width:640px}
+  #intro{padding:54px 0 6px;text-align:center;background:var(--white)}
+  .intro-wrap{max-width:780px;margin:0 auto}
+  .intro-lead{font-family:'Figtree';font-size:1.35rem;line-height:1.5;color:var(--ink);font-weight:500}
+  .intro-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:24px 0 16px}
+  .intro-trust{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-family:'Figtree';font-weight:600;color:var(--ink2);font-size:.95rem}
+  .intro-trust span{white-space:nowrap}
   .eyebrow-hero{display:inline-block;font-family:'Figtree';font-weight:700;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--violeta);background:#fff;border:1px solid var(--line);padding:8px 15px;border-radius:100px;box-shadow:var(--sh-s)}
   .hero-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(2.6rem,6vw,4.7rem);line-height:1.0;letter-spacing:-.028em;margin:20px 0;color:var(--ink)}
   .hero-title .hl{color:var(--violeta);position:relative;white-space:nowrap}
@@ -230,7 +251,12 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
   .rev{border:1px dashed var(--line);border-radius:var(--r-lg);padding:26px;background:var(--soft);color:var(--mut);text-align:center}
   .rev .stars{color:var(--ambar);font-size:1.1rem;letter-spacing:2px;margin-bottom:8px}
   /* FOOTER */
-  footer{background:#0c1c2e;color:#c3d3e3;padding:0 0 30px;margin-top:0}
+  footer{position:relative;overflow:hidden;background:#0b2545;color:#eef3fa;padding:64px 0 30px;margin-top:0}
+  .foot-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;z-index:0}
+  .foot-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,26,50,.95) 0%,rgba(9,26,50,.85) 42%,rgba(9,26,50,.45) 70%,rgba(9,26,50,.12) 100%)}
+  footer .wrap{position:relative;z-index:2}
+  .foot-grid{max-width:640px}
+  @media(max-width:760px){.foot-ov{background:linear-gradient(rgba(9,26,50,.72),rgba(9,26,50,.92))}}
   .foot-img{display:block;width:calc(100% - 40px);max-width:440px;height:auto;margin:0 auto 40px;border-radius:0 0 var(--r-lg) var(--r-lg)}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-bottom:40px}
   @media(max-width:760px){.foot-grid{grid-template-columns:1fr;gap:26px}}
@@ -322,18 +348,14 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
 <span id="top"></span>
 <!-- HERO -->
 <header class="hero">
-  <div class="wrap hero-wrap">
-    <div class="hero-copy">
-      <span class="eyebrow-hero rv">Mayorista · San Martín · Zona Norte</span>
-      <h1 class="hero-title rv d1">Pañales al <span class="hl">precio de fábrica</span>, a la puerta de tu casa.</h1>
-      <p class="hero-sub rv d2">Somos mayoristas de pañales de adulto y bebé. Te asesoramos con el talle justo y te lo llevamos a domicilio.</p>
-      <div class="hero-cta rv d3">
-        <a href="#catalogo" class="btn primary lg">Ver productos</a>
-        <button class="btn ghost lg" onclick="openRita()">Necesito ayuda para elegir</button>
-      </div>
-      <div class="hero-trust rv d4"><span>✓ Envío gratis desde $30.000</span><span>✓ Retiro gratis en el local</span><span>✓ Adulto y bebé</span></div>
+  <img class="hero-bg rv rv-r" src="local-hero.jpg" alt="Familia en su casa - Pañalera Ruta 8" decoding="async">
+  <div class="hero-ov"></div>
+  <div class="wrap">
+    <div class="hero-copy rv rv-l">
+      <span class="eyebrow-hero">Mayorista · San Martín · Zona Norte</span>
+      <h1 class="hero-title">Pañales al <span class="hl">precio de fábrica</span>, a la puerta de tu casa.</h1>
     </div>
-    <div class="hero-media rv d2">
+    <div class="hero-media-x" style="display:none">
       <div class="hero-frame"><img class="hero-img" src="local-hero.jpg" alt="Frente de Pañalera Ruta 8 en San Martín" loading="eager" decoding="async"></div>
       <div class="hero-stamp" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stampcirc" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><g class="stamp-rot"><circle cx="60" cy="60" r="58" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/><text font-family="Bricolage Grotesque" font-weight="700" font-size="10.5" letter-spacing="1.5" fill="currentColor"><textPath href="#stampcirc" startOffset="0">PRECIO DE FÁBRICA · MAYORISTA · </textPath></text></g><text x="60" y="72" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="36" fill="currentColor">8</text></svg></div>
     </div>
@@ -343,6 +365,13 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
     <span>Precio de fábrica</span><i>●</i><span>Envío a domicilio</span><i>●</i><span>Adulto y bebé</span><i>●</i><span>San Martín · Zona Norte</span><i>●</i><span>Asesoría de talle</span><i>●</i>
   </div></div>
 </header>
+<section id="intro">
+  <div class="wrap intro-wrap">
+    <p class="intro-lead rv">Somos mayoristas de pañales de adulto y bebé. Te asesoramos con el talle justo y te lo llevamos a domicilio.</p>
+    <div class="intro-cta rv d1"><a href="#catalogo" class="btn primary lg">Ver productos</a><button class="btn ghost lg" onclick="openRita()">Necesito ayuda para elegir</button></div>
+    <div class="intro-trust rv d2"><span>✓ Envío gratis desde $30.000</span><span>✓ Retiro gratis en el local</span><span>✓ Adulto y bebé</span></div>
+  </div>
+</section>
 <div class="route"></div>
 
 <!-- BENEFICIOS -->
@@ -437,9 +466,10 @@ window.addEventListener('load',function(){if(!location.hash){window.scrollTo(0,0
 
 <!-- FOOTER -->
 <footer>
-  <img class="foot-img" src="local-esquina.jpg" alt="Frente de Pañalera Ruta 8 en San Martín" loading="lazy">
+  <img class="foot-bg rv rv-r" src="footer-bg.jpg" alt="Clientes de Pañalera Ruta 8" loading="lazy">
+  <div class="foot-ov"></div>
   <div class="wrap">
-    <div class="foot-grid">
+    <div class="foot-grid rv rv-l">
       <div class="foot-brand">
         <div class="brand" style="color:#fff"><img class="mark-logo" src="logo-emblema.png" alt="Logo Pañalera Ruta 8" width="56" height="56"><span><b style="color:#fff">Pañalera Ruta 8</b><small style="color:#8ba3bd">Mayorista · precio de fábrica</small></span></div>
         <p style="margin-top:14px;max-width:36ch;color:#8ba3bd">Pañales de adulto y bebé al precio de fábrica, a la puerta de tu casa. San Martín, zona norte GBA.</p>
