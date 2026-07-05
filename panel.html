@@ -233,18 +233,7 @@
     </section>
 
     <section class="view" id="sec-chatbot">
-      <h2 class="title">💬 Chatbot Web (Rita)</h2><p class="lead">El cerebro de Rita se edita acá y responde con IA usando el catálogo real. Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
-      <div class="panel">
-        <div class="h">🤖 Cerebro de Rita (editable)</div>
-        <div class="b">
-          <div class="field"><label>Nombre del asistente</label><input id="ri_nombre" placeholder="Rita"></div>
-          <div class="field"><label>Saludo inicial (lo primero que dice en la web)</label><textarea id="ri_saludo" rows="2"></textarea></div>
-          <div class="field"><label>Instrucciones / personalidad (system prompt)</label><textarea id="ri_prompt" rows="12" style="width:100%;font-family:monospace;font-size:.82rem"></textarea></div>
-          <div class="field"><label><input type="checkbox" id="ri_activo" style="width:auto;margin-right:8px">Rita activa (si la apagás, el chat de la web queda en pausa)</label></div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn lg" id="btnRitaSave" onclick="guardarRita()">💾 Guardar cambios de Rita</button><span id="ri_msg" class="hint"></span></div>
-          <div class="hint" style="margin-top:8px">Rita responde con IA usando estas instrucciones + el catálogo real. Para activar la IA hay que cargar la clave <b>ANTHROPIC_API_KEY</b> en Supabase → Edge Functions → Secrets. Sin la clave, da una respuesta de respaldo (la web igual funciona).</div>
-        </div>
-      </div>
+      <h2 class="title">💬 Chatbot Web — tablero</h2><p class="lead">El chat de la página web (módulo pendiente de construir). Las conversaciones de WhatsApp están en “🤖 Bot WhatsApp”.</p>
       <div class="kpis" id="kpisChat"></div>
       <div class="panel"><div class="h">🙋 Necesitan que atiendas vos</div><div class="b tablewrap" id="tChatHumano"></div></div>
       <div class="panel"><div class="h">💬 Últimas conversaciones</div><div class="b tablewrap" id="tChatUlt"></div></div>
@@ -494,7 +483,7 @@
   <div style="display:flex;gap:8px;margin-top:10px"><button class="btn gris sm" id="btnChatHumano">Atiendo yo</button><button class="btn gris sm" id="btnChatCerrar">Cerrar chat</button><button class="btn gris sm" style="margin-left:auto" onclick="cerrar('ovChat')">Volver</button></div>
 </div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script>
@@ -514,9 +503,9 @@ async function showApp(s){$('login').style.display='none';$('app').style.display
   try{const{data:rol}=await sb.rpc('app_rol');if(!['programador','dueño'].includes(rol)){const a=document.querySelector('#nav a[data-v="usuarios"]');if(a)a.style.display='none';}}catch(_){}
   await cargarMargenes();await cargarFuentes();suscribirRealtime();go('inicio');}
 $('btnLogin').onclick=async()=>{$('loginErr').textContent='';const{data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('pass').value});if(error){$('loginErr').textContent='No pudimos entrar: '+error.message;return;}showApp(data.session);};
-$('btnForgot').onclick=async(e)=>{e.preventDefault();const email=$('email').value.trim();const m=$('forgotMsg');if(!email){m.style.color='#c00';m.textContent='Primero escribí tu email arriba y volvé a tocar el link.';return;}m.style.color='#555';m.textContent='Enviando...';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error){m.style.color='#c00';m.textContent='No se pudo: '+error.message;}else{m.style.color='var(--verde)';m.textContent='✅ Te mandamos un mail a '+email+'. Abrí el link (revisá spam) y te trae de vuelta acá para poner la clave nueva.';}};
+$('btnForgot').onclick=async(e)=>{e.preventDefault();const email=$('email').value.trim();const m=$('forgotMsg');if(!email){m.style.color='#c00';m.textContent='Primero escribí tu email arriba y volvé a tocar el link.';return;}m.style.color='#555';m.textContent='Enviando...';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error){m.style.color='#c00';m.textContent='No se pudo: '+error.message;}else{m.style.color='var(--verde)';m.textContent='\u2705 Te mandamos un mail a '+email+'. Abrí el link (revisá spam) y te trae de vuelta acá para poner la clave nueva.';}};
 sb.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){showLogin();$('reset').style.display='block';$('forgotMsg').textContent='';$('newpass').focus();}});
-$('btnSetPass').onclick=async()=>{$('resetErr').textContent='';const np=$('newpass').value;if(!np||np.length<8){$('resetErr').textContent='Mínimo 8 caracteres.';return;}const{error}=await sb.auth.updateUser({password:np});if(error){$('resetErr').textContent='No se pudo: '+error.message;return;}$('reset').style.display='none';$('pass').value=np;const fm=$('forgotMsg');fm.style.color='var(--verde)';fm.textContent='✅ ¡Clave cambiada! Ya podés entrar.';try{if(history.replaceState)history.replaceState(null,'',location.pathname);}catch(_){}};
+$('btnSetPass').onclick=async()=>{$('resetErr').textContent='';const np=$('newpass').value;if(!np||np.length<8){$('resetErr').textContent='Mínimo 8 caracteres.';return;}const{error}=await sb.auth.updateUser({password:np});if(error){$('resetErr').textContent='No se pudo: '+error.message;return;}$('reset').style.display='none';$('pass').value=np;const fm=$('forgotMsg');fm.style.color='var(--verde)';fm.textContent='\u2705 ¡Clave cambiada! Ya podés entrar.';try{if(history.replaceState)history.replaceState(null,'',location.pathname);}catch(_){}};
 $('pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnLogin').click();});
 $('btnLogout').onclick=async()=>{await sb.auth.signOut();showLogin();};
 
@@ -789,23 +778,14 @@ $('btnChatCerrar').onclick=async()=>{if(!CHAT)return;await sb.from('bot_outbox')
 $('btnReconectar').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'reconectar',payload:{}});alert('Pedido de reconexión enviado al bot.');};
 
 // CHATBOT (tablero real: usa conversaciones + mensajes)
-async function guardarRita(){
-  const msg=$('ri_msg'); msg.textContent='Guardando…';
-  const {error}=await sb.from('web_config').update({nombre:($('ri_nombre').value.trim()||'Rita'),saludo:$('ri_saludo').value.trim(),system_prompt:$('ri_prompt').value,activo:$('ri_activo').checked,actualizado_en:new Date().toISOString()}).eq('id',1);
-  msg.textContent=error?('⚠️ Error: '+error.message):'✅ Guardado. Rita ya usa el nuevo cerebro.';
-  setTimeout(()=>{msg.textContent='';},5000);
-}
 async function loadChatbot(){
-  // Cargar el cerebro editable de Rita (web_config)
-  const{data:wc}=await sb.from('web_config').select('*').eq('id',1).maybeSingle();
-  if(wc){ $('ri_nombre').value=wc.nombre||''; $('ri_saludo').value=wc.saludo||''; $('ri_prompt').value=wc.system_prompt||''; $('ri_activo').checked=wc.activo!==false; }
   // SOLO conversaciones del canal WEB (las de WhatsApp viven en "Bot WhatsApp")
   const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','web').order('ultima_actividad',{ascending:false}).limit(100);
   const convs=cv||[];
   if(!convs.length){
     $('kpisChat').innerHTML=kpi(0,'Conversaciones','az')+kpi(0,'Atendidas por el bot','gr')+kpi(0,'Esperan persona','amb')+kpi(0,'Cerradas');
-    $('tChatHumano').innerHTML=empty('Todavía no hay charlas del chat web. Cuando alguien escriba con Rita en la página, aparecen acá.');
-    $('tChatUlt').innerHTML=empty('Sin charlas del chat web todavía. (Las de WhatsApp están en “🤖 Bot WhatsApp”.)');
+    $('tChatHumano').innerHTML=empty('El Chatbot Web todavía no está construido (módulo pendiente). Cuando exista el chat de la página, sus conversaciones aparecen acá.');
+    $('tChatUlt').innerHTML=empty('Las conversaciones de WhatsApp NO van acá: están en “🤖 Bot WhatsApp”.');
     return;
   }
   const ids=convs.map(c=>c.id);
@@ -959,4 +939,29 @@ async function loadSistema(){
   $('sistServicios').innerHTML=tbl('<tr><th>Servicio</th><th>Estado</th><th>Detalle</th></tr>'+svc.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td><span class="badge ${s[2]}">${esc(s[1])}</span></td><td>${esc(s[3])}</td></tr>`).join(''));
   $('sistLogs').innerHTML=L.length?tbl('<tr><th>Cuándo</th><th>Origen</th><th>Nivel</th><th>Mensaje</th></tr>'+L.map(x=>`<tr><td>${esc((x.creado_en||'').slice(0,19).replace('T',' '))}</td><td>${esc(x.origen)}</td><td><span class="badge ${x.nivel==='error'?'amb':'gr'}">${esc(x.nivel)}</span></td><td>${esc(x.mensaje)}</td></tr>`).join('')):empty('Sin errores registrados. 👍');
 }
-async function logPanel(mensaje,detalle){try{const{data:{session}}=await sb.auth.getSession();await sb.from('eventos_log').insert({origen:'panel',nivel:'error',mensaje:String(mensaje).slice(0,400),detalle:detalle||null,usuario_id:(session&&session.user&&sessi
+async function logPanel(mensaje,detalle){try{const{data:{session}}=await sb.auth.getSession();await sb.from('eventos_log').insert({origen:'panel',nivel:'error',mensaje:String(mensaje).slice(0,400),detalle:detalle||null,usuario_id:(session&&session.user&&session.user.id)||null});}catch(_){}}
+window.addEventListener('error',ev=>{logPanel(ev.message,{src:ev.filename,line:ev.lineno});});
+window.addEventListener('unhandledrejection',ev=>{logPanel('Promesa sin manejar: '+((ev.reason&&ev.reason.message)||ev.reason),null);});
+let _rtSuscrito=false;
+function suscribirRealtime(){ if(_rtSuscrito)return; _rtSuscrito=true;
+  sb.channel('sistema')
+    .on('postgres_changes',{event:'*',schema:'public',table:'bot_estado'},()=>{if(vistaActual==='sistema')loadSistema();if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'eventos_log'},()=>{if(vistaActual==='sistema')loadSistema();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'conversaciones'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'mensajes'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .subscribe();
+}
+function abrir(id){$(id).style.display='flex';}function cerrar(id){$(id).style.display='none';}
+// Saca los emojis del principio de títulos y encabezados (look profesional, sin default)
+(function(){try{
+  function strip(s){var i=0;while(i<s.length){var c=s.charCodeAt(i);if(c===32||c===9||c===0x200D||(c>=0x2190&&c<=0x3300)||(c>=0xFE00&&c<=0xFE0F)||(c>=0xD800&&c<=0xDFFF))i++;else break;}return s.slice(i);}
+  document.querySelectorAll('h2.title, .panel .h').forEach(function(el){var n=el.firstChild;if(n&&n.nodeType===3)n.textContent=strip(n.textContent);});
+}catch(_){}})();
+// Tema claro/oscuro
+function _temaLabel(){const d=document.documentElement.getAttribute('data-theme')==='dark';const t=$('temaTxt');if(t)t.textContent=d?'Tema claro':'Tema oscuro';}
+_temaLabel();
+$('btnTema').onclick=()=>{const nuevo=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nuevo);try{localStorage.setItem('panalera-theme',nuevo);}catch(_){}_temaLabel();};
+init();
+</script>
+</body>
+</html>
