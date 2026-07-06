@@ -100,7 +100,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   header.hero{position:relative;overflow:hidden;background:#0b2545;padding-top:74px}
   .hero-bgs{position:relative;display:block;width:100%;z-index:0;opacity:0;transform:translateY(-112%);transition:opacity 1.1s ease,transform 1.6s cubic-bezier(.16,.68,.24,1);will-change:transform}
   header.hero.in .hero-bgs{opacity:1;transform:none}
-  .hero-bg{display:block;width:100%;height:auto}
+  .hero-pic{display:block;width:100%}.hero-pic2{position:absolute;inset:0}.hero-bg{display:block;width:100%;height:auto}
   .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
   header.hero.show2 .hero-bg2{opacity:1}
   .hero-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(9,28,55,.96) 0%,rgba(9,28,55,.86) 38%,rgba(9,28,55,.5) 55%,transparent 72%)}
@@ -123,7 +123,8 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .rv-r{opacity:0;transform:translateX(64px);transition:opacity 1.3s ease,transform 1.5s cubic-bezier(.16,.68,.24,1)}
   .rv-l.in,.rv-r.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.rv-l,.rv-r{transition:none;opacity:1;transform:none}}
-  @media(max-width:760px){.hero-bg,.hero-bg2{height:44vh;min-height:330px;max-height:420px;object-fit:cover;object-position:78% 32%}.hero-ov{display:block;background:linear-gradient(180deg,rgba(9,28,55,.18) 0%,rgba(9,28,55,.32) 40%,rgba(9,28,55,.85) 80%,rgba(9,28,55,.97) 100%)}.hero-copy-wrap{bottom:0;align-items:flex-end}.hero-copy{max-width:100%;padding:0 0 16px}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-title,header.hero .hero-click{font-size:clamp(1.6rem,7vw,2.35rem);line-height:1.12;color:#fff}header.hero .hero-title .hl,header.hero .hero-click u{white-space:normal}.acc{font-size:1.2em}.eyebrow-hero{font-size:.62rem;padding:6px 13px;letter-spacing:.04em}}
+  @media(max-width:760px){.hero-bgs{position:relative}.hero-pic{display:block;width:100%}.hero-pic2{position:absolute;inset:0}header.hero .hero-bg{width:100%;height:auto;max-height:none;min-height:0;object-fit:fill}header.hero .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.hero-ov{display:block;background:linear-gradient(90deg,rgba(11,37,74,.95) 0%,rgba(11,37,74,.9) 38%,rgba(11,37,74,.5) 52%,rgba(11,37,74,.1) 64%,rgba(11,37,74,0) 74%)}.hero-copy-wrap{top:50px;bottom:6px;align-items:stretch}.hero-copy-wrap>.wrap{padding-left:14px;padding-right:0;width:100%}.hero-copy{max-width:45%;padding:0;display:flex;flex-direction:column;justify-content:space-between;height:100%}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-click{display:block;font-size:clamp(.8rem,3.8vw,1.08rem);line-height:1.04;letter-spacing:-.015em;font-weight:900;color:#fff;margin:0;text-shadow:0 1px 6px rgba(9,28,55,.85)}header.hero .eyebrow-hero{display:inline-block;font-size:.5rem;padding:4px 9px;letter-spacing:.03em;margin:0 0 2px;align-self:flex-start}header.hero .hero-title{font-size:clamp(.95rem,4.5vw,1.36rem);line-height:1.04;letter-spacing:-.015em;font-weight:900;color:#fff;text-align:left;margin:0;text-shadow:0 1px 6px rgba(9,28,55,.85)}header.hero .hero-title .hl{white-space:normal}.acc{font-size:1.12em}header.hero .hp-pre{display:none}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}
+  .hp-cap{display:none}
   .hero-copy{max-width:54%;padding-top:7px}
   #intro{padding:54px 0 6px;text-align:center;background:var(--white)}
   .intro-wrap{max-width:780px;margin:0 auto}
@@ -401,13 +402,13 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 <!-- HERO -->
 <header class="hero revsec">
   <div class="hero-bgs">
-    <img class="hero-bg" src="local-hero.jpg" alt="Familia en su casa - Panalera Ruta 8" decoding="async">
-    <img class="hero-bg2" src="local-hero2.jpg" alt="Mama con su bebe - Panalera Ruta 8" decoding="async">
+    <picture class="hero-pic"><img class="hero-bg" src="local-hero.jpg" alt="Familia en su casa - Panalera Ruta 8" decoding="async"></picture>
+    <picture class="hero-pic2"><source media="(max-width:760px)" srcset="local-hero2-m.jpg"><img class="hero-bg2" src="local-hero2.jpg" alt="Mama con su bebe - Panalera Ruta 8" decoding="async"></picture>
   </div>
   <div class="hero-ov"></div>
   <div class="hero-copy-wrap"><div class="wrap"><div class="hero-copy rv rv-l">
     <span class="eyebrow-hero">Mayorista · San Martín · Zona Norte</span>
-    <h1 class="hero-title">Pañales del <span class="acc">depósito</span> a la puerta de tu <span class="acc">casa</span>.</h1>
+    <h1 class="hero-title"><span class="hp-pre">Pañales d</span><span class="hp-cap">D</span>el <span class="acc">depósito</span> a la puerta de tu <span class="acc">casa</span>.</h1>
     <p class="hero-click">O donde estés, con un solo <span class="acc">click</span>.</p>
   </div></div></div>
   <div class="hero-stamp2" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stc" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"/></defs><g class="stamp-rot"><circle cx="60" cy="60" r="58" fill="#0b2545" stroke="#cfe0f5" stroke-width="1.5"/><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/><text font-family="Bricolage Grotesque" font-weight="700" font-size="10.5" letter-spacing="1.4" fill="#fff"><textPath href="#stc" startOffset="0">PAÑALERA RUTA 8 · MAYORISTA · </textPath></text></g><text x="60" y="73" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="38" fill="#ffffff">8</text></svg></div>
