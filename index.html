@@ -7,7 +7,7 @@
 <meta name="description" content="Venta mayorista de pañales de adulto y bebé al precio de fábrica, en San Martín, zona norte GBA. Envío a domicilio. Te asesoramos y te lo llevamos.">
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <script>/* Failsafe: si el JS principal falla (navegador viejo del cel), muestra TODO igual */
-window.addEventListener('load',function(){setTimeout(function(){if(!window.__appOK){var e=document.querySelectorAll('.rv,.revsec,.reveal,.reveal-l,.reveal-r');for(var i=0;i<e.length;i++){e[i].className+=' in';}}},700);});</script>
+window.addEventListener('load',function(){setTimeout(function(){if(!window.__appOK){if(typeof revScan==='function'){revScan();}else{var e=document.querySelectorAll('.rv,.revsec,.reveal,.reveal-l,.reveal-r');for(var i=0;i<e.length;i++){e[i].className+=' in';}}}},700);});</script>
 <script>/* Recuperacion de clave: si el mail de reset cae aca, reenviar al panel con el token */
 if(location.hash.indexOf('type=recovery')>=0 && location.pathname.indexOf('panel')<0){location.replace('panel.html'+location.hash);}
 /* Al recargar, volver siempre arriba (al hero) */
@@ -39,6 +39,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   html{font-size:calc(16px * var(--fscale))}
+  @media(max-width:760px){:root{--fscale:1.42}}
   body{font-family:'Figtree',system-ui,sans-serif;color:var(--ink);background:var(--white);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   h1,h2,h3,.serif{font-family:'Bricolage Grotesque',Georgia,serif;font-weight:600;line-height:1.08;letter-spacing:-.01em;color:var(--ink)}
   a{color:inherit;text-decoration:none}
@@ -123,7 +124,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .rv-r{opacity:0;transform:translateX(64px);transition:opacity 1.3s ease,transform 1.5s cubic-bezier(.16,.68,.24,1)}
   .rv-l.in,.rv-r.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.rv-l,.rv-r{transition:none;opacity:1;transform:none}}
-  @media(max-width:760px){header.hero{min-height:100svh;position:relative;background:#0b2545;display:block;overflow:hidden}.hero-bgs{position:absolute;inset:0}.hero-pic,.hero-pic2{position:absolute;left:0;right:0;bottom:0;top:auto;height:56%}header.hero .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}header.hero .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}.hero-ov{display:none}.hero-copy-wrap{display:none}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-mposter{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;position:absolute;inset:0;z-index:3;padding:70px 20px 84px;text-align:center}header.hero .hmp-logo,header.hero .hmp-brand{display:none}header.hero .hmp-top{margin-top:0}header.hero .hmp-cta{margin-top:auto}.hmp-top{display:flex;flex-direction:column;align-items:center;width:100%}.hmp-logo{width:64px;height:64px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}.hmp-brand{font-family:"Fraunces",serif;font-weight:900;font-size:1.65rem;color:#fff;margin-top:8px;letter-spacing:-.01em}.hmp-eyebrow{margin-top:10px;display:inline-block;font-family:"Figtree",sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#dbe8f7;border:1.5px solid rgba(219,232,247,.5);border-radius:100px;padding:6px 14px}.hmp-title{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.95rem,8.6vw,2.7rem);line-height:1.06;letter-spacing:-.02em;color:#fff;margin:18px 0 0}.hmp-sub{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.4rem,6.3vw,1.95rem);line-height:1.08;letter-spacing:-.02em;color:#fff;margin:12px 0 0}.hmp-cta{display:block;width:100%;max-width:430px;background:var(--azul,#0e5aa7);color:#fff;text-align:center;text-decoration:none;font-family:"Figtree",sans-serif;font-weight:900;font-size:1.08rem;letter-spacing:.04em;padding:17px 20px;border-radius:15px;box-shadow:0 16px 34px -10px rgba(14,90,167,.7)}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}
+  @media(max-width:760px){header.hero{min-height:100svh;position:relative;background:#0b2545;display:block;overflow:hidden}.hero-bgs{position:absolute;inset:0}.hero-pic,.hero-pic2{position:absolute;left:0;right:0;bottom:0;top:auto;height:56%}header.hero .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}header.hero .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}.hero-ov{display:none}.hero-copy-wrap{display:none}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-mposter{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;position:absolute;inset:0;z-index:3;padding:70px 20px 116px;text-align:center}header.hero .hmp-logo,header.hero .hmp-brand{display:none}header.hero .hmp-top{margin-top:0}header.hero .hmp-cta{margin-top:auto}.hmp-top{display:flex;flex-direction:column;align-items:center;width:100%}.hmp-logo{width:64px;height:64px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}.hmp-brand{font-family:"Fraunces",serif;font-weight:900;font-size:1.65rem;color:#fff;margin-top:8px;letter-spacing:-.01em}.hmp-eyebrow{margin-top:10px;display:inline-block;font-family:"Figtree",sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#dbe8f7;border:1.5px solid rgba(219,232,247,.5);border-radius:100px;padding:6px 14px}.hmp-title{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.95rem,8.6vw,2.7rem);line-height:1.06;letter-spacing:-.02em;color:#fff;margin:18px 0 0}.hmp-sub{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.4rem,6.3vw,1.95rem);line-height:1.08;letter-spacing:-.02em;color:#fff;margin:12px 0 0}.hmp-cta{display:block;width:100%;max-width:340px;background:var(--azul,#0e5aa7);color:#fff;text-align:center;text-decoration:none;font-family:"Figtree",sans-serif;font-weight:900;font-size:1.08rem;letter-spacing:.04em;padding:17px 20px;border-radius:15px;box-shadow:0 16px 34px -10px rgba(14,90,167,.7)}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}
   .hp-cap{display:none}
   .hero-mposter{display:none}
   .hero-copy{max-width:54%;padding-top:7px}
@@ -659,7 +660,7 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   </div>
 </div>
 
-<button class="fs-fab" onclick="cycleFs()" aria-label="Agrandar textos"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5h9v2M8.5 5v13M6 18h5"/><path d="M13 11v-1h7v1M16.5 10v8M14 18h5"/></svg><span id="fsFabLab">Agrandar textos</span></button>
+<button class="fs-fab" onclick="cycleFs()" aria-label="Achicar texto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5h9v2M8.5 5v13M6 18h5"/><path d="M13 11v-1h7v1M16.5 10v8M14 18h5"/></svg><span id="fsFabLab">Achicar texto</span></button>
 <div class="toast" id="toast"></div>
 
 <script src="supabase.min.js"></script>
@@ -808,13 +809,14 @@ function confirmOrder(){
   CART=[];updateCart();
 }
 // ---------- Tamaño de textos: 4 niveles (normal → máximo) ----------
-function cycleFs(){var map={1:1,2:1.12,3:1.26,4:1.42};window.__fs=(window.__fs||1)>=4?1:(window.__fs||1)+1;document.documentElement.style.setProperty('--fscale',map[window.__fs]);var bs=document.querySelectorAll('.afs-btns button');bs.forEach(function(b,i){b.classList.toggle('on',i===window.__fs-1);});var l=document.getElementById('fsFabLab');if(l)l.textContent='Texto '+window.__fs+'/4';}
+function cycleFs(){var map={1:1,2:1.12,3:1.26,4:1.42};window.__fs=(window.__fs||4)<=1?4:(window.__fs||4)-1;document.documentElement.style.setProperty('--fscale',map[window.__fs]);var bs=document.querySelectorAll('.afs-btns button');bs.forEach(function(b,i){b.classList.toggle('on',i===window.__fs-1);});var l=document.getElementById('fsFabLab');if(l)l.textContent='Achicar texto';}
 function setFs(lv,btn){window.__fs=lv;const map={1:1,2:1.12,3:1.26,4:1.42};document.documentElement.style.setProperty('--fscale',map[lv]||1);document.querySelectorAll('.afs-btns button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 // ---------- toast ----------
 let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200);}
 // ---------- reveals (nativo, sutil, reduce-motion friendly) ----------
-const io=('IntersectionObserver' in window)?new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.14}):null;
-function revScan(){try{if(!io){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));return;}document.querySelectorAll('.rv:not(.in),.revsec:not(.in),.reveal:not(.in),.reveal-l:not(.in),.reveal-r:not(.in)').forEach(el=>io.observe(el));}catch(e){document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));}}
+window.__fs=4;
+function revScan(){try{var vh=window.innerHeight||document.documentElement.clientHeight;var atBottom=(window.scrollY+vh)>=(document.documentElement.scrollHeight-40);document.querySelectorAll('.rv:not(.in),.revsec:not(.in),.reveal:not(.in),.reveal-l:not(.in),.reveal-r:not(.in),.reveal-up:not(.in),.reveal-down:not(.in)').forEach(function(el){var r=el.getBoundingClientRect();if(atBottom||(r.top<vh*0.9&&r.bottom>0)){el.classList.add('in');}});}catch(e){document.querySelectorAll('.rv,.revsec,.reveal,.reveal-l,.reveal-r').forEach(function(el){el.classList.add('in');});}}
+addEventListener('scroll',function(){requestAnimationFrame(revScan);},{passive:true});addEventListener('resize',revScan);addEventListener('load',revScan);
 // ---------- nav scroll ----------
 addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>20);});
 // ---------- RITA (asistente honesta; motor IA se conecta por Edge Function en la versión final) ----------
@@ -892,5 +894,7 @@ renderProds();cargarCatalogo();updateCart();revScan();window.__appOK=true;docume
   if(_hh&&document.querySelector('.hero-bg2')){setInterval(function(){_hh.classList.toggle('show2');},4000);}
 })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>(function(){try{if(typeof Lenis==="undefined")return;if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;document.documentElement.style.scrollBehavior="auto";var lenis=new Lenis({duration:1.05,smoothWheel:true,touchMultiplier:1.6});lenis.on("scroll",function(){if(typeof revScan==="function")revScan();});function raf(t){lenis.raf(t);requestAnimationFrame(raf);}requestAnimationFrame(raf);document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute("href");if(!id||id.length<2)return;var el=document.querySelector(id);if(!el)return;e.preventDefault();lenis.scrollTo(el,{offset:-8});});}catch(err){}})();</script>
 </body>
 </html>
