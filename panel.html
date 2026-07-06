@@ -240,9 +240,11 @@
         <textarea id="ri_prompt" rows="6" style="width:100%;box-sizing:border-box"></textarea>
         <label style="font-weight:700;display:block;margin:12px 0 4px">Rita — cuestionario "Soy mayorista"</label>
         <textarea id="ri_prompt_may" rows="8" style="width:100%;box-sizing:border-box"></textarea>
+        <label style="font-weight:700;display:block;margin:12px 0 4px">Números del equipo para el aviso de mayorista (WhatsApp, separados por coma)</label><input id="ri_nums" style="width:100%;box-sizing:border-box" placeholder="Ej: 5491112345678, 5491198765432">
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:10px"><label><input type="checkbox" id="ri_activo"> Rita activa</label><button class="btn lg" id="btnSaveRita">Guardar guiones</button><span id="riMsg" class="sub"></span></div>
       </div></div>
       <div class="kpis" id="kpisChat"></div>
+      <div class="panel"><div class="h">🏷️ Solicitudes de mayorista (calificando ahora)</div><div class="b tablewrap" id="tSolMay"></div></div>
       <div class="panel"><div class="h">🙋 Necesitan que atiendas vos</div><div class="b tablewrap" id="tChatHumano"></div></div>
       <div class="panel"><div class="h">💬 Últimas conversaciones</div><div class="b tablewrap" id="tChatUlt"></div></div>
     </section>
@@ -380,6 +382,8 @@
   <div class="err" id="mfErr"></div>
   <div class="acts"><button class="btn gris" onclick="cerrar('ovFicha')">Cerrar</button><button class="btn lg" id="btnSaveFicha">Guardar cambios</button></div>
 </div></div>
+
+<div class="overlay" id="ovMayPop"><div class="modal" style="max-width:460px;text-align:center"><div style="font-size:2.6rem">🏷️</div><h3>¡Entró un mayorista!</h3><p class="sub" id="mayPopSub"></p><div class="acts" style="justify-content:center"><button class="btn lg" id="btnMayPopOk">Aceptar y ver la charla</button></div></div></div>
 
 <!-- MODAL NUEVO PEDIDO -->
 <div class="overlay" id="ovPed"><div class="modal" style="max-width:660px">
@@ -530,6 +534,8 @@ function go(v){vistaActual=v;document.querySelectorAll('#nav a').forEach(a=>a.cl
   document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='sec-'+v));
   ({inicio:loadInicio,catalogo:loadCatalogo,productos:loadProductos,clientes:loadClientes,pedidos:loadPedidos,marketing:loadMarketing,promos:loadPromos,bot:loadBot,b2bfrio:loadB2B,chatbot:loadChatbot,publicaciones:loadPub,contabilidad:loadCont,sistema:loadSistema,config:loadConfig,usuarios:loadUsuarios}[v])();}
 document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>go(a.dataset.v));
+window.popMayorista=function(conv){window._mayPopConv=conv;var s=$('mayPopSub');if(s)s.textContent=((conv&&conv.nombre_contacto)?conv.nombre_contacto:'Un mayorista')+' está calificando ahora en la web. Tocá Aceptar para ir a la charla y seguirlo vos.';abrir('ovMayPop');};
+$('btnMayPopOk')&&($('btnMayPopOk').onclick=function(){cerrar('ovMayPop');var c=window._mayPopConv;go('chatbot');if(c)setTimeout(function(){try{abrirChat(c.id,c.wa_id,c.nombre_contacto||c.wa_id);}catch(e){}},350);});
 
 async function cargarMargenes(){const{data}=await sb.from('listas_precio').select('nombre,margen_pct');MARG={};(data||[]).forEach(l=>MARG[l.nombre]=Number(l.margen_pct));}
 async function cargarFuentes(){const{data}=await sb.from('fuentes_captacion').select('codigo,nombre').order('orden');FUENTES=data||[];
@@ -799,7 +805,8 @@ $('btnReconectar').onclick=async()=>{await sb.from('bot_outbox').insert({tipo:'r
 
 // CHATBOT (tablero real: usa conversaciones + mensajes)
 async function loadChatbot(){
-  try{const{data:wc}=await sb.from('web_config').select('*').eq('id',1).maybeSingle();if(wc){$('ri_prompt').value=wc.system_prompt||'';$('ri_prompt_may').value=wc.system_prompt_mayorista||'';$('ri_activo').checked=wc.activo!==false;}$('btnSaveRita').onclick=async()=>{$('riMsg').style.color='';$('riMsg').textContent='Guardando...';const{error}=await sb.from('web_config').update({system_prompt:$('ri_prompt').value,system_prompt_mayorista:$('ri_prompt_may').value,activo:$('ri_activo').checked,actualizado_en:new Date().toISOString()}).eq('id',1);$('riMsg').style.color=error?'#c00':'var(--verde)';$('riMsg').textContent=error?('No se pudo: '+error.message):'\u2705 Guardado. Rita ya usa estos guiones.';};}catch(_){}
+  try{const{data:wc}=await sb.from('web_config').select('*').eq('id',1).maybeSingle();if(wc){$('ri_prompt').value=wc.system_prompt||'';$('ri_prompt_may').value=wc.system_prompt_mayorista||'';$('ri_activo').checked=wc.activo!==false;if($('ri_nums'))$('ri_nums').value=wc.numeros_equipo||'';}$('btnSaveRita').onclick=async()=>{$('riMsg').style.color='';$('riMsg').textContent='Guardando...';const{error}=await sb.from('web_config').update({system_prompt:$('ri_prompt').value,system_prompt_mayorista:$('ri_prompt_may').value,activo:$('ri_activo').checked,numeros_equipo:($('ri_nums')?$('ri_nums').value:null),actualizado_en:new Date().toISOString()}).eq('id',1);$('riMsg').style.color=error?'#c00':'var(--verde)';$('riMsg').textContent=error?('No se pudo: '+error.message):'\u2705 Guardado. Rita ya usa estos guiones.';};}catch(_){}
+  try{const{data:sm}=await sb.from('conversaciones').select('*').eq('canal','web_mayorista').order('ultima_actividad',{ascending:false}).limit(50);const S=sm||[];if($('tSolMay'))$('tSolMay').innerHTML=S.length?tbl('<tr><th>Contacto</th><th>Estado</th><th>Última</th><th></th></tr>'+S.map(c=>`<tr><td><b>${esc(c.nombre_contacto||c.wa_id)}</b>${c.no_leidos>0?` <span class="badge amb">${c.no_leidos}</span>`:''}</td><td><span class="badge ${c.estado==='humano'?'amb':(c.estado==='cerrada'?'gr':'ok')}">${esc(c.estado)}</span></td><td>${esc((c.ultima_actividad||'').slice(0,16).replace('T',' '))}</td><td><button class="btn sm" onclick='abrirChat(${JSON.stringify(c.id)},${JSON.stringify(c.wa_id)},${JSON.stringify(c.nombre_contacto||c.wa_id)})'>Abrir</button></td></tr>`).join('')):empty('Sin solicitudes de mayorista todavía. Cuando alguien entre por "Soy mayorista", aparece acá.');}catch(_){}
   // SOLO conversaciones del canal WEB (las de WhatsApp viven en "Bot WhatsApp")
   const{data:cv}=await sb.from('conversaciones').select('*').eq('canal','web').order('ultima_actividad',{ascending:false}).limit(100);
   const convs=cv||[];
@@ -969,8 +976,9 @@ function suscribirRealtime(){ if(_rtSuscrito)return; _rtSuscrito=true;
   sb.channel('sistema')
     .on('postgres_changes',{event:'*',schema:'public',table:'bot_estado'},()=>{if(vistaActual==='sistema')loadSistema();if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'eventos_log'},()=>{if(vistaActual==='sistema')loadSistema();})
-    .on('postgres_changes',{event:'*',schema:'public',table:'conversaciones'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
-    .on('postgres_changes',{event:'*',schema:'public',table:'mensajes'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();})
+    .on('postgres_changes',{event:'*',schema:'public',table:'conversaciones'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();if(vistaActual==='chatbot')loadChatbot();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'conversaciones'},(payload)=>{try{if(payload.new&&payload.new.canal==='web_mayorista')popMayorista(payload.new);}catch(e){}})
+    .on('postgres_changes',{event:'*',schema:'public',table:'mensajes'},()=>{if(vistaActual==='bot')loadBot();if(vistaActual==='b2bfrio')loadB2B();if(vistaActual==='chatbot')loadChatbot();})
     .subscribe();
 }
 function abrir(id){$(id).style.display='flex';}function cerrar(id){$(id).style.display='none';}
