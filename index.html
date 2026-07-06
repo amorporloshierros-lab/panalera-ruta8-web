@@ -123,8 +123,9 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
   .rv-r{opacity:0;transform:translateX(64px);transition:opacity 1.3s ease,transform 1.5s cubic-bezier(.16,.68,.24,1)}
   .rv-l.in,.rv-r.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.rv-l,.rv-r{transition:none;opacity:1;transform:none}}
-  @media(max-width:760px){.hero-bgs{position:relative}.hero-pic{display:block;width:100%}.hero-pic2{position:absolute;inset:0}header.hero .hero-bg{width:100%;height:auto;max-height:none;min-height:0;object-fit:fill}header.hero .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.hero-ov{display:block;background:linear-gradient(90deg,rgba(11,37,74,.95) 0%,rgba(11,37,74,.9) 38%,rgba(11,37,74,.5) 52%,rgba(11,37,74,.1) 64%,rgba(11,37,74,0) 74%)}.hero-copy-wrap{top:50px;bottom:6px;align-items:stretch}.hero-copy-wrap>.wrap{padding-left:14px;padding-right:0;width:100%}.hero-copy{max-width:45%;padding:0;display:flex;flex-direction:column;justify-content:space-between;height:100%}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-click{display:block;font-size:clamp(.8rem,3.8vw,1.08rem);line-height:1.04;letter-spacing:-.015em;font-weight:900;color:#fff;margin:0;text-shadow:0 1px 6px rgba(9,28,55,.85)}header.hero .eyebrow-hero{display:inline-block;font-size:.5rem;padding:4px 9px;letter-spacing:.03em;margin:0 0 2px;align-self:flex-start}header.hero .hero-title{font-size:clamp(.95rem,4.5vw,1.36rem);line-height:1.04;letter-spacing:-.015em;font-weight:900;color:#fff;text-align:left;margin:0;text-shadow:0 1px 6px rgba(9,28,55,.85)}header.hero .hero-title .hl{white-space:normal}.acc{font-size:1.12em}header.hero .hp-pre{display:none}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}
+  @media(max-width:760px){header.hero{min-height:100svh;position:relative;background:#0b2545;display:block;overflow:hidden}.hero-bgs{position:absolute;inset:0}.hero-pic,.hero-pic2{position:absolute;left:0;right:0;bottom:0;top:auto;height:60%}header.hero .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}header.hero .hero-bg2{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%}.hero-ov{display:none}.hero-copy-wrap{display:none}header.hero .marquee{display:none}.hero-stamp2{display:none}header.hero .hero-mposter{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;position:absolute;inset:0;z-index:3;padding:72px 22px 84px;text-align:center}header.hero .hmp-top{margin-top:6vh}header.hero .hmp-cta{margin-top:auto}.hmp-top{display:flex;flex-direction:column;align-items:center;width:100%}.hmp-logo{width:64px;height:64px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}.hmp-brand{font-family:"Fraunces",serif;font-weight:900;font-size:1.65rem;color:#fff;margin-top:8px;letter-spacing:-.01em}.hmp-eyebrow{margin-top:10px;display:inline-block;font-family:"Figtree",sans-serif;font-weight:700;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#dbe8f7;border:1.5px solid rgba(219,232,247,.5);border-radius:100px;padding:6px 14px}.hmp-title{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.95rem,8.6vw,2.7rem);line-height:1.06;letter-spacing:-.02em;color:#fff;margin:18px 0 0}.hmp-sub{font-family:"Fraunces",serif;font-weight:800;font-size:clamp(1.05rem,5vw,1.45rem);line-height:1.12;color:#eaf1fb;margin:11px 0 0}.hmp-cta{display:block;width:100%;max-width:430px;background:var(--azul,#0e5aa7);color:#fff;text-align:center;text-decoration:none;font-family:"Figtree",sans-serif;font-weight:900;font-size:1.08rem;letter-spacing:.04em;padding:17px 20px;border-radius:15px;box-shadow:0 16px 34px -10px rgba(14,90,167,.7)}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}header.hero .hp-cap{display:inline}}
   .hp-cap{display:none}
+  .hero-mposter{display:none}
   .hero-copy{max-width:54%;padding-top:7px}
   #intro{padding:54px 0 6px;text-align:center;background:var(--white)}
   .intro-wrap{max-width:780px;margin:0 auto}
@@ -402,8 +403,8 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
 <!-- HERO -->
 <header class="hero revsec">
   <div class="hero-bgs">
-    <picture class="hero-pic"><img class="hero-bg" src="local-hero.jpg" alt="Familia en su casa - Panalera Ruta 8" decoding="async"></picture>
-    <picture class="hero-pic2"><source media="(max-width:760px)" srcset="local-hero2-m.jpg"><img class="hero-bg2" src="local-hero2.jpg" alt="Mama con su bebe - Panalera Ruta 8" decoding="async"></picture>
+    <picture class="hero-pic"><source media="(max-width:760px)" srcset="local-hero-poster.jpg"><img class="hero-bg" src="local-hero.jpg" alt="Familia en su casa - Panalera Ruta 8" decoding="async"></picture>
+    <picture class="hero-pic2"><source media="(max-width:760px)" srcset="local-hero2-poster.jpg"><img class="hero-bg2" src="local-hero2.jpg" alt="Mama con su bebe - Panalera Ruta 8" decoding="async"></picture>
   </div>
   <div class="hero-ov"></div>
   <div class="hero-copy-wrap"><div class="wrap"><div class="hero-copy rv rv-l">
@@ -416,6 +417,16 @@ window.addEventListener('load',function(){window.scrollTo(0,0);setTimeout(functi
     <span>Precio de fábrica</span><i>●</i><span>Envío a domicilio</span><i>●</i><span>Adulto y bebé</span><i>●</i><span>San Martín · Zona Norte</span><i>●</i><span>Asesoría de talle</span><i>●</i>
     <span>Precio de fábrica</span><i>●</i><span>Envío a domicilio</span><i>●</i><span>Adulto y bebé</span><i>●</i><span>San Martín · Zona Norte</span><i>●</i><span>Asesoría de talle</span><i>●</i>
   </div></div>
+  <div class="hero-mposter" aria-hidden="true">
+    <div class="hmp-top">
+      <img class="hmp-logo" src="logo-emblema.png" alt="Pañalera Ruta 8" width="60" height="60">
+      <div class="hmp-brand">Pañalera Ruta 8</div>
+      <span class="hmp-eyebrow">Mayorista · San Martín · Zona Norte</span>
+      <h2 class="hmp-title">Del depósito a la puerta de tu casa.</h2>
+      <p class="hmp-sub">O donde estés, con un solo click.</p>
+    </div>
+    <a href="#catalogo" class="hmp-cta">COMPRAR AHORA</a>
+  </div>
 </header>
 <section id="intro">
   <div class="wrap intro-wrap">
