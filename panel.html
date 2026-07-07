@@ -348,7 +348,7 @@
   <h3>Agregar cliente</h3><p class="sub">El teléfono, email y dirección se guardan cifrados.</p>
   <div class="field"><label>Nombre</label><input id="c_nombre" placeholder="Nombre y apellido"></div>
   <div class="grid2">
-    <div class="field"><label>Tipo</label><select id="c_tipo"><option value="one_time">Cliente (1 compra)</option><option value="recurrente">Recurrente</option><option value="b2b">B2B</option></select></div>
+    <div class="field"><label>Tipo</label><select id="c_tipo"><option value="one_time">Cliente (1 compra)</option><option value="recurrente">Recurrente</option><option value="b2b">B2B</option></select></div><div class="field"><label>Lista de precios (qué paga)</label><select id="c_lista"><option value="minorista">Minorista</option></select></div>
     <div class="field"><label>¿Cómo llegó?</label><select id="c_canal"></select></div>
     <div class="field"><label>Teléfono</label><input id="c_tel" placeholder="11…"></div>
     <div class="field"><label>Email</label><input id="c_email" placeholder="opcional"></div>
@@ -624,9 +624,10 @@ function renderCli(){const q=($('bCli').value||'').toLowerCase();const sf=($('fS
   if(!(window._CLI||[]).length){$('tCli').innerHTML=empty('Sin clientes. Tocá “+ Agregar cliente”.');return;}
   $('tCli').innerHTML=tbl('<tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Teléfono</th><th>Email</th><th>Rubro</th><th>Segmento</th><th></th></tr>'+rows.map(c=>`<tr><td>${esc(c.codigo)}</td><td><b>${esc(c.nombre)}</b></td><td><span class="chip">${esc(c.tipo)}</span></td><td>${esc(c.telefono||'')}</td><td>${esc(c.email||'')}</td><td>${esc(c.rubro||'')}</td><td><span class="chip">${esc(c._seg||'minorista')}</span></td><td><button class="btn gris" onclick="abrirFicha('${c.id}')">📋 Ficha</button></td></tr>`).join(''));}
 $('bCli').addEventListener('input',renderCli);$('fSeg')&&$('fSeg').addEventListener('change',renderCli);
-$('btnNuevoCli').onclick=()=>{['c_nombre','c_tel','c_email','c_dir','c_rubro'].forEach(i=>$(i).value='');$('c_tipo').value='one_time';$('c_canal').value='';$('mcErr').textContent='';abrir('ovCli');};
-$('btnSaveCli').onclick=async()=>{$('mcErr').textContent='';const nombre=$('c_nombre').value.trim();if(!nombre){$('mcErr').textContent='Poné un nombre.';return;}$('btnSaveCli').disabled=true;
-  try{const{error}=await sb.rpc('alta_cliente',{p_nombre:nombre,p_tipo:$('c_tipo').value,p_canal:$('c_canal').value||null,p_telefono:$('c_tel').value.trim()||null,p_email:$('c_email').value.trim()||null,p_direccion:$('c_dir').value.trim()||null,p_rubro:$('c_rubro').value.trim()||null});if(error)throw error;cerrar('ovCli');loadClientes();
+$('btnNuevoCli').onclick=async()=>{['c_nombre','c_tel','c_email','c_dir','c_rubro'].forEach(i=>$(i).value='');$('c_tipo').value='one_time';$('c_canal').value='';$('mcErr').textContent='';await cargarListasCli();$('c_lista').value='minorista';abrir('ovCli');};
+async function cargarListasCli(){try{const{data}=await sb.from('listas_precio').select('nombre,margen_pct');if(!data||!data.length)return;const orden={minorista:0,revendedor:1,geriatrico:2,mayorista:3,almacen:4};const nom={minorista:'Minorista',revendedor:'Revendedor',geriatrico:'Geriátrico',mayorista:'Mayorista',almacen:'Almacén'};data.sort((a,b)=>(orden[a.nombre]??9)-(orden[b.nombre]??9));$('c_lista').innerHTML=data.map(l=>`<option value="${l.nombre}">${nom[l.nombre]||l.nombre} (${l.margen_pct}%)</option>`).join('');}catch(e){}}
+  $('btnSaveCli').onclick=async()=>{$('mcErr').textContent='';const nombre=$('c_nombre').value.trim();if(!nombre){$('mcErr').textContent='Poné un nombre.';return;}$('btnSaveCli').disabled=true;
+  try{const{error}=await sb.rpc('alta_cliente_full',{p_nombre:nombre,p_tipo:$('c_tipo').value,p_lista:$('c_lista').value,p_canal:$('c_canal').value||null,p_telefono:$('c_tel').value.trim()||null,p_email:$('c_email').value.trim()||null,p_direccion:$('c_dir').value.trim()||null,p_rubro:$('c_rubro').value.trim()||null});if(error)throw error;cerrar('ovCli');loadClientes();
   }catch(e){$('mcErr').textContent='No se pudo guardar: '+(e.message||e);}finally{$('btnSaveCli').disabled=false;}};
 
 // FICHA DE CLIENTE (ver + editar + historial)
